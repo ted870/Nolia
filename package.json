@@ -1,0 +1,17 @@
+{
+  "name": "nolia",
+  "version": "0.5.4",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "coverage:intents": "node scripts/intent-coverage.js",
+    "sheet:ewondo": "node scripts/build-translation-sheet.js",
+    "packs:build": "node scripts/build-packs.js",
+    "pack:ewo": "node scripts/install-ewo-pack.js",
+    "pack:ewo:provisional": "python3 scripts/generate-provisional-ewondo.py"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

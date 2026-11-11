@@ -1,0 +1,86 @@
+﻿id;francais;ewondo_provisoire;retrotraduction_francaise;controles_automatiques;validation_humaine
+transfer.summary;Résumé structuré avec emplacements protégés;{direction}: {amount} {currency}. Dzoe nyè: {beneficiary}. E mam mësòman: {fees}.;Contrôle structurel uniquement;structure-ok;à faire
+transfer.insufficient_balance;Le solde ne suffit pas pour ce transfert.;E mòni esëki soe asu die.;Celui-ci n'est pas pour lui un autre témoignage.;structure-ok;à faire
+transfer.sent_success;Votre argent a été envoyé avec succès.;Ndò mvulna woe ongabë eyòṅ dzaban.;Et voilà qu'un de ses vêtements était donné.;structure-ok;à faire
+transfer.received;Vous avez reçu de l'argent.;Mingabi mòni.;Vous avez reçu l'argent.;structure-ok;à faire
+transfer.failed;Le transfert a échoué.;Ndò mvulna angabë fufulu.;Et la parabole fut arrivée.;structure-ok;à faire
+beneficiary.verify_before_confirm;Vérifiez le bénéficiaire avant d'envoyer l'argent.;Vòṅan efaè nyi, osusua yë na alom mòni.;Réjouissez-vous de ce don, avant qu'il souille l'argent.;structure-ok;à faire
+beneficiary.new_unknown;Ce bénéficiaire est nouveau.;Efaè nyi enë mkpamaṅ.;Le don de cet témoignage est mauvais.;structure-ok;à faire
+summary.verify_before_confirm;Vérifiez les détails avant de confirmer.;Ndò hm, yë na: Biayi bi mvulna osu.;"Ils dirent donc: ""Nous mettront devant nous.""";structure-ok;à faire
+environment.test_data;Ceci est une simulation avec des données fictives.;Ndò hm fë anë ntud ai dzom ziṅ.;C'est pourquoi il n'y a point de trésor.;structure-ok;à faire
+security.no_personal_data;Ne communiquez jamais votre code secret.;Dzam da, të miakòbò ndzoe woe.;Mais ne parle pas de son tribun.;structure-ok;à faire
+fees.free_transfer;Ce transfert est gratuit.;Ndò fë efaè esye te.;Et aussitôt le don de ce serviteur.;structure-ok;à faire
+fees.amount_info;Des frais sont appliqués à cette opération.;Asu te mam mësòman nyè.;C'est pourquoi ces choses lui sévèrent.;structure-ok;à faire
+transfer.total_debit;Cette somme sera retirée de votre compte.;Bayi komëzan asu daan.;et ils s'en retourneront pour nous.;structure-ok;à faire
+balance.available_info;Ceci est votre solde disponible.;E mam mënë e nyòlò dzama.;Ce que je suis, c'est mon corps.;structure-ok;à faire
+balance.after_operation;Ceci est le solde restant après l'opération.;E nyi enë e mam mòni a mvus hala.;Celui-ci est ce qu'il y aura de là.;structure-ok;à faire
+action.confirm_transfer;Cette action confirme l'envoi de l'argent.;E mam mëte, ndò e dzi engatsig mòni.;Ces choses, et ce qu'il a fait, on l'a déposé.;structure-ok;à faire
+error.generic;Un problème technique s'est produit.;Mod nkòbò adzo te.;C'est ce que dit un homme.;structure-ok;à faire
+fallback.unrecognized;Nolia n'a pas reconnu ce message. Le texte français reste visible.;Nolia andzëki yen e dzi nyi. E mvende engakòbò esye te, akòn bibug biaban.;"Nolie n'a point vu ce qui lui a été donné; mais dans la loi où il s'est annoncé, nous avons entendu cette parole.";structure-ok;à faire
+fallback.unrecognized_warning;Attention, Nolia n'a pas reconnu ce message. Vérifiez avant de continuer.;Boan okala, Nolia andzëki yen e dzam di. Tòbògò na akada kui osu.;"Prenez garde, Nolie n'a pas vu ce que je fais; dis-le devant.";structure-ok;à faire
+environment.testBanner;Environnement de test — données fictives, aucune transaction réelle.;A mvòm-biyëman, tègè ai e dzi engakomban.;Il n'y avait pas ce qui établissait dans la connaissance de leurs convoitises.;structure-ok;à faire
+environment.protocol;Protocole de test;Mvende ndò mbëmbë foe;La Loi et la bonté de l'Evangile;structure-ok;à faire
+environment.backToHackathon;Retour au hackathon;Ndò hm adugan abë ekakatan;Il s'en alla donc vers le royaume.;structure-ok;à faire
+app.bankOnline;Banque en ligne;E nyi e dzom ziṅ enë mbòg, asu yë na;Celui-là donnera ce qui est bien, afin que:;structure-ok;à faire
+step.balance;Solde;Yë mvòm esye;"""Voici le serviteur de toutes choses.""";structure-ok;à faire
+common.fees;Frais;Fufulu hm fë asu daan;C'est pour nous que vous êtes glorifiés.;structure-ok;à faire
+common.beneficiary;Bénéficiaire;Beneficiò na:;Et il répondit:;structure-ok;à faire
+common.summary;Récapitulatif;Ndò hm, akëlë kui anë dzam sosoo.;Il s'en alla donc jusqu'à la justice.;structure-ok;à faire
+step.confirmation;Confirmation;Bendëgan e mam mëte;Considérez ces choses.;structure-ok;à faire
+balance.accountHeading;VOTRE COMPTE;Ndò fë mbëmbë foe, asu yë na b;Et l'Evangile, afin qu'il fût;structure-ok;à faire
+balance.intro;Consultez votre solde et lancez un transfert en toute sécurité.;Ndò hm, yëmanan e mam mian ai ngogëlan a saaṅ.;Ayez donc compris ces choses et ce que vous avez prêché.;structure-ok;à faire
+balance.available;SOLDE DISPONIBLE;Dzam da, eyòṅ esëki bod asu yë na mvulna mbëmbë foe.;Mais lorsque ce ne sont pas les hommes, afin que l'Evangile soit blasphémé.;structure-ok;à faire
+balance.currentAccount;Compte courant;Ndò mbëmbë foe;Evangile de l'Evangil;structure-ok;à faire
+balance.startTransfer;Effectuer un transfert;Ndò fë mvulna ṅnyè angatyeban a nda-Zamba.;Et la parabole de Jésus s'approcha dans l'Eglise.;structure-ok;à faire
+balance.checkFees;Consulter les frais;Ndò fë ṅnyè ayen e mam mësë, nala waty;Et lui-même, voyant tout ce qu'il faisait,;structure-ok;à faire
+balance.recentTransactions;TRANSACTIONS RÉCENTES;Dzam da, asu yë na eyòṅ mimbog mbëmbë foe.;Mais afin que, lorsque les prisonniers entendent l'Evangile.;structure-ok;à faire
+transaction.merchantPayment;Paiement marchand;Mbëmbë mvende.;C'est la Loi.;structure-ok;à faire
+transaction.salaryReceived;Salaire reçu;E mvòṅ ya maan bëngayi nyè, asu y;C'est pourquoi la grâce qui lui a été donnée,;structure-ok;à faire
+transaction.transferReceived;Transfert reçu;Ndò mvulna mbëmbë foe asu yë na;"Alors l'Evangile, après lui avoir dit: ""Il n'y en a point de plus grand que vous.""";structure-ok;à faire
+transaction.electricityBill;Facture électricité;Foe ngòn ziṅ asu yë na bod mbëmbë foe;La fille de l'Evangile, afin que les hommes soient fidèles.;structure-ok;à faire
+security.title;Sécurité;Asu te, akëlë kòm esë;C'est pourquoi, ayant été guéri de toutes choses, il s'en alla.;structure-ok;à faire
+security.verifyBeneficiary;Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert.;Tòbëgan hm dzoe ai e nyi esya, osusua yakpèè soan.;Prenez donc nommé et notre père, mais avant vous rendez grâces.;structure-ok;à faire
+security.secureConnection;Connexion sécurisée;Secured nnëm;Un cœur sûre;structure-ok;à faire
+security.demoWarning;Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle réelle.;Safinum Pay — Engënòṅ mbil. Tègè ai e dzi enyiṅ ya abëlë.;La rémunération est accomplie, et il n'y a pas de vie à laquelle il y en a.;structure-ok;à faire
+fees.title;FRAIS DE TRANSFERT;Tègè ai nda-Zamba, asu yë na mibò esye dzom ziṅ.;Il n'y a point de maison de Dieu, afin que vous fassiez le serviteur.;structure-ok;à faire
+fees.intro;Choisissez le type de transfert et le montant. Les frais sont calculés automatiquement.;Ndò hm, dzam bò na: Këlëg mvulna ai efaè.;"Alors il leur dit: ""Allez à la puissance et au don.""";structure-ok;à faire
+fees.operationType;TYPE D'OPÉRATION;Mod ziṅ asu yë na:;Il n'y a personne qui dit:;structure-ok;à faire
+fees.safinumAccount;Compte Safinum;Mbëmbë foe Safinum;L'Evangile de Safinum;structure-ok;à faire
+fees.mobileMoney;Mobile Money;Mobile Money;Payer l'Argent mobile;structure-ok;à faire
+fees.otherBank;Autre banque;Mbòg bëvòg mfufub, asu yë na;Or, l'un d'eux est saint, afin que:;structure-ok;à faire
+fees.freeInstant;Transfert instantané et gratuit;Ntud, fili-nnëm esye asu daan;Ainsi, le ministère de votre désobéissance est grand pour vous.;structure-ok;à faire
+fees.amountToSend;MONTANT À ENVOYER;Amu abog asëki dzam bò na:;Car le temps ne peut leur dire:;structure-ok;à faire
+fees.free;Gratuit;Bibëlë fufulu, asu yë na b;Nous sommes semblables, afin que nous soyons;structure-ok;à faire
+fees.totalDebit;Total à débiter;Ndò mbëmbë asu yë na:;Et la porte, afin que:;structure-ok;à faire
+fees.balanceAfter;Solde après opération;E mvòm esë a nsëṅ,;Toutes les choses qui sont dans le ciel,;structure-ok;à faire
+beneficiary.intro;Renseignez les informations du destinataire. Vérifiez toujours le numéro avant de valider.;Ndò hm, mikëlë e kalara enyiṅ. Tsogan tsig nda-bob asu die osusua yadzèè.;"Vous avez donc reçu le livre de la vie; garde-toi pour lui l'avant.";structure-ok;à faire
+beneficiary.newWarning;Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant de continuer.;Ndò efaè nyi, bandzëki dzam bò asu te. Tsogan tsig ntol osusua kui.;"Alors le don s'éleva, et il ne leur parlait pas; mais laissez-vous baptiser devant lui.";structure-ok;à faire
+beneficiary.name;NOM DU BÉNÉFICIAIRE;Dzoe bënefini nyè a mvus hala,;Le nom de l'Enfant lui sera donné ensuite,;structure-ok;à faire
+beneficiary.phone;NUMÉRO DE TÉLÉPHONE;Ndò hm tëlekoan na:;Ils répondirent donc:;structure-ok;à faire
+beneficiary.reason;MOTIF DU TRANSFERT;Asu te mod ziṅan akëlë kòm esye;C'est pourquoi que nul ne peut servir son ministère.;structure-ok;à faire
+beneficiary.note;NOTE (OPTIONNEL);NOTES;NOTES;structure-ok;à faire
+beneficiary.checked;J'ai vérifié le nom et le numéro du bénéficiaire.;Ndò mëngayen dzoe ai e nyi esye.;Et je vis un nom et un serviteur.;structure-ok;à faire
+summary.intro;Vérifiez les informations avant de confirmer le transfert.;Biayëm e mam mëte, ndò fë badugan dzom ziṅ.;Nous savons ces choses, et nous avons entendu quelque chose.;structure-ok;à faire
+summary.amount;Montant;Amount;Montant;structure-ok;à faire
+summary.totalDebited;Total débité;Ndò mbëmbë asu yë na:;Et la porte, afin que:;structure-ok;à faire
+summary.phone;Téléphone;Tele nkòbò woe;La témoignage de ta propre langue, c'est ton fils.;structure-ok;à faire
+summary.reference;Référence;Ndò fë nkukuma a mvus hala,;Puis il y avait un roi,;structure-ok;à faire
+summary.operation;Opération;Operation;Fonctionnement;structure-ok;à faire
+summary.confirmCorrect;Je confirme que les informations ci-dessus sont correctes.;Mayi kòm na e mam mëte binë asu yë nala.;Je connaîtrai que ces choses sont ainsi.;structure-ok;à faire
+summary.edit;Modifier;Mod ziṅan yadzëki dzoe na:;Il n'y a point de nom pour un homme qui disait:;structure-ok;à faire
+summary.confirmTransfer;Confirmer le transfert;Adzoe mëkpamaṅ, asu yë na bakòbò e dzom ziṅ.;Or, nous avons reçu le royaume, afin que nous parlons de ce qu'il faisait.;structure-ok;à faire
+receipt.title;Transfert effectué;Ndò hm, akëlë kui mbëṅ.;Il s'en alla donc bientôt.;structure-ok;à faire
+receipt.successMessage;Votre transfert a été envoyé avec succès.;Ndò bëngalom mvulna a nsëṅ.;Et ils furent abaissés du côté d'une parabole.;structure-ok;à faire
+receipt.status;Statut;Status;Statut;structure-ok;à faire
+receipt.success;Succès;A mvus yë na akòbògò eyòṅ bod bëng;Après qu'il parlait encore à leurs frères,;structure-ok;à faire
+receipt.newTransfer;Nouveau transfert;Ndò mkpamaṅ mbëmbë foe asu yë n;Aussitôt l'Evangile de la grâce fut-il éprouvé, afin que le Seigneur soit venu et qu'aujourd'hui il n'y eût point d'adultère.;structure-ok;à faire
+error.title;Une erreur est survenue;Mis mëngabò na: Mvulna;"Les yeux m'avaient dit: ""Voici ce que j'ai fait.""";structure-ok;à faire
+error.insufficientBalance;Solde insuffisant pour effectuer ce transfert.;Ndò fë mbil esye asu yë na mam mvulna.;Et aussitôt le ministère, afin que ces choses soient ébranlées.;structure-ok;à faire
+error.close;Fermer;Ndò fë nkukuma a mvus hala,;Puis il y avait un roi,;structure-ok;à faire
+common.back;Retour;Ndò hm, akëlë kui.;Il s'en alla donc jusqu'à ce jour.;structure-ok;à faire
+common.continue;Continuer;Këlë kui asu yë na bakòb;Allez jusqu'à ce que nous fassions témoignage.;structure-ok;à faire
+balance.greeting;Bonjour, {name};Mina, {name};Vous-mêmes,;structure-ok;à faire
+balance.accountNumber;Numéro de compte : {account};Ndò mbëmbë na: {account};Et il dit à la porte:;structure-ok;à faire
+security.alertTitle;Alerte de sécurité;Dzam da, asu yë na bakòbò mam mëte.;Mais afin que nous parlons de ces choses.;structure-ok;à faire
+security.verifyBeneficiaryBeforeContinue;Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer.;Ndò hm asu yë na: Biayi tsig efaè waan, oyab.;"Alors il dit: ""Nous recevrons votre don, et vous êtes.""";structure-ok;à faire
+confirmation.requiredBeforeSubmit;Vous devez confirmer les informations avant de valider le transfert.;Miayi bò na mibëlë kad eyòṅ mam mëte, asu yë na minnalan fufulu we.;Vous cherchez à leur dire ces choses, afin que votre cœur soit proche.;structure-ok;à faire

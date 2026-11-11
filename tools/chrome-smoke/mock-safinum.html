@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page simulée — parcours Safinum (test local Nolia)</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; padding: 16px 16px 120px; background: #f4f6f8; color: #1d2733; }
+  header { background: #0b3d5c; color: #fff; padding: 10px 16px; margin: -16px -16px 16px; }
+  .card { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 0 0 12px; }
+  h2 { font-size: 15px; margin: 0 0 8px; }
+  button { margin: 4px 8px 4px 0; padding: 8px 14px; }
+  .actions { position: fixed; right: 16px; bottom: 16px; }
+  .error { border-left: 4px solid #b42318; }
+</style>
+</head>
+<body>
+<header>
+  <p>Environnement de test — données fictives, aucune transaction réelle.</p>
+  <span>Protocole de test</span> · <a href="#">Retour au hackathon</a> · <span>Banque en ligne</span>
+</header>
+<main>
+  <section class="card" id="balance">
+    <h2>Bonjour, Paul Ndzana</h2>
+    <p>VOTRE COMPTE</p>
+    <p>Numéro de compte : CM 001 2345 6789 01</p>
+    <p>SOLDE DISPONIBLE</p>
+    <p>125 000 FCFA</p>
+    <p>Consultez votre solde et lancez un transfert en toute sécurité.</p>
+    <button type="button">Effectuer un transfert</button>
+    <p>TRANSACTIONS RÉCENTES</p>
+    <p>Salaire reçu</p><p>+250 000 FCFA</p><p>12 nov. 2026</p>
+  </section>
+  <section class="card" id="fees">
+    <h2>FRAIS DE TRANSFERT</h2>
+    <p>MONTANT À ENVOYER</p>
+    <input id="amount" type="text" value="25000" aria-label="Montant">
+    <p>Frais</p><p>500 FCFA</p>
+    <p>Total à débiter</p><p>25 500 FCFA</p>
+  </section>
+  <section class="card" id="summary">
+    <h2>Récapitulatif</h2>
+    <p>Vérifiez les informations avant de confirmer le transfert.</p>
+    <p>Bénéficiaire</p><p>Amina Ngo Bell</p>
+    <p>Téléphone</p><p>+237 6 99 12 34 56</p>
+    <p>Référence</p><p>SAF-2026-13J0O3</p>
+    <p>Paul Ndzana vous a envoyé 15 000 FCFA.</p>
+    <p>Le bénéficiaire est temporairement bloqué pour vérification.</p>
+  </section>
+  <section class="card" id="security-alert">
+    <h2>Alerte de sécurité</h2>
+    <p>Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer.</p>
+    <p>SECURITY_001</p>
+    <p>Vous devez confirmer les informations avant de valider le transfert.</p>
+    <p>CONFIRM_001</p>
+  </section>
+  <div id="notifications" aria-live="polite"></div>
+</main>
+<div class="actions">
+  <button type="button" id="confirm">Confirmer le transfert</button>
+  <button type="button" id="trigger">Continuer</button>
+</div>
+<script>
+  // Simulates a notification injected after loading (like AMOUNT_002 on Safinum).
+  window.__clicks = 0;
+  document.getElementById("confirm").addEventListener("click", () => { window.__clicks += 1; });
+  document.getElementById("trigger").addEventListener("click", () => {
+    setTimeout(() => {
+      const box = document.createElement("section");
+      box.className = "card error";
+      const title = document.createElement("h2");
+      title.textContent = "Une erreur est survenue";
+      const message = document.createElement("p");
+      message.textContent = "Solde insuffisant pour effectuer ce transfert.";
+      const code = document.createElement("p");
+      code.textContent = "AMOUNT_002";
+      const extra = document.createElement("p");
+      extra.textContent = "Le transfert a échoué. veuillez réessayer.";
+      box.append(title, message, code, extra);
+      document.getElementById("notifications").append(box);
+    }, 300);
+  });
+</script>
+</body>
+</html>
