@@ -17,9 +17,9 @@ import {
 } from "../core/message-catalog.js";
 import { INTENT_REGISTRY } from "../core/intent-registry.js";
 import { TEST_PACK } from "../core/locale-test-pack.js";
-import { EWO_PACK } from "../core/locale-ewo-pack.js";
-import { PROVISIONAL_EWO_PACK } from "../core/locale-ewo-provisional-pack.js";
+import { TARGET_PACK } from "../core/locale-target-pack.js";
 import { syntheticValidatedPack } from "./helpers/synthetic-pack.js";
+import { TARGET_LANGUAGE } from "../core/target-language.js";
 
 const readJson = async (path) => JSON.parse(await readFile(new URL(path, import.meta.url), "utf8"));
 const codes = (validation) => validation.reasons.map((reason) => reason.code);
@@ -43,7 +43,7 @@ test("the dynamic messages keep their protected slots in the schema", () => {
   assert.deepEqual([...byId["balance.accountNumber"].requiredSlots], ["account"]);
 });
 
-test("the ewondo model and the TEST pack contain every id of the schema", async () => {
+test("the target-language model and the TEST pack contain every id of the schema", async () => {
   for (const path of ["../locales/template.json", "../locales/test.json"]) {
     const pack = await readJson(path);
     for (const requirement of PACK_REQUIREMENTS) {
@@ -53,9 +53,9 @@ test("the ewondo model and the TEST pack contain every id of the schema", async 
   }
 });
 
-test("the ewondo model is an empty draft: no translation and no validator invented", async () => {
+test("the target-language model is an empty draft: no translation and no validator invented", async () => {
   const model = await readJson("../locales/template.json");
-  assert.equal(model.meta.languageCode, "ewo");
+  assert.equal(model.meta.languageCode, TARGET_LANGUAGE.code);
   assert.equal(model.meta.status, "draft");
   assert.deepEqual(model.meta.validatedBy, []);
   assert.equal(model.meta.validatedAt, null);
@@ -65,8 +65,15 @@ test("the ewondo model is an empty draft: no translation and no validator invent
   }
 });
 
-test("the shipped ewondo module is the draft model until a validated pack is installed", async () => {
-  assert.deepEqual(JSON.parse(JSON.stringify(EWO_PACK)), await readJson("../locales/template.json"));
+test("the shipped target-language module is the complete provisional Ewondo pack", async () => {
+  assert.deepEqual(JSON.parse(JSON.stringify(TARGET_PACK)), await readJson("../locales/ewo-provisional.json"));
+  const validation = validateLanguagePack(TARGET_PACK, {
+    mode: "provisional",
+    expectedLanguage: TARGET_LANGUAGE.code
+  });
+  assert.equal(validation.ok, true);
+  assert.deepEqual(validation.coverage, { present: 84, total: 84 });
+  assert.equal(demo(TARGET_PACK).ok, false, "a provisional pack must never pass for a validated pack");
 });
 
 // ------------------------------------------------------------ TEST vs demo
@@ -86,21 +93,12 @@ test("the TEST pack is refused in demo mode", () => {
   assert.throws(() => loadLanguagePack(TEST_PACK, { mode: "demo" }), (error) => error.code === "PACK_REFUSED");
 });
 
-test("the draft ewondo model is refused in demo mode with readable reasons", () => {
-  const validation = demo(EWO_PACK);
+test("the draft target-language model is refused in demo mode with readable reasons", async () => {
+  const validation = demo(await readJson("../locales/template.json"));
   assert.equal(validation.ok, false);
   assert.ok(codes(validation).includes("PACK_NOT_VALIDATED"));
   assert.ok(codes(validation).includes("VALIDATORS_MISSING"));
   assert.ok(codes(validation).includes("VALIDATION_DATE_INVALID"));
-});
-
-test("the generated ewondo pack is accepted only in provisional mode", () => {
-  const provisional = validateLanguagePack(PROVISIONAL_EWO_PACK, { mode: "provisional" });
-  assert.deepEqual(provisional.reasons, []);
-  assert.equal(PROVISIONAL_EWO_PACK.meta.humanValidated, false);
-  assert.deepEqual(PROVISIONAL_EWO_PACK.meta.validatedBy, []);
-  assert.equal(demo(PROVISIONAL_EWO_PACK).ok, false);
-  assert.ok(codes(demo(PROVISIONAL_EWO_PACK)).includes("PACK_NOT_VALIDATED"));
 });
 
 test("a complete pack validated by two people on a past date is accepted", () => {
@@ -159,12 +157,14 @@ test("rendering refuses a catalog message whose slot value is missing", () => {
 // -------------------------------------------------------- install script
 
 test("the install script refuses the draft model and writes nothing", async () => {
-  const modulePath = new URL("../core/locale-ewo-pack.js", import.meta.url);
+  const modulePath = new URL("../core/locale-target-pack.js", import.meta.url);
   const before = (await stat(modulePath)).mtimeMs;
   const run = promisify(execFile);
   await assert.rejects(
-    run(process.execPath, ["scripts/install-ewo-pack.js", "locales/template.json"], {
-      cwd: new URL("..", import.meta.url)
+    run(process.execPath, ["scripts/install-language-pack.js", "locales/template.json"], {
+      cwd: new URL("..", import.meta.url),
+      // Never let a test write the shipped module, even if it were accepted.
+      env: { ...process.env, NOLIA_TARGET_MODULE: "/nonexistent-nolia-dir/out.js" }
     }),
     (error) => error.code === 1 && /PACK_NOT_VALIDATED/u.test(error.stderr)
   );

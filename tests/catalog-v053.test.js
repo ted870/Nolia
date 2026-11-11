@@ -14,7 +14,7 @@ import { extractCriticalValues } from "../core/value-extractor.js";
 import { createNoliaController } from "../core/nolia-controller.js";
 import { CATALOG_MESSAGE_IDS, validateLanguagePack } from "../core/language-pack.js";
 import { TEST_PACK } from "../core/locale-test-pack.js";
-import { EWO_PACK } from "../core/locale-ewo-pack.js";
+import { TARGET_PACK } from "../core/locale-target-pack.js";
 import { buildMessageRows } from "../scripts/build-translation-sheet.js";
 import { FakeDocument, addText, fakeMutationObserverFor, flushMutations } from "./helpers/fake-dom.js";
 
@@ -63,13 +63,13 @@ test("SECURITY_001 and CONFIRM_001 are protected values, never translated", () =
       extractCriticalValues(`Code ${code}`).values.map((value) => `${value.type}:${value.canonical}`),
       [`errorCode:${code}`]
     );
-    for (const pack of [TEST_PACK, EWO_PACK]) {
+    for (const pack of [TEST_PACK, TARGET_PACK]) {
       assert.equal(JSON.stringify(pack).includes(code), false, `${code} must not be a pack entry`);
     }
   }
 });
 
-test("the ewondo model has the three entries empty and in draft; the TEST pack marks them [TEST]", async () => {
+test("the target-language model has the three entries empty and in draft; the TEST pack marks them [TEST]", async () => {
   const model = JSON.parse(await readFile(new URL("../locales/template.json", import.meta.url), "utf8"));
   for (const [id, text] of NEW_MESSAGES) {
     assert.deepEqual(model.templates[id], { status: "draft", requiredSlots: [], text: "", source: text });
@@ -87,7 +87,7 @@ test("the translation sheet lists the three texts and their protected codes", ()
   assert.match(rows.get("confirmation.requiredBeforeSubmit")[5], /CONFIRM_001/u);
   for (const [id] of NEW_MESSAGES) {
     assert.equal(rows.get(id)[4], "avertissement");
-    assert.equal(rows.get(id)[6], "", "no ewondo text is invented");
+    assert.equal(rows.get(id)[6], "", "no target-language text is invented");
   }
 });
 
@@ -99,7 +99,7 @@ test("TEST mode shows a [TEST] wording for each text, keeps the codes and restor
 
   const controller = createNoliaController({
     root: document.documentElement,
-    packs: { test: TEST_PACK, ewo: EWO_PACK },
+    packs: { test: TEST_PACK, target: TARGET_PACK },
     version: "0.5.3",
     MutationObserverImpl: fakeMutationObserverFor(document),
     scheduleTask: (task) => task()

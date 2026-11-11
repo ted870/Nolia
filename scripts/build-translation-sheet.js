@@ -1,12 +1,13 @@
 /**
- * Generate the ewondo translation sheets from the code (local, deterministic).
- * Usage: npm run sheet:ewondo
+ * Generate the target-language translation sheets from the code (local,
+ * deterministic). The language comes from core/target-language.js.
+ * Usage: npm run sheet:langue
  *
- * docs/fiche-traduction-ewondo.csv   66 catalog messages (64 exact + 2 dynamic)
- * docs/fiche-intentions-ewondo.csv   intent explanations and fallback notices
+ * docs/fiche-traduction-<langue>.csv   66 catalog messages (64 exact + 2 dynamic)
+ * docs/fiche-intentions-<langue>.csv   intent explanations and fallback notices
  *
  * The "Traduction proposée" column is always empty: translations are written
- * by ewondo speakers, never generated.
+ * by speakers of the target language, never generated.
  */
 import { writeFile, mkdir } from "node:fs/promises";
 import {
@@ -15,6 +16,12 @@ import {
 } from "../core/message-catalog.js";
 import { INTENT_REGISTRY, intentForCatalogId } from "../core/intent-registry.js";
 import { FALLBACK_TEMPLATE_IDS } from "../core/intent-renderer.js";
+import { TARGET_LANGUAGE } from "../core/target-language.js";
+
+export const SHEET_FILES = Object.freeze({
+  messages: `fiche-traduction-${TARGET_LANGUAGE.slug}.csv`,
+  intents: `fiche-intentions-${TARGET_LANGUAGE.slug}.csv`
+});
 
 const HEADER = [
   "Identifiant", "Écran", "Texte français", "Intention", "Gravité", "Éléments protégés",
@@ -57,7 +64,7 @@ function screenOf(id) {
 
 function commentOf(entry) {
   const notes = [];
-  if (entry.slotNames) notes.push("Message dynamique : garder l'emplacement entre accolades, sa place peut suivre l'ordre de la phrase ewondo");
+  if (entry.slotNames) notes.push("Message dynamique : garder l'emplacement entre accolades, sa place peut suivre l'ordre de la phrase " + TARGET_LANGUAGE.name);
   if (entry.role === "action") notes.push("Bouton : formulation courte et impérative");
   if (entry.severity === "critical") notes.push("Message critique : le sens ne doit être ni atténué ni ambigu");
   else if (entry.id === "confirmation.requiredBeforeSubmit") {
@@ -117,9 +124,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   await mkdir(new URL("../docs/", import.meta.url), { recursive: true });
   const messages = buildMessageRows();
   const intents = buildIntentRows();
-  await writeFile(new URL("../docs/fiche-traduction-ewondo.csv", import.meta.url), toCsv([HEADER, ...messages]));
-  await writeFile(new URL("../docs/fiche-intentions-ewondo.csv", import.meta.url), toCsv([HEADER, ...intents]));
-  console.log(`fiche-traduction-ewondo.csv : ${messages.length} lignes ; fiche-intentions-ewondo.csv : ${intents.length} lignes`);
+  await writeFile(new URL(`../docs/${SHEET_FILES.messages}`, import.meta.url), toCsv([HEADER, ...messages]));
+  await writeFile(new URL(`../docs/${SHEET_FILES.intents}`, import.meta.url), toCsv([HEADER, ...intents]));
+  console.log(`${SHEET_FILES.messages} : ${messages.length} lignes ; ${SHEET_FILES.intents} : ${intents.length} lignes`);
 }
 
 export { HEADER };

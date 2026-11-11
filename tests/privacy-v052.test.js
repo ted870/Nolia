@@ -10,7 +10,7 @@ import { readFile, readdir } from "node:fs/promises";
 import { createNoliaController, minimalClassification } from "../core/nolia-controller.js";
 import { analyzeTextRecord } from "../core/text-analyzer.js";
 import { TEST_PACK } from "../core/locale-test-pack.js";
-import { EWO_PACK } from "../core/locale-ewo-pack.js";
+import { TARGET_PACK } from "../core/locale-target-pack.js";
 import { FakeDocument, addText, fakeMutationObserverFor, flushMutations } from "./helpers/fake-dom.js";
 
 const SENSITIVE = ["Paul", "Ndzana", "Marie", "Atangana", "20 000", "20000", "CM 001", "SAF-2026", "677001122", "AMOUNT_002"];
@@ -61,7 +61,7 @@ test("at run time, nothing stored per text node carries contract values or slots
   try {
     controller = createNoliaController({
       root: document.documentElement,
-      packs: { test: TEST_PACK, ewo: EWO_PACK },
+      packs: { test: TEST_PACK, target: TARGET_PACK },
       version: "0.5.2",
       MutationObserverImpl: fakeMutationObserverFor(document),
       scheduleTask: (task) => task()

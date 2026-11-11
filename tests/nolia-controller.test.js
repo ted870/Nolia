@@ -5,8 +5,7 @@ import { createNoliaController } from "../core/nolia-controller.js";
 import { createNoliaPanel } from "../core/nolia-panel.js";
 import { extractVisibleText } from "../core/dom-extractor.js";
 import { TEST_PACK } from "../core/locale-test-pack.js";
-import { EWO_PACK } from "../core/locale-ewo-pack.js";
-import { PROVISIONAL_EWO_PACK } from "../core/locale-ewo-provisional-pack.js";
+import { TARGET_PACK } from "../core/locale-target-pack.js";
 import { DISPLAY_SEPARATOR } from "../core/intent-renderer.js";
 import { syntheticValidatedPack } from "./helpers/synthetic-pack.js";
 import {
@@ -27,7 +26,7 @@ const PAGE = Object.freeze({
   fragment: "Bienvenue"
 });
 
-function setup({ ewo = EWO_PACK, provisional = null } = {}) {
+function setup({ target = TARGET_PACK } = {}) {
   const document = new FakeDocument();
   const nodes = {};
   for (const [key, text] of Object.entries(PAGE)) {
@@ -40,8 +39,8 @@ function setup({ ewo = EWO_PACK, provisional = null } = {}) {
   const statuses = [];
   const controller = createNoliaController({
     root: document.documentElement,
-    packs: { test: TEST_PACK, ewo, provisional },
-    version: "0.5.4",
+    packs: { test: TEST_PACK, target },
+    version: "0.5.1",
     onStatus: (status) => statuses.push(status),
     MutationObserverImpl: fakeMutationObserverFor(document),
     scheduleTask: (task) => task()
@@ -148,22 +147,26 @@ test("a site change between Nolia's display and the restoration has priority", (
   assert.equal(nodes.continue.nodeValue, "Patientez");
 });
 
-test("the ewondo mode stays disabled with a clear reason while no validated pack exists", () => {
+test("the shipped provisional Ewondo pack enables only the visibly automatic mode", () => {
   const { nodes, controller } = setup();
-  assert.equal(controller.status.ewondoAvailable, false);
-  assert.match(controller.status.ewondoRefusal, /draft/u);
-  assert.match(controller.status.ewondoRefusal, /validateurs/u);
-  const result = controller.enableEwondo();
-  assert.equal(result.enabled, false);
-  assert.equal(controller.status.mode, "observation");
+  assert.equal(controller.status.targetAvailable, false);
+  assert.equal(controller.status.provisionalAvailable, true);
+  assert.deepEqual(controller.status.provisionalCoverage, { present: 84, total: 84 });
+  const result = controller.enableTargetLanguage();
+  assert.equal(result.enabled, true);
+  assert.equal(controller.status.mode, "provisoire");
+  assert.match(nodes.continue.nodeValue, /^\[AUTO\]/u);
+  assert.equal(nodes.amount.nodeValue, PAGE.amount);
+  assert.equal(nodes.code.nodeValue, PAGE.code);
+  controller.restoreFrench();
   assert.deepEqual(textsOf(nodes), PAGE);
 });
 
-test("a validated pack is displayed through the same path in ewondo mode, then restored", () => {
-  const { nodes, controller } = setup({ ewo: syntheticValidatedPack() });
-  assert.equal(controller.status.ewondoAvailable, true);
-  assert.equal(controller.enableEwondo().enabled, true);
-  assert.equal(controller.status.mode, "ewondo");
+test("a validated pack is displayed through the same path in target-language mode, then restored", () => {
+  const { nodes, controller } = setup({ target: syntheticValidatedPack() });
+  assert.equal(controller.status.targetAvailable, true);
+  assert.equal(controller.enableTargetLanguage().enabled, true);
+  assert.equal(controller.status.mode, "langue");
   assert.equal(nodes.continue.nodeValue, "CONTROLE Continuer");
   assert.equal(nodes.greeting.nodeValue, "CONTROLE Bonjour, Paul Ndzana");
   assert.ok(nodes.paraphrase.nodeValue.endsWith("(20 000 FCFA)"));
@@ -171,26 +174,10 @@ test("a validated pack is displayed through the same path in ewondo mode, then r
   assert.deepEqual(textsOf(nodes), PAGE);
 });
 
-test("the machine-generated pack runs only in visibly provisional ewondo mode", () => {
-  const { nodes, controller } = setup({ provisional: PROVISIONAL_EWO_PACK });
-  assert.equal(controller.status.ewondoAvailable, false);
-  assert.equal(controller.status.ewondoProvisionalAvailable, true);
-  assert.equal(controller.status.ewondoQuality, "provisional");
-  const result = controller.enableEwondo();
-  assert.equal(result.enabled, true);
-  assert.equal(controller.status.mode, "ewondo-provisional");
-  assert.equal(nodes.continue.nodeValue, PROVISIONAL_EWO_PACK.templates["common.continue"].text);
-  assert.ok(nodes.greeting.nodeValue.includes("Paul Ndzana"));
-  assert.ok(nodes.paraphrase.nodeValue.startsWith(PAGE.paraphrase + DISPLAY_SEPARATOR));
-  assert.ok(nodes.paraphrase.nodeValue.endsWith("(20 000 FCFA)"));
-  controller.restoreFrench();
-  assert.deepEqual(textsOf(nodes), PAGE);
-});
-
-test("the TEST pack cannot be smuggled in as the ewondo pack", () => {
-  const { controller } = setup({ ewo: TEST_PACK });
-  assert.equal(controller.status.ewondoAvailable, false);
-  assert.equal(controller.enableEwondo().enabled, false);
+test("the TEST pack cannot be smuggled in as the target-language pack", () => {
+  const { controller } = setup({ target: TEST_PACK });
+  assert.equal(controller.status.targetAvailable, false);
+  assert.equal(controller.enableTargetLanguage().enabled, false);
 });
 
 test("the status exposes counters and ids only, never page text", () => {
