@@ -2,7 +2,7 @@
   "meta": {
     "languageCode": "TEST",
     "languageName": "[TEST] Langue artificielle",
-    "version": 2,
+    "version": 3,
     "status": "test",
     "validatedBy": [],
     "validatedAt": null
@@ -26,111 +26,511 @@
     },
     "transfer.insufficient_balance": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] INTENTION TRANSFER INSUFFICIENT BALANCE",
-      "requiredSlots": []
+      "source": "Vous ne disposez pas d'assez de fonds."
     },
     "transfer.sent_success": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "send",
       "text": "[TEST] INTENTION TRANSFER SENT SUCCESS",
-      "requiredSlots": []
+      "source": "Votre virement a bien été effectué."
     },
     "transfer.received": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "receive",
       "text": "[TEST] INTENTION TRANSFER RECEIVED",
-      "requiredSlots": []
+      "source": "Paul Ndzana vous a envoyé 15 000 FCFA."
     },
     "transfer.failed": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] INTENTION TRANSFER FAILED",
-      "requiredSlots": []
+      "source": "Le virement a échoué."
     },
     "beneficiary.verify_before_confirm": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] INTENTION BENEFICIARY VERIFY BEFORE CONFIRM",
-      "requiredSlots": []
+      "source": "Contrôlez le numéro du destinataire avant l'envoi."
     },
     "beneficiary.new_unknown": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] INTENTION BENEFICIARY NEW UNKNOWN",
-      "requiredSlots": []
+      "source": "Vous n'avez encore jamais utilisé ce destinataire."
     },
     "summary.verify_before_confirm": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] INTENTION SUMMARY VERIFY BEFORE CONFIRM",
-      "requiredSlots": []
+      "source": "Relisez les détails avant de valider l'opération."
     },
     "environment.test_data": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] INTENTION ENVIRONMENT TEST DATA",
-      "requiredSlots": []
+      "source": "Ceci est une simulation : les opérations sont fictives."
     },
     "security.no_personal_data": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] INTENTION SECURITY NO PERSONAL DATA",
-      "requiredSlots": []
+      "source": "Ne communiquez jamais votre code secret."
     },
     "fees.free_transfer": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] INTENTION FEES FREE TRANSFER",
-      "requiredSlots": []
+      "source": "Aucun frais ne sera appliqué à ce transfert."
     },
     "fees.amount_info": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] INTENTION FEES AMOUNT INFO",
-      "requiredSlots": []
+      "source": "Les frais de cette opération s'élèvent à 500 FCFA."
     },
     "transfer.total_debit": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "send",
       "text": "[TEST] INTENTION TRANSFER TOTAL DEBIT",
-      "requiredSlots": []
+      "source": "Somme prélevée sur votre compte : 25 500 FCFA."
     },
     "balance.available_info": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] INTENTION BALANCE AVAILABLE INFO",
-      "requiredSlots": []
+      "source": "Votre solde actuel est de 125 000 FCFA."
     },
     "balance.after_operation": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] INTENTION BALANCE AFTER OPERATION",
-      "requiredSlots": []
+      "source": "Nouveau solde après le transfert : 99 500 FCFA."
     },
     "action.confirm_transfer": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "send",
       "text": "[TEST] INTENTION ACTION CONFIRM TRANSFER",
-      "requiredSlots": []
+      "source": "Valider le virement"
     },
     "error.generic": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] INTENTION ERROR GENERIC",
-      "requiredSlots": []
+      "source": "Un problème technique s'est produit."
     },
     "fallback.unrecognized": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] MESSAGE NON RECONNU, LE TEXTE FRANÇAIS EST CONSERVÉ",
-      "requiredSlots": []
+      "source": "fallback.unrecognized"
     },
     "fallback.unrecognized_warning": {
       "status": "test",
+      "requiredSlots": [],
       "direction": "neutral",
       "text": "[TEST] ATTENTION, MESSAGE NON RECONNU : VÉRIFIEZ AVANT DE CONTINUER",
-      "requiredSlots": []
+      "source": "fallback.unrecognized_warning"
+    },
+    "environment.testBanner": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Environnement de test — données fictives, aucune transaction réelle.",
+      "source": "Environnement de test — données fictives, aucune transaction réelle."
+    },
+    "environment.protocol": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Protocole de test",
+      "source": "Protocole de test"
+    },
+    "environment.backToHackathon": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Retour au hackathon",
+      "source": "Retour au hackathon"
+    },
+    "app.bankOnline": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Banque en ligne",
+      "source": "Banque en ligne"
+    },
+    "step.balance": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Solde",
+      "source": "Solde"
+    },
+    "common.fees": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Frais",
+      "source": "Frais"
+    },
+    "common.beneficiary": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Bénéficiaire",
+      "source": "Bénéficiaire"
+    },
+    "common.summary": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Récapitulatif",
+      "source": "Récapitulatif"
+    },
+    "step.confirmation": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Confirmation",
+      "source": "Confirmation"
+    },
+    "balance.accountHeading": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] VOTRE COMPTE",
+      "source": "VOTRE COMPTE"
+    },
+    "balance.intro": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Consultez votre solde et lancez un transfert en toute sécurité.",
+      "source": "Consultez votre solde et lancez un transfert en toute sécurité."
+    },
+    "balance.available": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] SOLDE DISPONIBLE",
+      "source": "SOLDE DISPONIBLE"
+    },
+    "balance.currentAccount": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Compte courant",
+      "source": "Compte courant"
+    },
+    "balance.startTransfer": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Effectuer un transfert",
+      "source": "Effectuer un transfert"
+    },
+    "balance.checkFees": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Consulter les frais",
+      "source": "Consulter les frais"
+    },
+    "balance.recentTransactions": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] TRANSACTIONS RÉCENTES",
+      "source": "TRANSACTIONS RÉCENTES"
+    },
+    "transaction.merchantPayment": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Paiement marchand",
+      "source": "Paiement marchand"
+    },
+    "transaction.salaryReceived": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Salaire reçu",
+      "source": "Salaire reçu"
+    },
+    "transaction.transferReceived": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Transfert reçu",
+      "source": "Transfert reçu"
+    },
+    "transaction.electricityBill": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Facture électricité",
+      "source": "Facture électricité"
+    },
+    "security.title": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Sécurité",
+      "source": "Sécurité"
+    },
+    "security.verifyBeneficiary": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert.",
+      "source": "Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert."
+    },
+    "security.secureConnection": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Connexion sécurisée",
+      "source": "Connexion sécurisée"
+    },
+    "security.demoWarning": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle réelle.",
+      "source": "Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle réelle."
+    },
+    "fees.title": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] FRAIS DE TRANSFERT",
+      "source": "FRAIS DE TRANSFERT"
+    },
+    "fees.intro": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Choisissez le type de transfert et le montant. Les frais sont calculés automatiquement.",
+      "source": "Choisissez le type de transfert et le montant. Les frais sont calculés automatiquement."
+    },
+    "fees.operationType": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] TYPE D'OPÉRATION",
+      "source": "TYPE D'OPÉRATION"
+    },
+    "fees.safinumAccount": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Compte Safinum",
+      "source": "Compte Safinum"
+    },
+    "fees.mobileMoney": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Mobile Money",
+      "source": "Mobile Money"
+    },
+    "fees.otherBank": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Autre banque",
+      "source": "Autre banque"
+    },
+    "fees.freeInstant": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Transfert instantané et gratuit",
+      "source": "Transfert instantané et gratuit"
+    },
+    "fees.amountToSend": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] MONTANT À ENVOYER",
+      "source": "MONTANT À ENVOYER"
+    },
+    "fees.free": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Gratuit",
+      "source": "Gratuit"
+    },
+    "fees.totalDebit": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Total à débiter",
+      "source": "Total à débiter"
+    },
+    "fees.balanceAfter": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Solde après opération",
+      "source": "Solde après opération"
+    },
+    "beneficiary.intro": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Renseignez les informations du destinataire. Vérifiez toujours le numéro avant de valider.",
+      "source": "Renseignez les informations du destinataire. Vérifiez toujours le numéro avant de valider."
+    },
+    "beneficiary.newWarning": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant de continuer.",
+      "source": "Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant de continuer."
+    },
+    "beneficiary.name": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] NOM DU BÉNÉFICIAIRE",
+      "source": "NOM DU BÉNÉFICIAIRE"
+    },
+    "beneficiary.phone": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] NUMÉRO DE TÉLÉPHONE",
+      "source": "NUMÉRO DE TÉLÉPHONE"
+    },
+    "beneficiary.reason": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] MOTIF DU TRANSFERT",
+      "source": "MOTIF DU TRANSFERT"
+    },
+    "beneficiary.note": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] NOTE (OPTIONNEL)",
+      "source": "NOTE (OPTIONNEL)"
+    },
+    "beneficiary.checked": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] J'ai vérifié le nom et le numéro du bénéficiaire.",
+      "source": "J'ai vérifié le nom et le numéro du bénéficiaire."
+    },
+    "summary.intro": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Vérifiez les informations avant de confirmer le transfert.",
+      "source": "Vérifiez les informations avant de confirmer le transfert."
+    },
+    "summary.amount": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Montant",
+      "source": "Montant"
+    },
+    "summary.totalDebited": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Total débité",
+      "source": "Total débité"
+    },
+    "summary.phone": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Téléphone",
+      "source": "Téléphone"
+    },
+    "summary.reference": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Référence",
+      "source": "Référence"
+    },
+    "summary.operation": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Opération",
+      "source": "Opération"
+    },
+    "summary.confirmCorrect": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Je confirme que les informations ci-dessus sont correctes.",
+      "source": "Je confirme que les informations ci-dessus sont correctes."
+    },
+    "summary.edit": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Modifier",
+      "source": "Modifier"
+    },
+    "summary.confirmTransfer": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Confirmer le transfert",
+      "source": "Confirmer le transfert"
+    },
+    "receipt.title": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Transfert effectué",
+      "source": "Transfert effectué"
+    },
+    "receipt.successMessage": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Votre transfert a été envoyé avec succès.",
+      "source": "Votre transfert a été envoyé avec succès."
+    },
+    "receipt.status": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Statut",
+      "source": "Statut"
+    },
+    "receipt.success": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Succès",
+      "source": "Succès"
+    },
+    "receipt.newTransfer": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Nouveau transfert",
+      "source": "Nouveau transfert"
+    },
+    "error.title": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Une erreur est survenue",
+      "source": "Une erreur est survenue"
+    },
+    "error.insufficientBalance": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Solde insuffisant pour effectuer ce transfert.",
+      "source": "Solde insuffisant pour effectuer ce transfert."
+    },
+    "error.close": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Fermer",
+      "source": "Fermer"
+    },
+    "common.back": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Retour",
+      "source": "Retour"
+    },
+    "common.continue": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Continuer",
+      "source": "Continuer"
+    },
+    "balance.greeting": {
+      "status": "test",
+      "requiredSlots": [
+        "name"
+      ],
+      "text": "[TEST] Bonjour, {name}",
+      "source": "Bonjour, {name}"
+    },
+    "balance.accountNumber": {
+      "status": "test",
+      "requiredSlots": [
+        "account"
+      ],
+      "text": "[TEST] Numéro de compte : {account}",
+      "source": "Numéro de compte : {account}"
     }
   }
 }

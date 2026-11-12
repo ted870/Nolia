@@ -97,6 +97,15 @@ export function verifyIntentIntegrity(source, readBack) {
     }
   }
 
+  // Same values but in another order (for example amount and fees swapped):
+  // the display lists values in the order of the French source.
+  if (errors.length === 0) {
+    const sequence = (values) => values.map((value) => `${value.type}:${value.canonical}`).join("|");
+    if (sequence(source.values) !== sequence(readBack.values)) {
+      errors.push({ field: "order", code: "ORDER_CHANGED" });
+    }
+  }
+
   return { valid: errors.length === 0, errors };
 }
 

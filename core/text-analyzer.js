@@ -28,7 +28,9 @@ const WARNING_REASONS = new Set([
   "AMBIGUOUS_VALUE",
   "UNSUPPORTED_CURRENCY",
   "REQUIRED_VALUE_MISSING",
-  "UNEXPLAINED_ALARM"
+  "UNEXPLAINED_ALARM",
+  "SECONDARY_CLAUSE",
+  "UNCOVERED_INSTRUCTION"
 ]);
 
 function wordingWords(text) {
@@ -41,6 +43,8 @@ function fallbackNotice(match) {
   const severity =
     match.warning ||
     WARNING_REASONS.has(match.reason) ||
+    // Several statements or a refusal for safety may hide a financial meaning.
+    (match.reason !== "NO_INTENT" && match.reason !== "NO_WORDING") ||
     certain.some((value) => value.type === "amount")
       ? "warning"
       : "normal";
@@ -77,7 +81,12 @@ export function analyzeTextRecord(record) {
     if (classification.reason !== "financial-value" || words < 2) return classification;
   }
 
-  const match = matchIntent(text);
+  // The DOM extractor collapses line breaks; the raw node text keeps them so
+  // that a second line is still seen as a second statement.
+  const rawText = typeof record.rawText === "string"
+    ? record.rawText
+    : typeof record.node?.nodeValue === "string" ? record.node.nodeValue : record.text;
+  const match = matchIntent(text, { rawText });
   // A text made only of critical values (for example "25 000 FCFA") is a
   // protected value even when the DOM extractor did not tag it.
   if (words === 0 && match.values.length > 0) {
@@ -97,7 +106,13 @@ export function analyzeTextRecord(record) {
     });
   }
 
-  if (words >= FALLBACK_MIN_WORDS || (words >= 2 && (match.warning || match.values.length > 0))) {
+  // A refusal for any reason other than "no intent at all" means Nolia saw a
+  // financial meaning it cannot explain safely: it always earns a notice.
+  const refusedForSafety = match.reason !== "NO_INTENT" && match.reason !== "NO_WORDING";
+  if (
+    words >= FALLBACK_MIN_WORDS ||
+    (words >= 2 && (match.warning || match.values.length > 0 || refusedForSafety))
+  ) {
     return fallbackNotice(match);
   }
 

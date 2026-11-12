@@ -34,6 +34,7 @@ const INTENTS = [
     ],
     supersedes: ["transfer.failed", "error.generic", "balance.available_info"],
     acceptedAlarms: ["erreur", "echec", "impossible", "refus"],
+    acceptedInstructions: ["reessayer"],
     examples: [
       "Vous ne disposez pas d'assez de fonds.",
       "Le montant demandé dépasse votre solde disponible.",
@@ -88,6 +89,7 @@ const INTENTS = [
     forbiddenCues: ["insuffisan", "\\bdepass", "pas assez", "pas d'assez"],
     supersedes: ["error.generic"],
     acceptedAlarms: ["erreur", "echec", "impossible", "refus", "annulation", "interruption"],
+    acceptedInstructions: ["reessayer"],
     examples: [
       "Le virement a échoué.",
       "Impossible d'effectuer le transfert.",
@@ -230,6 +232,7 @@ const INTENTS = [
     catalogIds: ["error.title"],
     requiredCues: [["\\berreur", "\\bprobleme", "\\bincident"], ["survenu", "produit", "\\brencontre", "\\btechnique", "\\binattendu"]],
     acceptedAlarms: ["erreur"],
+    acceptedInstructions: ["reessayer"],
     examples: ["Un problème technique s'est produit.", "Une erreur est survenue lors du traitement.", "Incident technique rencontré."]
   }
 ];
@@ -261,6 +264,32 @@ export const ALARM_CUES = Object.freeze({
   piratage: "\\bpirat",
   plafond: "\\b(plafond|limite)",
   delai: "\\b(delai|retard|en attente)"
+});
+
+/**
+ * Connectors that add a second meaning to a sentence ("effectué, mais...").
+ * Any of them sends the sentence to degraded mode: a partial explanation
+ * would hide the added clause.
+ */
+export const SECONDARY_CLAUSE_CUES = Object.freeze([
+  "\\bmais\\b", "\\bcependant\\b", "\\btoutefois\\b", "\\bpourtant\\b",
+  "\\bpuis\\b", "\\bensuite\\b", "\\bneanmoins\\b", "\\bpar contre\\b",
+  "\\ben revanche\\b", "\\bsauf\\b", "\\bsinon\\b", "\\bpar ailleurs\\b"
+]);
+
+/**
+ * Instructions to the user. A text containing one is attached to an intent
+ * only if the intent lists it in `acceptedInstructions`.
+ */
+export const INSTRUCTION_CUES = Object.freeze({
+  reessayer: "\\breessay",
+  contacter: "\\b(contactez|contacter|appelez|appeler|joignez|composez|rapprochez-vous)\\b",
+  cliquer: "\\b(cliquez|appuyez|touchez|selectionnez)\\b",
+  deplacer: "\\b(rendez-vous|presentez-vous|allez)\\b",
+  telecharger: "\\b(telechargez|installez|mettez a jour)\\b",
+  envoyer: "\\b(envoyez|transferez|versez|payez|rechargez|approvisionnez)\\b",
+  attendre: "\\b(patientez|patienter|attendez|attendre)\\b",
+  veuillez: "\\b(veuillez|merci de)\\b(?! reessayer)"
 });
 
 /** Direction cues, used to refuse a contradiction with the intent direction. */
@@ -303,6 +332,7 @@ function compileIntent(intent) {
     supersedes: Object.freeze([...(intent.supersedes ?? [])]),
     maxWords: intent.maxWords ?? null,
     acceptedAlarms: Object.freeze([...(intent.acceptedAlarms ?? [])]),
+    acceptedInstructions: Object.freeze([...(intent.acceptedInstructions ?? [])]),
     examples: Object.freeze([...(intent.examples ?? [])])
   });
 }
@@ -345,6 +375,11 @@ export function validateIntentRegistry(registry = INTENT_REGISTRY, knownCatalogI
     }
     for (const alarm of intent.acceptedAlarms) {
       if (!(alarm in ALARM_CUES)) throw new TypeError(`Intent ${intent.id} accepts unknown alarm ${alarm}.`);
+    }
+    for (const instruction of intent.acceptedInstructions) {
+      if (!(instruction in INSTRUCTION_CUES)) {
+        throw new TypeError(`Intent ${intent.id} accepts unknown instruction ${instruction}.`);
+      }
     }
     for (const catalogId of intent.catalogIds) {
       if (claimedCatalogIds.has(catalogId)) {

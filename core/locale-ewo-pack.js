@@ -1,0 +1,542 @@
+/**
+ * Ewondo pack shipped with the extension. Generated file: do not edit by hand.
+ * Current content: the empty DRAFT model (no ewondo text is validated yet).
+ * The demo mode refuses it and the Nolia panel shows why.
+ * To ship a validated pack: npm run pack:ewo -- <path/to/ewo.json>
+ */
+export const EWO_PACK = Object.freeze({
+  "meta": {
+    "languageCode": "ewo",
+    "languageName": "Ewondo (modèle à remplir)",
+    "version": 3,
+    "status": "draft",
+    "validatedBy": [],
+    "validatedAt": null
+  },
+  "directionLabels": {
+    "send": "",
+    "receive": "",
+    "neutral": ""
+  },
+  "templates": {
+    "transfer.summary": {
+      "status": "draft",
+      "text": "{direction} {amount} {currency} à {beneficiary}. Frais : {fees} {currency}.",
+      "requiredSlots": [
+        "direction",
+        "amount",
+        "currency",
+        "beneficiary",
+        "fees"
+      ]
+    },
+    "transfer.insufficient_balance": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "Vous ne disposez pas d'assez de fonds."
+    },
+    "transfer.sent_success": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "send",
+      "text": "",
+      "source": "Votre virement a bien été effectué."
+    },
+    "transfer.received": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "receive",
+      "text": "",
+      "source": "Paul Ndzana vous a envoyé 15 000 FCFA."
+    },
+    "transfer.failed": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "Le virement a échoué."
+    },
+    "beneficiary.verify_before_confirm": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "Contrôlez le numéro du destinataire avant l'envoi."
+    },
+    "beneficiary.new_unknown": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "Vous n'avez encore jamais utilisé ce destinataire."
+    },
+    "summary.verify_before_confirm": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "Relisez les détails avant de valider l'opération."
+    },
+    "environment.test_data": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "Ceci est une simulation : les opérations sont fictives."
+    },
+    "security.no_personal_data": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "Ne communiquez jamais votre code secret."
+    },
+    "fees.free_transfer": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "Aucun frais ne sera appliqué à ce transfert."
+    },
+    "fees.amount_info": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "Les frais de cette opération s'élèvent à 500 FCFA."
+    },
+    "transfer.total_debit": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "send",
+      "text": "",
+      "source": "Somme prélevée sur votre compte : 25 500 FCFA."
+    },
+    "balance.available_info": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "Votre solde actuel est de 125 000 FCFA."
+    },
+    "balance.after_operation": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "Nouveau solde après le transfert : 99 500 FCFA."
+    },
+    "action.confirm_transfer": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "send",
+      "text": "",
+      "source": "Valider le virement"
+    },
+    "error.generic": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "Un problème technique s'est produit."
+    },
+    "fallback.unrecognized": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "fallback.unrecognized"
+    },
+    "fallback.unrecognized_warning": {
+      "status": "draft",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "",
+      "source": "fallback.unrecognized_warning"
+    },
+    "environment.testBanner": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Environnement de test — données fictives, aucune transaction réelle."
+    },
+    "environment.protocol": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Protocole de test"
+    },
+    "environment.backToHackathon": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Retour au hackathon"
+    },
+    "app.bankOnline": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Banque en ligne"
+    },
+    "step.balance": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Solde"
+    },
+    "common.fees": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Frais"
+    },
+    "common.beneficiary": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Bénéficiaire"
+    },
+    "common.summary": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Récapitulatif"
+    },
+    "step.confirmation": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Confirmation"
+    },
+    "balance.accountHeading": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "VOTRE COMPTE"
+    },
+    "balance.intro": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Consultez votre solde et lancez un transfert en toute sécurité."
+    },
+    "balance.available": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "SOLDE DISPONIBLE"
+    },
+    "balance.currentAccount": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Compte courant"
+    },
+    "balance.startTransfer": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Effectuer un transfert"
+    },
+    "balance.checkFees": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Consulter les frais"
+    },
+    "balance.recentTransactions": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "TRANSACTIONS RÉCENTES"
+    },
+    "transaction.merchantPayment": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Paiement marchand"
+    },
+    "transaction.salaryReceived": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Salaire reçu"
+    },
+    "transaction.transferReceived": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Transfert reçu"
+    },
+    "transaction.electricityBill": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Facture électricité"
+    },
+    "security.title": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Sécurité"
+    },
+    "security.verifyBeneficiary": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert."
+    },
+    "security.secureConnection": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Connexion sécurisée"
+    },
+    "security.demoWarning": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle réelle."
+    },
+    "fees.title": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "FRAIS DE TRANSFERT"
+    },
+    "fees.intro": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Choisissez le type de transfert et le montant. Les frais sont calculés automatiquement."
+    },
+    "fees.operationType": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "TYPE D'OPÉRATION"
+    },
+    "fees.safinumAccount": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Compte Safinum"
+    },
+    "fees.mobileMoney": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Mobile Money"
+    },
+    "fees.otherBank": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Autre banque"
+    },
+    "fees.freeInstant": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Transfert instantané et gratuit"
+    },
+    "fees.amountToSend": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "MONTANT À ENVOYER"
+    },
+    "fees.free": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Gratuit"
+    },
+    "fees.totalDebit": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Total à débiter"
+    },
+    "fees.balanceAfter": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Solde après opération"
+    },
+    "beneficiary.intro": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Renseignez les informations du destinataire. Vérifiez toujours le numéro avant de valider."
+    },
+    "beneficiary.newWarning": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant de continuer."
+    },
+    "beneficiary.name": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "NOM DU BÉNÉFICIAIRE"
+    },
+    "beneficiary.phone": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "NUMÉRO DE TÉLÉPHONE"
+    },
+    "beneficiary.reason": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "MOTIF DU TRANSFERT"
+    },
+    "beneficiary.note": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "NOTE (OPTIONNEL)"
+    },
+    "beneficiary.checked": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "J'ai vérifié le nom et le numéro du bénéficiaire."
+    },
+    "summary.intro": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Vérifiez les informations avant de confirmer le transfert."
+    },
+    "summary.amount": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Montant"
+    },
+    "summary.totalDebited": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Total débité"
+    },
+    "summary.phone": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Téléphone"
+    },
+    "summary.reference": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Référence"
+    },
+    "summary.operation": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Opération"
+    },
+    "summary.confirmCorrect": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Je confirme que les informations ci-dessus sont correctes."
+    },
+    "summary.edit": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Modifier"
+    },
+    "summary.confirmTransfer": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Confirmer le transfert"
+    },
+    "receipt.title": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Transfert effectué"
+    },
+    "receipt.successMessage": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Votre transfert a été envoyé avec succès."
+    },
+    "receipt.status": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Statut"
+    },
+    "receipt.success": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Succès"
+    },
+    "receipt.newTransfer": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Nouveau transfert"
+    },
+    "error.title": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Une erreur est survenue"
+    },
+    "error.insufficientBalance": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Solde insuffisant pour effectuer ce transfert."
+    },
+    "error.close": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Fermer"
+    },
+    "common.back": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Retour"
+    },
+    "common.continue": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Continuer"
+    },
+    "balance.greeting": {
+      "status": "draft",
+      "requiredSlots": [
+        "name"
+      ],
+      "text": "",
+      "source": "Bonjour, {name}"
+    },
+    "balance.accountNumber": {
+      "status": "draft",
+      "requiredSlots": [
+        "account"
+      ],
+      "text": "",
+      "source": "Numéro de compte : {account}"
+    }
+  }
+});

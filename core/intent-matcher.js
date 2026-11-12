@@ -10,6 +10,8 @@ import { normalizeText } from "./semantic-contract.js";
 import { extractCriticalValues, maskCriticalValues } from "./value-extractor.js";
 import {
   ALARM_CUES,
+  INSTRUCTION_CUES,
+  SECONDARY_CLAUSE_CUES,
   DIRECTION_CUES,
   INTENT_REGISTRY,
   NEGATION_CUES,
@@ -24,6 +26,17 @@ const SEND_CUES = compiled(DIRECTION_CUES.send);
 const RECEIVE_CUES = compiled(DIRECTION_CUES.receive);
 const WARNINGS = compiled(WARNING_CUES);
 const ALARMS = Object.entries(ALARM_CUES).map(([name, source]) => [name, new RegExp(source, "u")]);
+
+const CLAUSES = compiled(SECONDARY_CLAUSE_CUES);
+const INSTRUCTIONS = Object.entries(INSTRUCTION_CUES).map(([name, source]) => [name, new RegExp(source, "u")]);
+
+export function hasSecondaryClause(foldedText) {
+  return CLAUSES.some((cue) => cue.test(foldedText));
+}
+
+export function detectInstructions(foldedText) {
+  return INSTRUCTIONS.filter(([, cue]) => cue.test(foldedText)).map(([name]) => name);
+}
 
 export function detectAlarms(foldedText) {
   return ALARMS.filter(([, cue]) => cue.test(foldedText)).map(([name]) => name);
@@ -41,9 +54,37 @@ export function foldText(text) {
     .toLowerCase();
 }
 
+/**
+ * Abbreviations whose final dot does not end a sentence. Compared without
+ * case; values (dates, amounts, references) are already masked before this.
+ */
+const ABBREVIATIONS = Object.freeze([
+  "m", "mm", "mme", "mmes", "mlle", "dr", "pr", "me", "st", "ste", "sté", "cie",
+  "réf", "ref", "tél", "tel", "n", "no", "num", "env", "etc", "ex", "cf",
+  "min", "max", "av", "bd", "qté", "art", "vol", "p", "fcfa", "doc"
+]);
+const ABBREVIATION_PATTERN = new RegExp(
+  `(^|[\\s(«"'’])((?:${ABBREVIATIONS.join("|")}))\\.(?=\\s|$)`,
+  "giu"
+);
+const DOT_PLACEHOLDER = "\u2024"; // one dot leader, never typed by Safinum
+
+/** Line break with text on both sides: two visual lines are two statements. */
+export function hasLineBreak(rawText) {
+  return typeof rawText === "string" && /\S[^\S\r\n]*[\r\n\u2028\u2029]+\s*\S/u.test(rawText);
+}
+
+/**
+ * Count sentences without relying on the capital letter that follows.
+ * A boundary is a run of . ! ? … or ; followed by whitespace and more text.
+ * "p. ex." and other known abbreviations do not split.
+ */
 export function countSentences(maskedText) {
-  return maskedText
-    .split(/(?<=[.!?])\s+(?=[\p{Lu}{])/u)
+  const protectedText = maskedText
+    .replace(/\bp\.\s*ex\./giu, `p${DOT_PLACEHOLDER} ex${DOT_PLACEHOLDER}`)
+    .replace(ABBREVIATION_PATTERN, (_, before, word) => `${before}${word}${DOT_PLACEHOLDER}`);
+  return protectedText
+    .split(/[.!?…;]+(?=\s+\S)/u)
     .map((part) => part.trim())
     .filter((part) => /\p{L}/u.test(part)).length;
 }
@@ -96,6 +137,7 @@ function directionConflict(intent, detected) {
  */
 export function matchIntent(text, options = {}) {
   const registry = options.registry ?? INTENT_REGISTRY;
+  const rawText = typeof options.rawText === "string" ? options.rawText : text;
   const normalized = normalizeText(text);
   const extraction = extractCriticalValues(normalized);
   const masked = maskCriticalValues(normalized, extraction.values);
@@ -114,7 +156,8 @@ export function matchIntent(text, options = {}) {
     Object.freeze({ status: "refused", reason, intent: null, ...base, ...extra });
 
   if (!/\p{L}/u.test(masked)) return refuse("NO_WORDING");
-  if (countSentences(masked) > 1) return refuse("MULTI_SENTENCE");
+  if (hasLineBreak(rawText) || countSentences(masked) > 1) return refuse("MULTI_SENTENCE");
+  if (hasSecondaryClause(folded)) return refuse("SECONDARY_CLAUSE");
   if (wordCount > MAX_INTENT_WORDS) return refuse("TOO_LONG");
 
   const candidates = resolveSupersession(
@@ -132,6 +175,9 @@ export function matchIntent(text, options = {}) {
   const refusedFor = (reason) => refuse(reason, { candidateIds: Object.freeze([intent.id]) });
 
   if (unexplainedAlarms(intent, alarms).length > 0) return refusedFor("UNEXPLAINED_ALARM");
+  if (detectInstructions(folded).some((name) => !intent.acceptedInstructions.includes(name))) {
+    return refusedFor("UNCOVERED_INSTRUCTION");
+  }
   if (directionConflict(intent, detectedDirection)) return refusedFor("DIRECTION_CONFLICT");
   if (extraction.ambiguous) return refusedFor("AMBIGUOUS_VALUE");
   for (const type of intent.requiredValues) {

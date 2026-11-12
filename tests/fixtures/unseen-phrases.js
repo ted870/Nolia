@@ -69,6 +69,17 @@ export const UNSEEN_PHRASES = Object.freeze([
   { category: "ambiguous", text: "Transfert de 100 € effectué avec succès.", kind: "fallback", reason: "UNSUPPORTED_CURRENCY", severity: "warning", values: ["amount:100 EUR"] },
   { category: "ambiguous", text: "Nouveau bénéficiaire : vérifiez le numéro, ou le solde sera insuffisant.", kind: "fallback", reason: "AMBIGUOUS_INTENT", severity: "warning" },
 
+  // adversarial (v0.5.1): segmentation, added clauses, uncovered instructions
+  { category: "adversarial", text: "Le transfert a échoué. veuillez réessayer.", kind: "fallback", reason: "MULTI_SENTENCE", severity: "warning" },
+  { category: "adversarial", text: "Votre virement a bien été effectué !! Vérifiez votre reçu.", kind: "fallback", reason: "MULTI_SENTENCE" },
+  { category: "adversarial", text: "Le virement a été effectué, mais les frais seront prélevés deux fois.", kind: "fallback", reason: "SECONDARY_CLAUSE", severity: "warning" },
+  { category: "adversarial", text: "Le transfert est effectué, toutefois le bénéficiaire doit confirmer.", kind: "fallback", reason: "SECONDARY_CLAUSE" },
+  { category: "adversarial", text: "Solde insuffisant ; ensuite votre compte sera fermé.", kind: "fallback", reason: "MULTI_SENTENCE" },
+  { category: "adversarial", text: "Opération effectuée puis annulée par la banque.", kind: "fallback", reason: "SECONDARY_CLAUSE" },
+  { category: "adversarial", text: "Le paiement a échoué, appelez le service client.", kind: "fallback", reason: "UNCOVERED_INSTRUCTION", severity: "warning" },
+  { category: "adversarial", text: "Votre transfert a été effectué, réf. SAF-2026-QR77.", kind: "intent", intentId: "transfer.sent_success", values: ["reference:SAF-2026-QR77"] },
+  { category: "adversarial", text: "Transfert reçu de M. Ndzana le 3 nov. 2026.", kind: "intent", intentId: "transfer.received", values: ["date:3 nov. 2026"] },
+
   // fragments: left untouched without notice
   { category: "fragment", text: "Bienvenue", kind: "unknown" },
   { category: "fragment", text: "Aide", kind: "unknown" },

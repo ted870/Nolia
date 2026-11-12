@@ -1,0 +1,9 @@
+{
+  "name": "nolia-chrome-smoke",
+  "private": true,
+  "type": "module",
+  "description": "Vérification Chrome de l'extension sur une page Safinum SIMULÉE (outil de développement, hors extension).",
+  "dependencies": {
+    "puppeteer-core": "^23.0.0"
+  }
+}
