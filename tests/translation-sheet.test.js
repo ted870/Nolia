@@ -2,9 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
-import { HEADER, buildIntentRows, buildMessageRows, toCsv } from "../scripts/build-translation-sheet.js";
+import { HEADER, SHEET_FILES, buildIntentRows, buildMessageRows, toCsv } from "../scripts/build-translation-sheet.js";
 
-test("the ewondo sheet has exactly 66 rows with the 13 requested columns", () => {
+test("the translation sheet has exactly 66 rows with the 13 requested columns", () => {
   const rows = buildMessageRows();
   assert.equal(rows.length, 66); // 63 until v0.5.2
   assert.equal(HEADER.length, 13);
@@ -21,6 +21,6 @@ test("no translation, validator or date is pre-filled", () => {
 
 test("the committed CSV files are in sync with the code", async () => {
   const read = (name) => readFile(new URL(`../docs/${name}`, import.meta.url), "utf8");
-  assert.equal(await read("fiche-traduction-ewondo.csv"), toCsv([HEADER, ...buildMessageRows()]));
-  assert.equal(await read("fiche-intentions-ewondo.csv"), toCsv([HEADER, ...buildIntentRows()]));
+  assert.equal(await read(SHEET_FILES.messages), toCsv([HEADER, ...buildMessageRows()]));
+  assert.equal(await read(SHEET_FILES.intents), toCsv([HEADER, ...buildIntentRows()]));
 });

@@ -9,6 +9,8 @@
  * - It shows counters only, never page content.
  */
 
+import { TARGET_LANGUAGE } from "./target-language.js";
+
 const STYLE = `
 :host { all: initial; position: fixed; left: 12px; bottom: 12px; z-index: 2147483000;
   font: 13px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: #1f2933; }
@@ -20,8 +22,9 @@ const STYLE = `
 .mode { display: inline-block; border-radius: 999px; padding: 1px 8px; font-size: 12px; font-weight: 600;
   background: #e4e7eb; color: #1f2933; }
 .mode[data-mode="test"] { background: #fff3c4; color: #5c4400; }
-.mode[data-mode="ewondo"] { background: #d1f2df; color: #0b4d2c; }
-.mode[data-mode="ewondo-provisional"] { background: #fff3c4; color: #5c4400; }
+.mode[data-mode="langue"] { background: #d1f2df; color: #0b4d2c; }
+.mode[data-mode="provisoire"] { background: #ffe1c7; color: #7a2e0e; }
+.notice { margin: 6px 0 0; font-size: 12px; color: #5c3200; background: #fff1dc; border: 1px solid #f0b37e; border-radius: 6px; padding: 6px 8px; }
 dl { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; margin: 6px 0 8px; }
 dt { margin: 0; } dd { margin: 0; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
 .actions { display: grid; gap: 6px; }
@@ -33,7 +36,6 @@ button:focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
 button[disabled] { cursor: not-allowed; opacity: .55; }
 button[aria-pressed="true"] { background: #1f2933; color: #ffffff; }
 .reason { margin: 6px 0 0; font-size: 12px; color: #7a2e0e; background: #fff4ec; border-radius: 6px; padding: 6px 8px; }
-.reason[data-kind="provisional"] { color: #5c4400; background: #fff8db; }
 .note { margin: 8px 0 0; font-size: 11px; color: #52606d; }
 .toggle { all: unset; cursor: pointer; font-size: 12px; padding: 2px 6px; border-radius: 4px; color: #1f2933; }
 .toggle:focus-visible { outline: 3px solid #2563eb; }
@@ -47,8 +49,8 @@ button[aria-pressed="true"] { background: #1f2933; color: #ffffff; }
 const MODE_LABELS = Object.freeze({
   observation: "Observation",
   test: "Mode TEST",
-  "ewondo-provisional": "Ewondo provisoire",
-  ewondo: "Ewondo validé"
+  langue: `Mode ${TARGET_LANGUAGE.name}`,
+  provisoire: `Mode ${TARGET_LANGUAGE.name} — traduction automatique, à vérifier`
 });
 
 function make(document, tag, attributes = {}, text = null) {
@@ -93,13 +95,13 @@ export function createNoliaPanel({ document, controller, collapsed = false }) {
 
   const testButton = make(document, "button", { type: "button", "aria-pressed": "false" }, "Activer le mode TEST");
   const restoreButton = make(document, "button", { type: "button" }, "Restaurer le français");
-  const ewoButton = make(document, "button", { type: "button", "aria-pressed": "false", "aria-describedby": "nolia-ewo-reason" }, "Activer l'éwondo");
+  const targetButton = make(document, "button", { type: "button", "aria-pressed": "false", "aria-describedby": "nolia-target-reason" }, `Activer ${TARGET_LANGUAGE.withArticle}`);
   const actions = make(document, "div", { class: "actions" });
-  actions.append(testButton, restoreButton, ewoButton);
+  actions.append(testButton, restoreButton, targetButton);
 
-  const reason = make(document, "p", { class: "reason", id: "nolia-ewo-reason" });
+  const reason = make(document, "p", { class: "reason", id: "nolia-target-reason" });
   const note = make(document, "p", { class: "note" },
-    "Nolia aide à comprendre le texte. Elle ne bloque aucune transaction. Le mode TEST n'est pas une langue.");
+    "Nolia aide à comprendre le texte. Elle ne bloque ni ne protège aucune transaction. Le mode TEST n'est pas une langue.");
 
   box.append(head, mode, list, actions, reason, note);
   shadow.append(style, pill, box);
@@ -115,32 +117,33 @@ export function createNoliaPanel({ document, controller, collapsed = false }) {
     mode.setAttribute("data-mode", status.mode);
     for (const [key, element] of Object.entries(counters)) element.textContent = String(status[key]);
     testButton.setAttribute("aria-pressed", String(status.mode === "test"));
-    const ewondoEnabled = status.mode === "ewondo" || status.mode === "ewondo-provisional";
-    ewoButton.setAttribute("aria-pressed", String(ewondoEnabled));
+    targetButton.setAttribute("aria-pressed", String(status.mode === "langue" || status.mode === "provisoire"));
     restoreButton.disabled = status.mode === "observation";
     testButton.disabled = !status.testAvailable;
-    ewoButton.disabled = !status.ewondoAvailable && !status.ewondoProvisionalAvailable;
-    ewoButton.textContent = status.ewondoAvailable
-      ? "Activer l'éwondo validé"
-      : "Activer l'éwondo provisoire";
-    if (status.ewondoAvailable) {
+    targetButton.disabled = !status.targetAvailable && !status.provisionalAvailable;
+    targetButton.textContent = status.targetAvailable || !status.provisionalAvailable
+      ? `Activer ${TARGET_LANGUAGE.withArticle}`
+      : `Activer ${TARGET_LANGUAGE.withArticle} (automatique)`;
+    if (status.targetAvailable) {
       reason.textContent = "";
       reason.hidden = true;
-      reason.removeAttribute("data-kind");
-    } else if (status.ewondoProvisionalAvailable) {
-      reason.textContent = "Traduction automatique provisoire : elle n'a pas encore été vérifiée par des locuteurs.";
+    } else if (status.provisionalAvailable) {
+      const { present, total } = status.provisionalCoverage;
+      reason.setAttribute("class", "notice");
+      reason.textContent =
+        `Traduction automatique (${status.provisionalSource}), non validée par des humains : ` +
+        `${present}/${total} textes, chacun précédé de [AUTO] ; les autres restent en français.`;
       reason.hidden = false;
-      reason.setAttribute("data-kind", "provisional");
     } else {
-      reason.textContent = `Éwondo indisponible. ${status.ewondoRefusal} ${status.ewondoProvisionalRefusal}`;
+      reason.setAttribute("class", "reason");
+      reason.textContent = `${TARGET_LANGUAGE.label} indisponible : aucun pack validé. ${status.targetRefusal}`;
       reason.hidden = false;
-      reason.removeAttribute("data-kind");
     }
   }
 
   testButton.addEventListener("click", () => controller.enableTest());
   restoreButton.addEventListener("click", () => controller.restoreFrench());
-  ewoButton.addEventListener("click", () => controller.enableEwondo());
+  targetButton.addEventListener("click", () => controller.enableTargetLanguage());
   collapse.addEventListener("click", () => setCollapsed(true));
   pill.addEventListener("click", () => setCollapsed(false));
 
@@ -158,6 +161,6 @@ export function createNoliaPanel({ document, controller, collapsed = false }) {
     get shadowRoot() {
       return shadow;
     },
-    elements: Object.freeze({ testButton, restoreButton, ewoButton, reason, mode, counters, title })
+    elements: Object.freeze({ testButton, restoreButton, targetButton, reason, mode, counters, title })
   });
 }

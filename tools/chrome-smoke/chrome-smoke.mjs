@@ -6,9 +6,9 @@ import { readFileSync, writeFileSync } from "node:fs";
 import puppeteer from "puppeteer-core";
 
 
-const [extDir, outDir] = process.argv.slice(2);
+const [extDir, outDir, option] = process.argv.slice(2);
+const PROVISIONAL = option === "--provisional"; // extension copy loaded with a provisional pack
 const VERSION = JSON.parse(readFileSync(`${extDir}/manifest.json`, "utf8")).version;
-const PROVISIONAL = JSON.parse(readFileSync(`${extDir}/locales/ewo-provisional.json`, "utf8"));
 const html = readFileSync(new URL("./mock-safinum.html", import.meta.url));
 const requests = [];
 const server = https
@@ -131,23 +131,24 @@ try {
   check("panneau en mode Observation", initialPanel.includes("Observation"));
   const counts = initialPanel.match(/Messages reconnus(\d+)Textes protégés(\d+)Messages inconnus(\d+)/u);
   check("compteurs affichés", Boolean(counts), counts ? `reconnus ${counts[1]}, protégés ${counts[2]}, inconnus ${counts[3]}` : initialPanel);
-  check("avertissement éwondo provisoire visible", /Traduction automatique provisoire/u.test(initialPanel));
+  if (PROVISIONAL) {
+    check("avis « traduction automatique » visible", /Traduction automatique \(.+\), non validée par des humains : \d+\/84 textes, chacun précédé de \[AUTO\]/u.test(initialPanel));
+  } else {
+    check("raison du refus visible (langue cible)", /Éwondo indisponible : aucun pack validé\..*draft/u.test(initialPanel));
+  }
   const buttons = await Promise.all((await panel()).buttons.map(nodeText));
-  const ewo = buttons.find(([text]) => text === "Activer l'éwondo provisoire");
-  check("bouton éwondo provisoire activable", ewo?.[1] === false);
+  if (PROVISIONAL) {
+    const auto = buttons.find(([text]) => text === "Activer l'éwondo (automatique)");
+    check("bouton « Activer l'éwondo (automatique) » actif", auto?.[1] === false);
+  } else {
+    const target = buttons.find(([text]) => text === "Activer l'éwondo");
+    check("bouton « Activer l'éwondo » désactivé", target?.[1] === true);
+  }
 
   const original = await bodyText();
   const snapshotSize = await snapshotTextNodes();
   const inputBefore = await page.evaluate(() => document.getElementById("amount").value);
   await page.screenshot({ path: `${outDir}/1-observation.png` });
-
-  check("clic « Activer l'éwondo provisoire »", await clickButton("Activer l'éwondo provisoire"));
-  const provisionalText = await bodyText();
-  check("panneau identifie le mode provisoire", (await panelText()).includes("Ewondo provisoire"));
-  check("catalogue ewondo provisoire affiché", provisionalText.includes(PROVISIONAL.templates["common.summary"].text));
-  check("nom dynamique conservé en ewondo", provisionalText.includes("Paul Ndzana"));
-  check("valeurs protégées intactes en ewondo", ["125 000 FCFA", "25 500 FCFA", "SAF-2026-13J0O3", "+237 6 99 12 34 56", "CM 001 2345 6789 01"].every((value) => provisionalText.includes(value)));
-  check("restauration après ewondo provisoire", await clickButton("Restaurer le français") && (await changedTextNodes()) === 0);
 
   check("clic « Activer le mode TEST »", await clickButton("Activer le mode TEST"));
   const testText = await bodyText();
@@ -184,6 +185,19 @@ try {
 
   check("réactivation du mode TEST", await clickButton("Activer le mode TEST") && (await bodyText()).includes("[TEST] Continuer"));
   await clickButton("Restaurer le français");
+
+  if (PROVISIONAL) {
+    await snapshotTextNodes();
+    check("clic « Activer l'éwondo (automatique) »", await clickButton("Activer l'éwondo (automatique)"));
+    const autoText = await bodyText();
+    const autoMarkers = (autoText.match(/\[AUTO\]/gu) ?? []).length;
+    check("mode provisoire : traductions préfixées [AUTO]", autoMarkers >= 10 && !autoText.includes("[TEST]"), `${autoMarkers} marqueur(s)`);
+    check("mode provisoire : montants et références intacts", ["125 000 FCFA", "25 500 FCFA", "SAF-2026-13J0O3", "SECURITY_001"].every((value) => autoText.includes(value)));
+    check("mode provisoire : formulation reconnue avec [AUTO] et valeurs", /Paul Ndzana vous a envoyé 15 000 FCFA\. — \[AUTO\].*15 000 FCFA/u.test(autoText));
+    check("mode provisoire : panneau « traduction automatique, à vérifier »", (await panelText()).includes("Mode éwondo — traduction automatique, à vérifier"));
+    await page.screenshot({ path: `${outDir}/6-mode-provisoire.png` });
+    check("restauration depuis le mode provisoire", await clickButton("Restaurer le français") && (await changedTextNodes()) === 0);
+  }
 
   await page.setViewport({ width: 390, height: 800 });
   await page.reload({ waitUntil: "load" });

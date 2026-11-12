@@ -1,14 +1,15 @@
 /**
  * Synthetic "validated" pack for unit tests only. Its texts are French
- * control phrases, not ewondo, and its validator names are placeholders
+ * control phrases, not a real language, and its validator names are placeholders
  * (same convention as tests/transfer-renderer.test.js). It is never shipped.
  */
 import { TEST_PACK } from "../../core/locale-test-pack.js";
+import { TARGET_LANGUAGE } from "../../core/target-language.js";
 
 export function syntheticValidatedPack() {
   const pack = structuredClone(TEST_PACK);
   pack.meta = {
-    languageCode: "xx-controle",
+    languageCode: TARGET_LANGUAGE.code, // texts stay French "CONTROLE …" control phrases
     languageName: "Pack de contrôle synthétique",
     version: 1,
     status: "validated",

@@ -1,9 +1,9 @@
 /**
- * Provisional Ewondo pack generated locally with Flagship/Lingo.
- * Machine output: not validated by human speakers.
- * Generated file: do not edit by hand.
+ * Éwondo pack shipped with the extension. Generated file: do not edit by hand.
+ * Installed from ewo-provisional.json after demo-mode validation.
+ * PROVISIONAL machine translation by Flagship/Lingo cameroon-int8 on 2026-11-11: NOT validated by humans; shown with [AUTO].
  */
-export const PROVISIONAL_EWO_PACK = Object.freeze({
+export const TARGET_PACK = Object.freeze({
   "meta": {
     "languageCode": "ewo",
     "languageName": "Ewondo — traduction automatique provisoire",

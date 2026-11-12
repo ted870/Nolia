@@ -9,8 +9,6 @@
  *
  * Modes:
  * - "test": only the artificial TEST pack, every text starting with [TEST];
- * - "provisional": machine-generated Ewondo, visibly marked and never passed
- *   off as human-validated;
  * - "demo": only a pack validated by two distinct named people on a past date.
  *
  * No network, no eval, no storage. The pack is a plain object.
@@ -22,7 +20,7 @@ import {
 } from "./message-catalog.js";
 import { INTENT_REGISTRY } from "./intent-registry.js";
 import { FALLBACK_TEMPLATE_IDS } from "./intent-renderer.js";
-import { extractPlaceholders, isPastIsoDate, renderMessage, TemplateError } from "./template-renderer.js";
+import { AUTO_MARKER, extractPlaceholders, isPastIsoDate, renderMessage, TemplateError } from "./template-renderer.js";
 import { normalizeText } from "./semantic-contract.js";
 
 const TEST_MARKER = "[TEST]";
@@ -71,28 +69,19 @@ function checkMeta(pack, mode, reasons) {
     }
     return;
   }
-
   if (mode === "provisional") {
-    if (meta.status !== "provisional" || meta.languageCode !== "ewo") {
-      reasons.push({
-        code: "INVALID_PROVISIONAL_PACK",
-        detail: "Le mode provisoire exige un pack ewondo marqué provisional."
-      });
+    if (meta.status !== "provisional" || meta.languageCode === "TEST") {
+      reasons.push({ code: "PACK_NOT_PROVISIONAL", detail: `Statut du pack : ${String(meta.status)} (provisional requis).` });
     }
-    if (meta.humanValidated !== false) {
-      reasons.push({
-        code: "PROVISIONAL_STATUS_AMBIGUOUS",
-        detail: "Le pack provisoire doit déclarer humanValidated: false."
-      });
+    const claimed = Array.isArray(meta.validatedBy) ? meta.validatedBy.length > 0 : meta.validatedBy != null;
+    if (claimed || meta.validatedAt != null) {
+      reasons.push({ code: "PROVISIONAL_CLAIMS_VALIDATION", detail: "Un pack automatique ne peut nommer aucun validateur ni date de validation." });
     }
-    if (typeof meta.generatedBy !== "string" || !meta.generatedBy.trim()) {
-      reasons.push({
-        code: "GENERATOR_MISSING",
-        detail: "La source de génération automatique doit être déclarée."
-      });
+    if (typeof meta.generatedBy !== "string" || meta.generatedBy.trim() === "") {
+      reasons.push({ code: "GENERATOR_MISSING", detail: "L'outil de traduction (generatedBy) doit être indiqué." });
     }
-    if (String(meta.languageName ?? "").includes(TEST_MARKER)) {
-      reasons.push({ code: "TEST_CONTENT_IN_PROVISIONAL", detail: "Le pack TEST ne peut pas servir de pack provisoire." });
+    if (!isPastIsoDate(meta.generatedAt)) {
+      reasons.push({ code: "GENERATION_DATE_INVALID", detail: "Date de génération absente, invalide ou future (AAAA-MM-JJ)." });
     }
     return;
   }
@@ -127,6 +116,9 @@ function checkMeta(pack, mode, reasons) {
 function checkTemplate(pack, requirement, mode, reasons) {
   const template = pack?.templates?.[requirement.id];
   const fail = (code, detail) => reasons.push({ code, id: requirement.id, detail });
+  // A provisional pack may be partial: a text rejected by the automatic checks
+  // is simply absent, and that message stays in French.
+  if (mode === "provisional" && template === undefined) return "absent";
   if (!template || typeof template !== "object") return fail("TEMPLATE_MISSING", "Traduction absente.");
 
   const expectedStatus = mode === "test" ? "test" : mode === "provisional" ? "provisional" : "validated";
@@ -139,8 +131,11 @@ function checkTemplate(pack, requirement, mode, reasons) {
   if (mode === "test" && !template.text.startsWith(TEST_MARKER)) {
     fail("TEST_MARKER_MISSING", "Chaque texte TEST doit commencer par [TEST].");
   }
-  if (mode !== "test" && template.text.includes(TEST_MARKER)) {
+  if (mode === "demo" && template.text.includes(TEST_MARKER)) {
     fail("TEST_CONTENT_IN_DEMO", "[TEST] apparaît dans une traduction.");
+  }
+  if (mode === "provisional" && (template.text.includes(TEST_MARKER) || template.text.includes(AUTO_MARKER))) {
+    fail("MARKER_IN_PROVISIONAL_TEXT", "Un texte automatique ne contient ni [TEST] ni [AUTO] : Nolia ajoute [AUTO] elle-même.");
   }
 
   const placeholders = extractPlaceholders(template.text);
@@ -168,21 +163,31 @@ function checkTemplate(pack, requirement, mode, reasons) {
 /**
  * Check a whole pack. Never throws for content problems: returns every reason.
  * @param {object} pack
- * @param {{mode?: "demo"|"provisional"|"test"}} [options]
+ * @param {{mode?: "demo"|"test", expectedLanguage?: string|null}} [options]
  * @returns {{ok: boolean, mode: string, reasons: Array<{code: string, id?: string, detail: string}>}}
  */
-export function validateLanguagePack(pack, { mode = "demo" } = {}) {
-  if (mode !== "demo" && mode !== "provisional" && mode !== "test") {
-    throw new TypeError(`Unsupported mode: ${mode}`);
-  }
+export function validateLanguagePack(pack, { mode = "demo", expectedLanguage = null } = {}) {
+  if (!["demo", "test", "provisional"].includes(mode)) throw new TypeError(`Unsupported mode: ${mode}`);
   const reasons = [];
   if (!pack || typeof pack !== "object") {
     reasons.push({ code: "INVALID_PACK", detail: "Aucun pack fourni." });
     return { ok: false, mode, reasons };
   }
   checkMeta(pack, mode, reasons);
-  for (const requirement of PACK_REQUIREMENTS) checkTemplate(pack, requirement, mode, reasons);
-  return { ok: reasons.length === 0, mode, reasons };
+  if (expectedLanguage && mode !== "test" && pack.meta?.languageCode !== expectedLanguage) {
+    reasons.push({
+      code: "WRONG_LANGUAGE",
+      detail: `Pack de langue ${String(pack.meta?.languageCode)} ; langue attendue : ${expectedLanguage}.`
+    });
+  }
+  let present = 0;
+  for (const requirement of PACK_REQUIREMENTS) {
+    if (checkTemplate(pack, requirement, mode, reasons) !== "absent") present += 1;
+  }
+  if (mode === "provisional" && present === 0) {
+    reasons.push({ code: "PACK_EMPTY", detail: "Aucun texte automatique n'a passé les contrôles." });
+  }
+  return { ok: reasons.length === 0, mode, reasons, coverage: { present, total: PACK_REQUIREMENTS.length } };
 }
 
 /** Short human summary of a refusal, for the panel (no page content in it). */

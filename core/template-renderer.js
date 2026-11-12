@@ -2,12 +2,17 @@
  * Render language templates without depending on Chrome or the DOM.
  *
  * A demo can use only language packs and templates that were explicitly
- * validated. Machine-generated text requires the explicit provisional mode.
- * Test data requires an explicit test mode and a visible [TEST] marker.
+ * validated. Test data requires an explicit test mode and a visible [TEST]
+ * marker. Since v0.5.5 a third, separate "provisional" mode accepts machine
+ * translations that no human validated: the pack must say which tool produced
+ * it, must not claim any validator, and the display layer prefixes every
+ * provisional text with [AUTO].
  */
 
 const PLACEHOLDER_PATTERN = /\{([a-z][a-zA-Z0-9]*)\}/gu;
 const TEST_MARKER = "[TEST]";
+export const AUTO_MARKER = "[AUTO]";
+const MODES = new Set(["demo", "test", "provisional"]);
 
 export class TemplateError extends Error {
   /**
@@ -33,11 +38,24 @@ export function extractPlaceholders(text) {
  * Check whether a pack is allowed in the requested runtime mode.
  *
  * @param {object} pack
- * @param {"demo"|"provisional"|"test"} mode
+ * @param {"demo"|"test"|"provisional"} mode
  */
 function assertPackAllowed(pack, mode) {
   if (!pack || typeof pack !== "object" || !pack.meta) {
     throw new TemplateError("INVALID_PACK", "Language-pack metadata is missing.");
+  }
+
+  if (mode === "provisional") {
+    if (pack.meta.status !== "provisional" || pack.meta.languageCode === "TEST") {
+      throw new TemplateError("PACK_NOT_PROVISIONAL", "Provisional mode accepts only a provisional pack.");
+    }
+    if (Array.isArray(pack.meta.validatedBy) ? pack.meta.validatedBy.length > 0 : pack.meta.validatedBy != null) {
+      throw new TemplateError("PROVISIONAL_CLAIMS_VALIDATION", "A provisional pack cannot name validators.");
+    }
+    if (typeof pack.meta.generatedBy !== "string" || pack.meta.generatedBy.trim() === "" || !isPastIsoDate(pack.meta.generatedAt)) {
+      throw new TemplateError("PROVISIONAL_EVIDENCE_MISSING", "A provisional pack must name its tool (generatedBy) and a past date (generatedAt).");
+    }
+    return;
   }
 
   if (mode === "test") {
@@ -45,22 +63,6 @@ function assertPackAllowed(pack, mode) {
       throw new TemplateError(
         "INVALID_TEST_PACK",
         "Test mode accepts only the explicit TEST language pack."
-      );
-    }
-    return;
-  }
-
-  if (mode === "provisional") {
-    if (
-      pack.meta.status !== "provisional" ||
-      pack.meta.languageCode !== "ewo" ||
-      pack.meta.humanValidated !== false ||
-      typeof pack.meta.generatedBy !== "string" ||
-      !pack.meta.generatedBy.trim()
-    ) {
-      throw new TemplateError(
-        "INVALID_PROVISIONAL_PACK",
-        "Provisional mode accepts only a declared, machine-generated Ewondo pack."
       );
     }
     return;
@@ -125,13 +127,13 @@ export function isPastIsoDate(value, now = Date.now()) {
  * @param {object} pack Language pack loaded from JSON.
  * @param {string} messageId Stable message identifier.
  * @param {Record<string, string|number|bigint>} slots Values to insert.
- * @param {{mode?: "demo"|"provisional"|"test"}} [options]
+ * @param {{mode?: "demo"|"test"|"provisional"}} [options]
  * @returns {string}
  */
 export function renderMessage(pack, messageId, slots, options = {}) {
   const mode = options.mode ?? "demo";
 
-  if (mode !== "demo" && mode !== "provisional" && mode !== "test") {
+  if (!MODES.has(mode)) {
     throw new TemplateError("INVALID_MODE", `Unsupported mode: ${mode}`);
   }
 
@@ -161,7 +163,14 @@ export function renderMessage(pack, messageId, slots, options = {}) {
     );
   }
 
-  if (mode !== "test" && template.text.includes(TEST_MARKER)) {
+  if (mode === "provisional" && (template.text.includes(TEST_MARKER) || template.text.includes(AUTO_MARKER))) {
+    throw new TemplateError(
+      "MARKER_IN_PROVISIONAL_TEXT",
+      "A provisional text cannot contain [TEST] or [AUTO]; Nolia adds [AUTO] itself."
+    );
+  }
+
+  if (mode === "demo" && template.text.includes(TEST_MARKER)) {
     throw new TemplateError(
       "TEST_CONTENT_IN_DEMO",
       "Test content cannot be rendered in demo mode."

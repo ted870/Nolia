@@ -3,16 +3,19 @@
  * Usage: npm run packs:build
  *
  * - locales/test.json         artificial TEST pack, every text "[TEST] …"
- * - locales/template.json     ewondo model to fill in: status draft, texts empty
+ * - locales/template.json     target-language model to fill in: status draft, texts empty
  * - core/locale-test-pack.js  module copy of the TEST pack (loaded by Chrome)
- * - core/locale-ewo-pack.js   module copy of the ewondo pack currently shipped
- *                             (the draft model until install-ewo-pack is run)
+ * - core/locale-target-pack.js module copy of the target-language pack shipped
+ *                             (the draft model until install-language-pack is run)
+ *
+ * The target language is set in core/target-language.js.
  *
  * Existing translations in locales/template.json are kept: only missing
  * entries are added. Nothing is translated here.
  */
 import { readFile, writeFile } from "node:fs/promises";
 import { PACK_REQUIREMENTS } from "../core/language-pack.js";
+import { TARGET_LANGUAGE } from "../core/target-language.js";
 
 const root = new URL("../", import.meta.url);
 const readJson = async (path) => JSON.parse(await readFile(new URL(path, root), "utf8"));
@@ -36,14 +39,14 @@ export async function buildPacks() {
   const model = await readJson("locales/template.json");
 
   model.meta = {
-    languageCode: "ewo",
-    languageName: "Ewondo (modèle à remplir)",
-    version: 3,
+    languageCode: TARGET_LANGUAGE.code,
+    languageName: `${TARGET_LANGUAGE.label} (modèle à remplir)`,
+    version: 4,
     status: "draft",
     validatedBy: [],
     validatedAt: null
   };
-  testPack.meta.version = 3;
+  testPack.meta.version = 4;
 
   for (const requirement of PACK_REQUIREMENTS) {
     const base = { requiredSlots: [...requirement.requiredSlots] };
@@ -74,23 +77,24 @@ export async function buildPacks() {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const { model } = await buildPacks();
-  const ewoModule = new URL("core/locale-ewo-pack.js", root);
+  const targetModule = new URL("core/locale-target-pack.js", root);
   let shipped = null;
   try {
-    shipped = await readFile(ewoModule, "utf8");
+    shipped = await readFile(targetModule, "utf8");
   } catch {
     shipped = null;
   }
-  // The shipped ewondo module is only replaced by install-ewo-pack.js once a
-  // pack is validated; until then it is the draft model.
-  if (!shipped || shipped.includes('"status": "draft"')) {
+  // The shipped target-language module is only replaced by
+  // install-language-pack.js once a pack is validated; until then it is the
+  // draft model.
+  if (!shipped || shipped.includes('"status": "draft"') || !shipped.includes(`"languageCode": "${TARGET_LANGUAGE.code}"`)) {
     await writeFile(
-      ewoModule,
-      moduleSource("EWO_PACK", model, [
-        "Ewondo pack shipped with the extension. Generated file: do not edit by hand.",
-        "Current content: the empty DRAFT model (no ewondo text is validated yet).",
+      targetModule,
+      moduleSource("TARGET_PACK", model, [
+        `${TARGET_LANGUAGE.label} pack shipped with the extension. Generated file: do not edit by hand.`,
+        `Current content: the empty DRAFT model (no ${TARGET_LANGUAGE.name} text is validated yet).`,
         "The demo mode refuses it and the Nolia panel shows why.",
-        "To ship a validated pack: npm run pack:ewo -- <path/to/ewo.json>"
+        "To ship a validated pack: npm run pack:langue -- <path/to/pack.json>"
       ])
     );
   }

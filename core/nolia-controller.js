@@ -2,7 +2,7 @@
  * Nolia controller (v0.5.1): observation, display modes and restoration.
  *
  * Separated from extension/content-script.js so that it can be tested without
- * Chrome. It reads visible text, classifies it, and in TEST or ewondo mode
+ * Chrome. It reads visible text, classifies it, and in TEST or target-language mode
  * replaces catalog messages or appends explanations through the DOM adapter.
  * "Restaurer le français" puts back every original text node exactly.
  *
@@ -21,12 +21,13 @@ import { analyzeTextRecord } from "./text-analyzer.js";
 import { createDomTextAdapter } from "./dom-text-adapter.js";
 import { createDisplayRenderer } from "./display-renderer.js";
 import { summarizeRefusal, validateLanguagePack } from "./language-pack.js";
+import { TARGET_LANGUAGE } from "./target-language.js";
 
 export const MODES = Object.freeze({
   OBSERVATION: "observation",
   TEST: "test",
-  EWONDO_PROVISIONAL: "ewondo-provisional",
-  EWONDO: "ewondo"
+  TARGET: "langue", // validated by two people
+  PROVISIONAL: "provisoire" // machine translation, shown with [AUTO]
 });
 
 const DISPLAYABLE = new Set(["message", "intent", "fallback"]);
@@ -60,7 +61,7 @@ function bucketOf(classification) {
 /**
  * @param {object} options
  * @param {object} options.root Observation root (document.documentElement).
- * @param {{test: object, ewo: object|null, provisional?: object|null}} options.packs
+ * @param {{test: object, target: object|null}} options.packs
  * @param {string} options.version
  * @param {(status: object) => void} [options.onStatus]
  * @param {typeof MutationObserver} [options.MutationObserverImpl]
@@ -76,8 +77,14 @@ export function createNoliaController({
   scheduleTask,
   onDisplayError = () => {}
 }) {
-  const ewoValidation = validateLanguagePack(packs?.ewo ?? null, { mode: "demo" });
-  const provisionalValidation = validateLanguagePack(packs?.provisional ?? null, { mode: "provisional" });
+  const targetValidation = validateLanguagePack(packs?.target ?? null, {
+    mode: "demo",
+    expectedLanguage: TARGET_LANGUAGE.code
+  });
+  const provisionalValidation = validateLanguagePack(packs?.target ?? null, {
+    mode: "provisional",
+    expectedLanguage: TARGET_LANGUAGE.code
+  });
   const testValidation = validateLanguagePack(packs?.test ?? null, { mode: "test" });
 
   const status = {
@@ -96,11 +103,13 @@ export function createNoliaController({
     recognizedIntentIds: [],
     fallbackReasons: {},
     testAvailable: testValidation.ok,
-    ewondoAvailable: ewoValidation.ok,
-    ewondoRefusal: ewoValidation.ok ? "" : summarizeRefusal(ewoValidation),
-    ewondoProvisionalAvailable: provisionalValidation.ok,
-    ewondoProvisionalRefusal: provisionalValidation.ok ? "" : summarizeRefusal(provisionalValidation),
-    ewondoQuality: ewoValidation.ok ? "validated" : provisionalValidation.ok ? "provisional" : "unavailable",
+    targetLanguage: TARGET_LANGUAGE.code,
+    targetAvailable: targetValidation.ok,
+    targetRefusal: targetValidation.ok ? "" : summarizeRefusal(targetValidation),
+    // Machine translation, only when no validated pack exists.
+    provisionalAvailable: !targetValidation.ok && provisionalValidation.ok,
+    provisionalSource: provisionalValidation.ok ? String(packs.target.meta.generatedBy) : "",
+    provisionalCoverage: provisionalValidation.ok ? { ...provisionalValidation.coverage } : null,
     lastObservationAt: null,
     errorCode: null
   };
@@ -110,6 +119,7 @@ export function createNoliaController({
   // values, slots, amounts, names, accounts or references.
   const known = new Map();
   let adapter = null;
+  let renderer = null;
 
   function snapshot() {
     return Object.freeze({
@@ -156,6 +166,8 @@ export function createNoliaController({
 
   function display(record, classification) {
     if (!adapter || !DISPLAYABLE.has(classification.kind)) return;
+    // A partial provisional pack: messages it lacks stay in French.
+    if (renderer?.canRender && !renderer.canRender(classification)) return;
     try {
       adapter.applyRecord(record, classification);
     } catch (error) {
@@ -188,6 +200,7 @@ export function createNoliaController({
     const result = adapter ? adapter.restore() : Object.freeze({ restored: 0, hostChanged: 0 });
     adapter = null;
     status.mode = MODES.OBSERVATION;
+    renderer = null;
     // Restored nodes are observed again as French text.
     observer.flush();
     recount();
@@ -197,14 +210,10 @@ export function createNoliaController({
 
   function enable(mode, pack) {
     if (adapter) restoreFrench();
+    const rendererMode = mode === MODES.TEST ? "test" : mode === MODES.PROVISIONAL ? "provisional" : "demo";
+    renderer = createDisplayRenderer(pack, { mode: rendererMode });
     adapter = createDomTextAdapter({
-      renderText: createDisplayRenderer(pack, {
-        mode: mode === MODES.TEST
-          ? "test"
-          : mode === MODES.EWONDO_PROVISIONAL
-            ? "provisional"
-            : "demo"
-      })
+      renderText: renderer
     });
     status.mode = mode;
     for (const record of extractVisibleText(root)) {
@@ -243,18 +252,10 @@ export function createNoliaController({
       }
       return enable(MODES.TEST, packs.test);
     },
-    enableEwondo() {
-      if (ewoValidation.ok) {
-        return enable(MODES.EWONDO, packs.ewo);
-      }
-      if (provisionalValidation.ok) {
-        return enable(MODES.EWONDO_PROVISIONAL, packs.provisional);
-      }
-      return Object.freeze({
-        enabled: false,
-        mode: status.mode,
-        reason: `${status.ewondoRefusal} ${status.ewondoProvisionalRefusal}`.trim()
-      });
+    enableTargetLanguage() {
+      if (targetValidation.ok) return enable(MODES.TARGET, packs.target);
+      if (provisionalValidation.ok) return enable(MODES.PROVISIONAL, packs.target);
+      return Object.freeze({ enabled: false, mode: status.mode, reason: status.targetRefusal });
     },
     restoreFrench,
     get status() {

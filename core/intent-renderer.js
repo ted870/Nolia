@@ -82,11 +82,12 @@ export function verifyDisplayText(contract, rendering, text, originalText) {
   return readBack;
 }
 
-function buildAndVerify(pack, templateId, contract, originalText, mode) {
+function buildAndVerify(pack, templateId, contract, originalText, mode, marker = "") {
   if (typeof originalText !== "string" || !normalizeText(originalText)) {
     throw new TemplateError("ORIGINAL_MISSING", "The French source text is required.");
   }
-  const explanation = renderExplanation(pack, templateId, contract, mode);
+  const rendered = renderExplanation(pack, templateId, contract, mode);
+  const explanation = marker ? `${marker} ${rendered}` : rendered;
   const facts = factsOf(contract);
   const addition = facts ? `${explanation} (${facts})` : explanation;
   const text = `${originalText}${DISPLAY_SEPARATOR}${addition}`;
@@ -107,7 +108,7 @@ function buildAndVerify(pack, templateId, contract, originalText, mode) {
 export function renderIntent(pack, contract, options = {}) {
   const mode = options.mode ?? "demo";
   const templateId = options.templateId ?? contract.intentId;
-  return buildAndVerify(pack, templateId, contract, options.originalText, mode);
+  return buildAndVerify(pack, templateId, contract, options.originalText, mode, options.marker);
 }
 
 /**
@@ -124,5 +125,5 @@ export function renderFallback(pack, notice, options = {}) {
   if (notice.contract.intentId !== templateId) {
     throw new TemplateError("INTEGRITY_FAILED", "Fallback contract and template differ: INTENT_CHANGED.");
   }
-  return buildAndVerify(pack, templateId, notice.contract, options.originalText, mode);
+  return buildAndVerify(pack, templateId, notice.contract, options.originalText, mode, options.marker);
 }

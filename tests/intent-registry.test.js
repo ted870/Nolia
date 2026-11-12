@@ -84,15 +84,15 @@ test("the bundled TEST pack module is identical to locales/test.json", async () 
   assert.deepEqual(JSON.parse(JSON.stringify(TEST_PACK)), await readJson("../locales/test.json"));
 });
 
-test("v0.5.4 ships only the draft, TEST and explicitly provisional packs", async () => {
+test("v0.5.5 ships only the explicit provisional Ewondo pack beside the models", async () => {
   const { readdir } = await import("node:fs/promises");
   const files = await readdir(new URL("../locales/", import.meta.url));
   assert.deepEqual(files.sort(), ["ewo-provisional.json", "template.json", "test.json"]);
   const provisional = await readJson("../locales/ewo-provisional.json");
+  assert.equal(provisional.meta.languageCode, "ewo");
   assert.equal(provisional.meta.status, "provisional");
   assert.equal(provisional.meta.humanValidated, false);
   assert.deepEqual(provisional.meta.validatedBy, []);
-  assert.equal(provisional.meta.validatedAt, null);
 });
 
 test("cues are plain ASCII because they are applied to folded text (no accent, no look-alike letter)", () => {
