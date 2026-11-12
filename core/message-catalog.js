@@ -2,11 +2,14 @@ import { normalizeText } from "./semantic-contract.js";
 
 /** Stable identifiers for messages observed in the rendered Safinum journey. */
 const ENTRIES = [
+  ["environment.testBanner", "Environnement de test — données fictives, aucune transaction réelle.", "security", "warning"],
+  ["environment.protocol", "Protocole de test", "navigation"],
+  ["environment.backToHackathon", "Retour au hackathon", "navigation"],
   ["app.bankOnline", "Banque en ligne", "label"],
   ["step.balance", "Solde", "navigation"],
   ["common.fees", "Frais", "label"],
   ["common.beneficiary", "Bénéficiaire", "label"],
-  ["step.summary", "Récapitulatif", "navigation"],
+  ["common.summary", "Récapitulatif", "heading"],
   ["step.confirmation", "Confirmation", "navigation"],
   ["balance.accountHeading", "VOTRE COMPTE", "heading"],
   ["balance.intro", "Consultez votre solde et lancez un transfert en toute sécurité.", "instruction"],
@@ -34,7 +37,6 @@ const ENTRIES = [
   ["fees.free", "Gratuit", "label"],
   ["fees.totalDebit", "Total à débiter", "label"],
   ["fees.balanceAfter", "Solde après opération", "label"],
-  ["beneficiary.title", "BÉNÉFICIAIRE", "heading"],
   ["beneficiary.intro", "Renseignez les informations du destinataire. Vérifiez toujours le numéro avant de valider.", "instruction", "warning"],
   ["beneficiary.newWarning", "Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant de continuer.", "security", "warning"],
   ["beneficiary.name", "NOM DU BÉNÉFICIAIRE", "label"],
@@ -42,7 +44,6 @@ const ENTRIES = [
   ["beneficiary.reason", "MOTIF DU TRANSFERT", "label"],
   ["beneficiary.note", "NOTE (OPTIONNEL)", "label"],
   ["beneficiary.checked", "J'ai vérifié le nom et le numéro du bénéficiaire.", "confirmation", "warning"],
-  ["summary.title", "RÉCAPITULATIF", "heading"],
   ["summary.intro", "Vérifiez les informations avant de confirmer le transfert.", "instruction", "warning"],
   ["summary.amount", "Montant", "label"],
   ["summary.totalDebited", "Total débité", "label"],
@@ -70,19 +71,59 @@ function makeEntry([id, source, role, severity = "normal"]) {
 
 export const SAFINUM_MESSAGE_CATALOG = Object.freeze(ENTRIES.map(makeEntry));
 
+export const SAFINUM_DYNAMIC_MESSAGE_CATALOG = Object.freeze([
+  Object.freeze({
+    id: "balance.greeting",
+    source: "Bonjour, {name}",
+    role: "heading",
+    severity: "normal",
+    pattern: /^Bonjour,\s*(.+)$/iu,
+    slotNames: Object.freeze(["name"])
+  }),
+  Object.freeze({
+    id: "balance.accountNumber",
+    source: "Numéro de compte : {account}",
+    role: "label",
+    severity: "normal",
+    pattern: /^Numéro de compte\s*:\s*(.+)$/iu,
+    slotNames: Object.freeze(["account"])
+  })
+]);
+
+function sourceKey(text) {
+  return normalizeText(text).toLocaleLowerCase("fr");
+}
+
 const ENTRY_BY_SOURCE = new Map(
-  SAFINUM_MESSAGE_CATALOG.map((entry) => [normalizeText(entry.source), entry])
+  SAFINUM_MESSAGE_CATALOG.map((entry) => [sourceKey(entry.source), entry])
 );
 
 export function findCatalogEntry(text) {
-  return ENTRY_BY_SOURCE.get(normalizeText(text)) ?? null;
+  return ENTRY_BY_SOURCE.get(sourceKey(text)) ?? null;
+}
+
+export function matchCatalogMessage(text) {
+  const normalized = normalizeText(text);
+  const exact = findCatalogEntry(normalized);
+  if (exact) return Object.freeze({ entry: exact, slots: Object.freeze({}) });
+
+  for (const entry of SAFINUM_DYNAMIC_MESSAGE_CATALOG) {
+    const match = normalized.match(entry.pattern);
+    if (!match) continue;
+    const slots = Object.fromEntries(
+      entry.slotNames.map((slotName, index) => [slotName, normalizeText(match[index + 1])])
+    );
+    return Object.freeze({ entry, slots: Object.freeze(slots) });
+  }
+
+  return null;
 }
 
 export function validateMessageCatalog(entries = SAFINUM_MESSAGE_CATALOG) {
   const ids = new Set();
   const sources = new Set();
   for (const entry of entries) {
-    const source = normalizeText(entry.source);
+    const source = sourceKey(entry.source);
     if (!entry.id || ids.has(entry.id)) {
       throw new TypeError(`Duplicate or missing message id: ${String(entry.id)}`);
     }
@@ -91,6 +132,12 @@ export function validateMessageCatalog(entries = SAFINUM_MESSAGE_CATALOG) {
     }
     ids.add(entry.id);
     sources.add(source);
+  }
+  for (const entry of SAFINUM_DYNAMIC_MESSAGE_CATALOG) {
+    if (!entry.id || ids.has(entry.id) || !(entry.pattern instanceof RegExp)) {
+      throw new TypeError(`Duplicate or invalid dynamic message id: ${String(entry.id)}`);
+    }
+    ids.add(entry.id);
   }
   return true;
 }

@@ -92,7 +92,7 @@ que la page hôte peut importer ces modules.
 À ce stade, l'extension observe seulement la page. Elle ne traduit et ne
 modifie encore aucun élément.
 
-### Inventaire Safinum (v0.3.0)
+### Inventaire Safinum (v0.3.1)
 
 Le parcours réel a été inventorié sur les écrans Solde, Frais, Bénéficiaire,
 Récapitulatif, Confirmation et sur l'erreur `AMOUNT_002`. Chaque texte connu
@@ -103,7 +103,13 @@ catégories suivantes :
 
 - `message` : texte connu qui pourra recevoir une traduction validée ;
 - `protected` : montant, compte, téléphone, référence, date ou code d'erreur ;
-- `unknown` : texte inédit, laissé intact par défaut.
+- `ignored` : numéro d'étape purement structurel ;
+- `unknown` : véritable texte inédit, laissé intact par défaut.
+
+Les messages mixtes `Bonjour, {name}` et `Numéro de compte : {account}` sont
+reconnus avec des slots protégés. Les noms, marques, devises, dates, codes
+courts et valeurs financières restent intacts. La comparaison des textes du
+catalogue est insensible à la casse, mais pas au contenu.
 
 Le script de contenu expose uniquement des compteurs et les identifiants de
 messages reconnus dans `globalThis.__noliaStatus`. Aucun texte financier ou

@@ -13,6 +13,7 @@
     financialTokenCount: 0,
     recognizedMessageCount: 0,
     protectedTextCount: 0,
+    ignoredTextCount: 0,
     unknownTextCount: 0,
     recognizedMessageIds: [],
     lastObservationAt: null,
@@ -40,6 +41,8 @@
             knownIds.add(classification.messageId);
           } else if (classification.kind === "protected") {
             status.protectedTextCount += 1;
+          } else if (classification.kind === "ignored") {
+            status.ignoredTextCount += 1;
           } else {
             status.unknownTextCount += 1;
           }
