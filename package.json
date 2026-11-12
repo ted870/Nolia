@@ -1,10 +1,12 @@
 {
   "name": "nolia",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "coverage:intents": "node scripts/intent-coverage.js",
+    "sheet:ewondo": "node scripts/build-translation-sheet.js"
   },
   "engines": {
     "node": ">=20"

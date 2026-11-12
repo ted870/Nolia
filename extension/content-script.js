@@ -5,13 +5,17 @@
   const [
     { createDomObserver },
     { extractVisibleText },
-    { classifyTextRecord },
-    { createDomTextAdapter, renderTestDisplay }
+    { analyzeTextRecord },
+    { createDomTextAdapter },
+    { createDisplayRenderer },
+    { TEST_PACK }
   ] = await Promise.all([
     import(chrome.runtime.getURL("core/dom-observer.js")),
     import(chrome.runtime.getURL("core/dom-extractor.js")),
-    import(chrome.runtime.getURL("core/message-classifier.js")),
-    import(chrome.runtime.getURL("core/dom-text-adapter.js"))
+    import(chrome.runtime.getURL("core/text-analyzer.js")),
+    import(chrome.runtime.getURL("core/dom-text-adapter.js")),
+    import(chrome.runtime.getURL("core/display-renderer.js")),
+    import(chrome.runtime.getURL("core/locale-test-pack.js"))
   ]);
 
   const status = {
@@ -22,7 +26,11 @@
     protectedTextCount: 0,
     ignoredTextCount: 0,
     unknownTextCount: 0,
+    intentMatchCount: 0,
+    fallbackCount: 0,
+    fallbackReasons: {},
     recognizedMessageIds: [],
+    recognizedIntentIds: [],
     testDisplayEnabled: false,
     translatedTextCount: 0,
     displayErrorCount: 0,
@@ -35,11 +43,16 @@
   globalThis.__noliaStatus = Object.seal(status);
 
   try {
-    const adapter = createDomTextAdapter({ renderText: renderTestDisplay });
+    // v0.5.0: only the artificial TEST pack is loaded. No real language is
+    // displayed until a pack is validated by two independent speakers.
+    const adapter = createDomTextAdapter({
+      renderText: createDisplayRenderer(TEST_PACK, { mode: "test" })
+    });
     let testDisplayEnabled = false;
 
     function displayRecord(record, classification) {
-      if (!testDisplayEnabled || classification.kind !== "message") return;
+      if (!testDisplayEnabled) return;
+      if (!["message", "intent", "fallback"].includes(classification.kind)) return;
       try {
         adapter.applyRecord(record, classification);
         status.translatedTextCount = adapter.size;
@@ -53,6 +66,7 @@
       root: document.documentElement,
       onRecords(records) {
         const knownIds = new Set(status.recognizedMessageIds);
+        const knownIntentIds = new Set(status.recognizedIntentIds);
         status.visibleTextCount += records.length;
         status.financialTokenCount += records.reduce(
           (total, record) => total + record.financialTokens.length,
@@ -60,10 +74,17 @@
         );
         for (const record of records) {
           if (adapter.isManagedRecord(record)) continue;
-          const classification = classifyTextRecord(record);
+          const classification = analyzeTextRecord(record);
           if (classification.kind === "message") {
             status.recognizedMessageCount += 1;
             knownIds.add(classification.messageId);
+          } else if (classification.kind === "intent") {
+            status.intentMatchCount += 1;
+            knownIntentIds.add(classification.intentId);
+          } else if (classification.kind === "fallback") {
+            status.fallbackCount += 1;
+            status.fallbackReasons[classification.reason] =
+              (status.fallbackReasons[classification.reason] ?? 0) + 1;
           } else if (classification.kind === "protected") {
             status.protectedTextCount += 1;
           } else if (classification.kind === "ignored") {
@@ -74,6 +95,7 @@
           displayRecord(record, classification);
         }
         status.recognizedMessageIds = [...knownIds].sort();
+        status.recognizedIntentIds = [...knownIntentIds].sort();
         status.lastObservationAt = new Date().toISOString();
         status.state = "observing";
       }
@@ -91,7 +113,7 @@
         status.testDisplayEnabled = true;
 
         for (const record of extractVisibleText(document.documentElement)) {
-          displayRecord(record, classifyTextRecord(record));
+          displayRecord(record, analyzeTextRecord(record));
         }
 
         return Object.freeze({ enabled: true, translatedTextCount: adapter.size });

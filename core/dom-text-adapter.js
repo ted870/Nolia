@@ -1,6 +1,23 @@
 import { normalizeText } from "./semantic-contract.js";
 
 const TEXT_NODE = 3;
+const DISPLAYABLE_KINDS = new Set(["message", "intent", "fallback"]);
+
+/**
+ * Intent and degraded-mode displays must keep the French source verbatim at
+ * the start and carry every critical value of the contract after it.
+ */
+function assertSourceAndValuesPreserved(renderedText, currentText, contract) {
+  if (!renderedText.startsWith(currentText)) {
+    throw new TypeError("The French source text was not preserved.");
+  }
+  const appended = renderedText.slice(currentText.length);
+  for (const value of contract?.values ?? []) {
+    if (!appended.includes(value.raw)) {
+      throw new TypeError(`Protected value {${value.type}} was not preserved.`);
+    }
+  }
+}
 
 function assertProtectedSlotsPreserved(renderedText, slots = {}) {
   const normalizedRendered = normalizeText(renderedText);
@@ -24,7 +41,7 @@ export function createDomTextAdapter({ renderText }) {
   const managed = new Map();
 
   function applyRecord(record, classification) {
-    if (classification?.kind !== "message") return { outcome: "skipped" };
+    if (!DISPLAYABLE_KINDS.has(classification?.kind)) return { outcome: "skipped" };
 
     const node = record?.node;
     if (!node || node.nodeType !== TEXT_NODE) return { outcome: "invalid-node" };
@@ -38,13 +55,24 @@ export function createDomTextAdapter({ renderText }) {
     if (typeof renderedText !== "string" || !normalizeText(renderedText)) {
       throw new TypeError("The rendered display text must be a non-empty string.");
     }
-    assertProtectedSlotsPreserved(renderedText, classification.slots);
+    if (classification.kind === "message") {
+      assertProtectedSlotsPreserved(renderedText, classification.slots);
+    } else {
+      assertSourceAndValuesPreserved(renderedText, currentText, classification.contract);
+    }
 
     if (renderedText === currentText) return { outcome: "unchanged" };
 
     managed.set(node, { originalText: currentText, renderedText });
     node.nodeValue = renderedText;
-    return { outcome: "applied", messageId: classification.messageId };
+    if (classification.kind === "message") {
+      return { outcome: "applied", messageId: classification.messageId };
+    }
+    return {
+      outcome: "applied",
+      kind: classification.kind,
+      intentId: classification.contract.intentId
+    };
   }
 
   function isManagedRecord(record) {

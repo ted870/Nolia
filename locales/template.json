@@ -2,7 +2,7 @@
   "meta": {
     "languageCode": "LANGUAGE_TBD",
     "languageName": "Langue à choisir",
-    "version": 1,
+    "version": 2,
     "status": "draft",
     "validatedBy": [],
     "validatedAt": null
@@ -23,6 +23,114 @@
         "beneficiary",
         "fees"
       ]
+    },
+    "transfer.insufficient_balance": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
+    },
+    "transfer.sent_success": {
+      "status": "draft",
+      "direction": "send",
+      "text": "",
+      "requiredSlots": []
+    },
+    "transfer.received": {
+      "status": "draft",
+      "direction": "receive",
+      "text": "",
+      "requiredSlots": []
+    },
+    "transfer.failed": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
+    },
+    "beneficiary.verify_before_confirm": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
+    },
+    "beneficiary.new_unknown": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
+    },
+    "summary.verify_before_confirm": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
+    },
+    "environment.test_data": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
+    },
+    "security.no_personal_data": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
+    },
+    "fees.free_transfer": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
+    },
+    "fees.amount_info": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
+    },
+    "transfer.total_debit": {
+      "status": "draft",
+      "direction": "send",
+      "text": "",
+      "requiredSlots": []
+    },
+    "balance.available_info": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
+    },
+    "balance.after_operation": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
+    },
+    "action.confirm_transfer": {
+      "status": "draft",
+      "direction": "send",
+      "text": "",
+      "requiredSlots": []
+    },
+    "error.generic": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
+    },
+    "fallback.unrecognized": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
+    },
+    "fallback.unrecognized_warning": {
+      "status": "draft",
+      "direction": "neutral",
+      "text": "",
+      "requiredSlots": []
     }
   }
 }

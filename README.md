@@ -92,7 +92,7 @@ que la page hôte peut importer ces modules.
 À ce stade, l'extension observe seulement la page. Elle ne traduit et ne
 modifie encore aucun élément.
 
-### Inventaire Safinum (v0.4.0)
+### Inventaire Safinum (v0.4.0, inchangé en v0.5.0)
 
 Le parcours réel a été inventorié sur les écrans Solde, Frais, Bénéficiaire,
 Récapitulatif, Confirmation et sur l'erreur `AMOUNT_002`. Chaque texte connu
@@ -129,6 +129,24 @@ toujours priorité et n'est jamais écrasée par la restauration.
 
 Ce mode prouve le branchement au DOM ; il ne constitue pas une traduction et
 son marqueur visible empêche de le confondre avec une langue validée.
+
+### Intentions et mode dégradé (v0.5.0)
+
+La version 0.5.0 ajoute un registre d'intentions (`core/intent-registry.js`),
+distinct du catalogue de textes exacts. Une phrase française absente du
+catalogue peut être rattachée à une intention connue (par exemple
+`transfer.insufficient_balance`) si tous ses indices obligatoires sont présents,
+sans contradiction de sens envoyer/recevoir, sans négation inattendue, sans mot
+d'alerte non pris en charge et sans valeur ambiguë. Sinon, Nolia passe en mode
+dégradé : le texte français reste affiché, suivi d'un avis « message non
+reconnu » et des seules valeurs extraites avec certitude.
+
+Les valeurs critiques (montants, devise, téléphone, compte, référence, code
+d'erreur, date, nombres) sont extraites par `core/value-extractor.js`, figées
+dans un contrat d'intention et vérifiées après chaque rendu. Aucune phrase
+ewondo n'est intégrée : seuls `locales/template.json` (brouillons vides) et
+`locales/test.json` (`[TEST]`) existent. Détails et choix à vérifier :
+`docs/NOTES-v0.5.0.md`. Fiche de traduction : `docs/fiche-traduction-ewondo.csv`.
 
 ## Exécuter les tests
 
