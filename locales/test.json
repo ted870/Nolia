@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "languageCode": "TEST",
+    "languageName": "[TEST] Langue artificielle",
+    "version": 1,
+    "status": "test",
+    "validatedBy": [],
+    "validatedAt": null
+  },
+  "directionLabels": {
+    "send": "[TEST] ENVOI",
+    "receive": "[TEST] RECEPTION",
+    "neutral": "[TEST] NEUTRE"
+  },
+  "templates": {
+    "transfer.summary": {
+      "status": "test",
+      "text": "[TEST] {beneficiary} | {fees} {currency} | {direction} | {amount} {currency}",
+      "requiredSlots": [
+        "direction",
+        "amount",
+        "currency",
+        "beneficiary",
+        "fees"
+      ]
+    }
+  }
+}

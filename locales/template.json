@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "languageCode": "LANGUAGE_TBD",
+    "languageName": "Langue à choisir",
+    "version": 1,
+    "status": "draft",
+    "validatedBy": [],
+    "validatedAt": null
+  },
+  "directionLabels": {
+    "send": "",
+    "receive": "",
+    "neutral": ""
+  },
+  "templates": {
+    "transfer.summary": {
+      "status": "draft",
+      "text": "{direction} {amount} {currency} à {beneficiary}. Frais : {fees} {currency}.",
+      "requiredSlots": [
+        "direction",
+        "amount",
+        "currency",
+        "beneficiary",
+        "fees"
+      ]
+    }
+  }
+}
