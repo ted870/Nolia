@@ -92,6 +92,24 @@ que la page hôte peut importer ces modules.
 À ce stade, l'extension observe seulement la page. Elle ne traduit et ne
 modifie encore aucun élément.
 
+### Inventaire Safinum (v0.3.0)
+
+Le parcours réel a été inventorié sur les écrans Solde, Frais, Bénéficiaire,
+Récapitulatif, Confirmation et sur l'erreur `AMOUNT_002`. Chaque texte connu
+possède maintenant un identifiant stable dans `core/message-catalog.js`.
+
+`core/message-classifier.js` classe chaque texte observé dans une des trois
+catégories suivantes :
+
+- `message` : texte connu qui pourra recevoir une traduction validée ;
+- `protected` : montant, compte, téléphone, référence, date ou code d'erreur ;
+- `unknown` : texte inédit, laissé intact par défaut.
+
+Le script de contenu expose uniquement des compteurs et les identifiants de
+messages reconnus dans `globalThis.__noliaStatus`. Aucun texte financier ou
+personnel n'est journalisé, stocké ou transmis. Le classificateur ne modifie
+pas encore le DOM.
+
 ## Exécuter les tests
 
 Prérequis : Node.js 20 ou une version plus récente.
@@ -111,7 +129,6 @@ npm test
 
 ## Prochaines étapes
 
-1. inventaire contrôlé des messages Safinum ;
-2. association des textes connus aux contrats de sens ;
-3. stratégie d'affichage sans altération de l'opération ;
-4. intégration d'une langue après validation humaine.
+1. association des messages financiers aux contrats de sens ;
+2. stratégie d'affichage sans altération de l'opération ;
+3. intégration d'une langue après validation humaine.
