@@ -6,7 +6,7 @@ test sur le vrai https://safinum.cm/hackathon-test.
 - `mock-safinum.html` reprend des textes du catalogue (pas le code de Safinum).
 - `chrome-smoke.mjs` lance Chrome avec l'extension non empaquetée, fait pointer
   `safinum.cm` vers un serveur HTTPS local (certificat autosigné) et vérifie :
-  panneau, mode TEST, notification ajoutée après chargement, restauration
+panneau, mode ewondo provisoire, mode TEST, notification ajoutée après chargement, restauration
   exacte nœud par nœud, boutons du site, absence de requêtes externes.
 
 ```bash

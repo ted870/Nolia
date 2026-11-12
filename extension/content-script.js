@@ -12,18 +12,20 @@
       { createNoliaController },
       { createNoliaPanel },
       { TEST_PACK },
-      { EWO_PACK }
+      { EWO_PACK },
+      { PROVISIONAL_EWO_PACK }
     ] = await Promise.all([
       import(chrome.runtime.getURL("core/nolia-controller.js")),
       import(chrome.runtime.getURL("core/nolia-panel.js")),
       import(chrome.runtime.getURL("core/locale-test-pack.js")),
-      import(chrome.runtime.getURL("core/locale-ewo-pack.js"))
+      import(chrome.runtime.getURL("core/locale-ewo-pack.js")),
+      import(chrome.runtime.getURL("core/locale-ewo-provisional-pack.js"))
     ]);
 
     let panel = null;
     const controller = createNoliaController({
       root: document.documentElement,
-      packs: { test: TEST_PACK, ewo: EWO_PACK },
+      packs: { test: TEST_PACK, ewo: EWO_PACK, provisional: PROVISIONAL_EWO_PACK },
       version: chrome.runtime.getManifest().version,
       onStatus(snapshot) {
         // Counters and ids only: no page text is kept or logged.

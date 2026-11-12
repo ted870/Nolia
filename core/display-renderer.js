@@ -13,7 +13,9 @@ import { renderFallback, renderIntent } from "./intent-renderer.js";
 import { renderCatalogMessage } from "./language-pack.js";
 
 export function createDisplayRenderer(pack, { mode = "demo" } = {}) {
-  if (mode !== "demo" && mode !== "test") throw new TypeError(`Unsupported mode: ${mode}`);
+  if (mode !== "demo" && mode !== "provisional" && mode !== "test") {
+    throw new TypeError(`Unsupported mode: ${mode}`);
+  }
 
   return function renderText(record, classification) {
     const originalText = String(record?.node?.nodeValue ?? record?.text ?? "");

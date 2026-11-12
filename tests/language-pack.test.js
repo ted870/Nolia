@@ -18,6 +18,7 @@ import {
 import { INTENT_REGISTRY } from "../core/intent-registry.js";
 import { TEST_PACK } from "../core/locale-test-pack.js";
 import { EWO_PACK } from "../core/locale-ewo-pack.js";
+import { PROVISIONAL_EWO_PACK } from "../core/locale-ewo-provisional-pack.js";
 import { syntheticValidatedPack } from "./helpers/synthetic-pack.js";
 
 const readJson = async (path) => JSON.parse(await readFile(new URL(path, import.meta.url), "utf8"));
@@ -91,6 +92,15 @@ test("the draft ewondo model is refused in demo mode with readable reasons", () 
   assert.ok(codes(validation).includes("PACK_NOT_VALIDATED"));
   assert.ok(codes(validation).includes("VALIDATORS_MISSING"));
   assert.ok(codes(validation).includes("VALIDATION_DATE_INVALID"));
+});
+
+test("the generated ewondo pack is accepted only in provisional mode", () => {
+  const provisional = validateLanguagePack(PROVISIONAL_EWO_PACK, { mode: "provisional" });
+  assert.deepEqual(provisional.reasons, []);
+  assert.equal(PROVISIONAL_EWO_PACK.meta.humanValidated, false);
+  assert.deepEqual(PROVISIONAL_EWO_PACK.meta.validatedBy, []);
+  assert.equal(demo(PROVISIONAL_EWO_PACK).ok, false);
+  assert.ok(codes(demo(PROVISIONAL_EWO_PACK)).includes("PACK_NOT_VALIDATED"));
 });
 
 test("a complete pack validated by two people on a past date is accepted", () => {

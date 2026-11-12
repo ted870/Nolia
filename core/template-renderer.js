@@ -2,8 +2,8 @@
  * Render language templates without depending on Chrome or the DOM.
  *
  * A demo can use only language packs and templates that were explicitly
- * validated. Test data requires an explicit test mode and a visible [TEST]
- * marker.
+ * validated. Machine-generated text requires the explicit provisional mode.
+ * Test data requires an explicit test mode and a visible [TEST] marker.
  */
 
 const PLACEHOLDER_PATTERN = /\{([a-z][a-zA-Z0-9]*)\}/gu;
@@ -33,7 +33,7 @@ export function extractPlaceholders(text) {
  * Check whether a pack is allowed in the requested runtime mode.
  *
  * @param {object} pack
- * @param {"demo"|"test"} mode
+ * @param {"demo"|"provisional"|"test"} mode
  */
 function assertPackAllowed(pack, mode) {
   if (!pack || typeof pack !== "object" || !pack.meta) {
@@ -45,6 +45,22 @@ function assertPackAllowed(pack, mode) {
       throw new TemplateError(
         "INVALID_TEST_PACK",
         "Test mode accepts only the explicit TEST language pack."
+      );
+    }
+    return;
+  }
+
+  if (mode === "provisional") {
+    if (
+      pack.meta.status !== "provisional" ||
+      pack.meta.languageCode !== "ewo" ||
+      pack.meta.humanValidated !== false ||
+      typeof pack.meta.generatedBy !== "string" ||
+      !pack.meta.generatedBy.trim()
+    ) {
+      throw new TemplateError(
+        "INVALID_PROVISIONAL_PACK",
+        "Provisional mode accepts only a declared, machine-generated Ewondo pack."
       );
     }
     return;
@@ -109,13 +125,13 @@ export function isPastIsoDate(value, now = Date.now()) {
  * @param {object} pack Language pack loaded from JSON.
  * @param {string} messageId Stable message identifier.
  * @param {Record<string, string|number|bigint>} slots Values to insert.
- * @param {{mode?: "demo"|"test"}} [options]
+ * @param {{mode?: "demo"|"provisional"|"test"}} [options]
  * @returns {string}
  */
 export function renderMessage(pack, messageId, slots, options = {}) {
   const mode = options.mode ?? "demo";
 
-  if (mode !== "demo" && mode !== "test") {
+  if (mode !== "demo" && mode !== "provisional" && mode !== "test") {
     throw new TemplateError("INVALID_MODE", `Unsupported mode: ${mode}`);
   }
 
@@ -126,7 +142,7 @@ export function renderMessage(pack, messageId, slots, options = {}) {
     throw new TemplateError("TEMPLATE_NOT_FOUND", `Unknown template: ${messageId}`);
   }
 
-  const expectedStatus = mode === "test" ? "test" : "validated";
+  const expectedStatus = mode === "test" ? "test" : mode === "provisional" ? "provisional" : "validated";
   if (template.status !== expectedStatus) {
     throw new TemplateError(
       "TEMPLATE_NOT_ALLOWED",
@@ -145,7 +161,7 @@ export function renderMessage(pack, messageId, slots, options = {}) {
     );
   }
 
-  if (mode === "demo" && template.text.includes(TEST_MARKER)) {
+  if (mode !== "test" && template.text.includes(TEST_MARKER)) {
     throw new TemplateError(
       "TEST_CONTENT_IN_DEMO",
       "Test content cannot be rendered in demo mode."

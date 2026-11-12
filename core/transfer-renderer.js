@@ -51,7 +51,7 @@ function readDirectionLabels(pack, mode) {
       );
     }
     const trimmed = label.trim();
-    if (mode === "demo" && trimmed.includes("[TEST]")) {
+    if (mode !== "test" && trimmed.includes("[TEST]")) {
       throw new TemplateError(
         "TEST_CONTENT_IN_DEMO",
         "Direction labels cannot be test data in demo mode."

@@ -22,7 +22,12 @@ import { createDomTextAdapter } from "./dom-text-adapter.js";
 import { createDisplayRenderer } from "./display-renderer.js";
 import { summarizeRefusal, validateLanguagePack } from "./language-pack.js";
 
-export const MODES = Object.freeze({ OBSERVATION: "observation", TEST: "test", EWONDO: "ewondo" });
+export const MODES = Object.freeze({
+  OBSERVATION: "observation",
+  TEST: "test",
+  EWONDO_PROVISIONAL: "ewondo-provisional",
+  EWONDO: "ewondo"
+});
 
 const DISPLAYABLE = new Set(["message", "intent", "fallback"]);
 
@@ -55,7 +60,7 @@ function bucketOf(classification) {
 /**
  * @param {object} options
  * @param {object} options.root Observation root (document.documentElement).
- * @param {{test: object, ewo: object|null}} options.packs
+ * @param {{test: object, ewo: object|null, provisional?: object|null}} options.packs
  * @param {string} options.version
  * @param {(status: object) => void} [options.onStatus]
  * @param {typeof MutationObserver} [options.MutationObserverImpl]
@@ -72,6 +77,7 @@ export function createNoliaController({
   onDisplayError = () => {}
 }) {
   const ewoValidation = validateLanguagePack(packs?.ewo ?? null, { mode: "demo" });
+  const provisionalValidation = validateLanguagePack(packs?.provisional ?? null, { mode: "provisional" });
   const testValidation = validateLanguagePack(packs?.test ?? null, { mode: "test" });
 
   const status = {
@@ -92,6 +98,9 @@ export function createNoliaController({
     testAvailable: testValidation.ok,
     ewondoAvailable: ewoValidation.ok,
     ewondoRefusal: ewoValidation.ok ? "" : summarizeRefusal(ewoValidation),
+    ewondoProvisionalAvailable: provisionalValidation.ok,
+    ewondoProvisionalRefusal: provisionalValidation.ok ? "" : summarizeRefusal(provisionalValidation),
+    ewondoQuality: ewoValidation.ok ? "validated" : provisionalValidation.ok ? "provisional" : "unavailable",
     lastObservationAt: null,
     errorCode: null
   };
@@ -189,7 +198,13 @@ export function createNoliaController({
   function enable(mode, pack) {
     if (adapter) restoreFrench();
     adapter = createDomTextAdapter({
-      renderText: createDisplayRenderer(pack, { mode: mode === MODES.TEST ? "test" : "demo" })
+      renderText: createDisplayRenderer(pack, {
+        mode: mode === MODES.TEST
+          ? "test"
+          : mode === MODES.EWONDO_PROVISIONAL
+            ? "provisional"
+            : "demo"
+      })
     });
     status.mode = mode;
     for (const record of extractVisibleText(root)) {
@@ -229,10 +244,17 @@ export function createNoliaController({
       return enable(MODES.TEST, packs.test);
     },
     enableEwondo() {
-      if (!ewoValidation.ok) {
-        return Object.freeze({ enabled: false, mode: status.mode, reason: status.ewondoRefusal });
+      if (ewoValidation.ok) {
+        return enable(MODES.EWONDO, packs.ewo);
       }
-      return enable(MODES.EWONDO, packs.ewo);
+      if (provisionalValidation.ok) {
+        return enable(MODES.EWONDO_PROVISIONAL, packs.provisional);
+      }
+      return Object.freeze({
+        enabled: false,
+        mode: status.mode,
+        reason: `${status.ewondoRefusal} ${status.ewondoProvisionalRefusal}`.trim()
+      });
     },
     restoreFrench,
     get status() {

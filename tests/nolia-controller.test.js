@@ -6,6 +6,7 @@ import { createNoliaPanel } from "../core/nolia-panel.js";
 import { extractVisibleText } from "../core/dom-extractor.js";
 import { TEST_PACK } from "../core/locale-test-pack.js";
 import { EWO_PACK } from "../core/locale-ewo-pack.js";
+import { PROVISIONAL_EWO_PACK } from "../core/locale-ewo-provisional-pack.js";
 import { DISPLAY_SEPARATOR } from "../core/intent-renderer.js";
 import { syntheticValidatedPack } from "./helpers/synthetic-pack.js";
 import {
@@ -26,7 +27,7 @@ const PAGE = Object.freeze({
   fragment: "Bienvenue"
 });
 
-function setup({ ewo = EWO_PACK } = {}) {
+function setup({ ewo = EWO_PACK, provisional = null } = {}) {
   const document = new FakeDocument();
   const nodes = {};
   for (const [key, text] of Object.entries(PAGE)) {
@@ -39,8 +40,8 @@ function setup({ ewo = EWO_PACK } = {}) {
   const statuses = [];
   const controller = createNoliaController({
     root: document.documentElement,
-    packs: { test: TEST_PACK, ewo },
-    version: "0.5.1",
+    packs: { test: TEST_PACK, ewo, provisional },
+    version: "0.5.4",
     onStatus: (status) => statuses.push(status),
     MutationObserverImpl: fakeMutationObserverFor(document),
     scheduleTask: (task) => task()
@@ -165,6 +166,22 @@ test("a validated pack is displayed through the same path in ewondo mode, then r
   assert.equal(controller.status.mode, "ewondo");
   assert.equal(nodes.continue.nodeValue, "CONTROLE Continuer");
   assert.equal(nodes.greeting.nodeValue, "CONTROLE Bonjour, Paul Ndzana");
+  assert.ok(nodes.paraphrase.nodeValue.endsWith("(20 000 FCFA)"));
+  controller.restoreFrench();
+  assert.deepEqual(textsOf(nodes), PAGE);
+});
+
+test("the machine-generated pack runs only in visibly provisional ewondo mode", () => {
+  const { nodes, controller } = setup({ provisional: PROVISIONAL_EWO_PACK });
+  assert.equal(controller.status.ewondoAvailable, false);
+  assert.equal(controller.status.ewondoProvisionalAvailable, true);
+  assert.equal(controller.status.ewondoQuality, "provisional");
+  const result = controller.enableEwondo();
+  assert.equal(result.enabled, true);
+  assert.equal(controller.status.mode, "ewondo-provisional");
+  assert.equal(nodes.continue.nodeValue, PROVISIONAL_EWO_PACK.templates["common.continue"].text);
+  assert.ok(nodes.greeting.nodeValue.includes("Paul Ndzana"));
+  assert.ok(nodes.paraphrase.nodeValue.startsWith(PAGE.paraphrase + DISPLAY_SEPARATOR));
   assert.ok(nodes.paraphrase.nodeValue.endsWith("(20 000 FCFA)"));
   controller.restoreFrench();
   assert.deepEqual(textsOf(nodes), PAGE);

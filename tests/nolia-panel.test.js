@@ -6,16 +6,17 @@ import { createNoliaController } from "../core/nolia-controller.js";
 import { createNoliaPanel } from "../core/nolia-panel.js";
 import { TEST_PACK } from "../core/locale-test-pack.js";
 import { EWO_PACK } from "../core/locale-ewo-pack.js";
+import { PROVISIONAL_EWO_PACK } from "../core/locale-ewo-provisional-pack.js";
 import { FakeDocument, addText, fakeMutationObserverFor } from "./helpers/fake-dom.js";
 
-function setup() {
+function setup({ provisional = null } = {}) {
   const document = new FakeDocument();
   const node = addText(document, document.body, "Continuer", "button");
   let panel = null;
   const controller = createNoliaController({
     root: document.documentElement,
-    packs: { test: TEST_PACK, ewo: EWO_PACK },
-    version: "0.5.1",
+    packs: { test: TEST_PACK, ewo: EWO_PACK, provisional },
+    version: "0.5.4",
     onStatus: (status) => panel?.render(status),
     MutationObserverImpl: fakeMutationObserverFor(document),
     scheduleTask: (task) => task()
@@ -44,7 +45,7 @@ test("styles live only inside the shadow root", () => {
 test("the panel shows name, version, mode and the three counters", () => {
   const { panel, controller } = setup();
   const { title, mode, counters } = panel.elements;
-  assert.equal(title.textContent, "Nolia 0.5.1");
+  assert.equal(title.textContent, "Nolia 0.5.4");
   assert.equal(mode.textContent, "Observation");
   assert.equal(counters.recognizedCount.textContent, String(controller.status.recognizedCount));
   assert.equal(counters.protectedCount.textContent, "0");
@@ -70,10 +71,23 @@ test("the ewondo button is disabled and the refusal reason is visible", () => {
   const { ewoButton, reason } = panel.elements;
   assert.equal(ewoButton.disabled, true);
   assert.equal(reason.hidden, false);
-  assert.match(reason.textContent, /^Éwondo indisponible : aucun pack validé\./u);
+  assert.match(reason.textContent, /^Éwondo indisponible\./u);
   assert.match(reason.textContent, /draft/u);
   ewoButton.click(); // disabled: nothing happens
   assert.equal(node.nodeValue, "Continuer");
+});
+
+test("the provisional ewondo button is enabled with a permanent machine-translation warning", () => {
+  const { panel, node } = setup({ provisional: PROVISIONAL_EWO_PACK });
+  const { ewoButton, reason, mode } = panel.elements;
+  assert.equal(ewoButton.disabled, false);
+  assert.equal(ewoButton.textContent, "Activer l'éwondo provisoire");
+  assert.equal(reason.hidden, false);
+  assert.equal(reason.getAttribute("data-kind"), "provisional");
+  assert.match(reason.textContent, /automatique provisoire/u);
+  ewoButton.click();
+  assert.equal(mode.textContent, "Ewondo provisoire");
+  assert.equal(node.nodeValue, PROVISIONAL_EWO_PACK.templates["common.continue"].text);
 });
 
 test("the panel can be collapsed to a pill and reopened", () => {

@@ -9,6 +9,8 @@
  *
  * Modes:
  * - "test": only the artificial TEST pack, every text starting with [TEST];
+ * - "provisional": machine-generated Ewondo, visibly marked and never passed
+ *   off as human-validated;
  * - "demo": only a pack validated by two distinct named people on a past date.
  *
  * No network, no eval, no storage. The pack is a plain object.
@@ -70,6 +72,31 @@ function checkMeta(pack, mode, reasons) {
     return;
   }
 
+  if (mode === "provisional") {
+    if (meta.status !== "provisional" || meta.languageCode !== "ewo") {
+      reasons.push({
+        code: "INVALID_PROVISIONAL_PACK",
+        detail: "Le mode provisoire exige un pack ewondo marqué provisional."
+      });
+    }
+    if (meta.humanValidated !== false) {
+      reasons.push({
+        code: "PROVISIONAL_STATUS_AMBIGUOUS",
+        detail: "Le pack provisoire doit déclarer humanValidated: false."
+      });
+    }
+    if (typeof meta.generatedBy !== "string" || !meta.generatedBy.trim()) {
+      reasons.push({
+        code: "GENERATOR_MISSING",
+        detail: "La source de génération automatique doit être déclarée."
+      });
+    }
+    if (String(meta.languageName ?? "").includes(TEST_MARKER)) {
+      reasons.push({ code: "TEST_CONTENT_IN_PROVISIONAL", detail: "Le pack TEST ne peut pas servir de pack provisoire." });
+    }
+    return;
+  }
+
   if (meta.status !== "validated") {
     reasons.push({ code: "PACK_NOT_VALIDATED", detail: `Statut du pack : ${String(meta.status)} (validated requis).` });
   }
@@ -102,7 +129,7 @@ function checkTemplate(pack, requirement, mode, reasons) {
   const fail = (code, detail) => reasons.push({ code, id: requirement.id, detail });
   if (!template || typeof template !== "object") return fail("TEMPLATE_MISSING", "Traduction absente.");
 
-  const expectedStatus = mode === "test" ? "test" : "validated";
+  const expectedStatus = mode === "test" ? "test" : mode === "provisional" ? "provisional" : "validated";
   if (template.status !== expectedStatus) {
     return fail("TEMPLATE_NOT_ALLOWED", `Statut ${String(template.status)} (${expectedStatus} requis).`);
   }
@@ -112,7 +139,7 @@ function checkTemplate(pack, requirement, mode, reasons) {
   if (mode === "test" && !template.text.startsWith(TEST_MARKER)) {
     fail("TEST_MARKER_MISSING", "Chaque texte TEST doit commencer par [TEST].");
   }
-  if (mode === "demo" && template.text.includes(TEST_MARKER)) {
+  if (mode !== "test" && template.text.includes(TEST_MARKER)) {
     fail("TEST_CONTENT_IN_DEMO", "[TEST] apparaît dans une traduction.");
   }
 
@@ -141,11 +168,13 @@ function checkTemplate(pack, requirement, mode, reasons) {
 /**
  * Check a whole pack. Never throws for content problems: returns every reason.
  * @param {object} pack
- * @param {{mode?: "demo"|"test"}} [options]
+ * @param {{mode?: "demo"|"provisional"|"test"}} [options]
  * @returns {{ok: boolean, mode: string, reasons: Array<{code: string, id?: string, detail: string}>}}
  */
 export function validateLanguagePack(pack, { mode = "demo" } = {}) {
-  if (mode !== "demo" && mode !== "test") throw new TypeError(`Unsupported mode: ${mode}`);
+  if (mode !== "demo" && mode !== "provisional" && mode !== "test") {
+    throw new TypeError(`Unsupported mode: ${mode}`);
+  }
   const reasons = [];
   if (!pack || typeof pack !== "object") {
     reasons.push({ code: "INVALID_PACK", detail: "Aucun pack fourni." });
