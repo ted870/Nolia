@@ -92,7 +92,7 @@ que la page hôte peut importer ces modules.
 À ce stade, l'extension observe seulement la page. Elle ne traduit et ne
 modifie encore aucun élément.
 
-### Inventaire Safinum (v0.3.1)
+### Inventaire Safinum (v0.4.0)
 
 Le parcours réel a été inventorié sur les écrans Solde, Frais, Bénéficiaire,
 Récapitulatif, Confirmation et sur l'erreur `AMOUNT_002`. Chaque texte connu
@@ -114,7 +114,21 @@ catalogue est insensible à la casse, mais pas au contenu.
 Le script de contenu expose uniquement des compteurs et les identifiants de
 messages reconnus dans `globalThis.__noliaStatus`. Aucun texte financier ou
 personnel n'est journalisé, stocké ou transmis. Le classificateur ne modifie
-pas encore le DOM.
+pas le DOM par défaut.
+
+### Affichage de diagnostic `[TEST]`
+
+La version 0.4.0 fournit un adaptateur d'affichage désactivé par défaut. Dans
+le contexte de console Nolia, `globalThis.__noliaTestMode.enable()` préfixe
+uniquement les messages reconnus avec `[TEST]`. Les textes protégés, inconnus,
+les champs de formulaire, attributs et événements ne sont jamais modifiés.
+
+`globalThis.__noliaTestMode.disable()` restaure le texte français lorsque le
+site ne l'a pas modifié entre-temps. Une modification plus récente du site a
+toujours priorité et n'est jamais écrasée par la restauration.
+
+Ce mode prouve le branchement au DOM ; il ne constitue pas une traduction et
+son marqueur visible empêche de le confondre avec une langue validée.
 
 ## Exécuter les tests
 
@@ -136,5 +150,5 @@ npm test
 ## Prochaines étapes
 
 1. association des messages financiers aux contrats de sens ;
-2. stratégie d'affichage sans altération de l'opération ;
-3. intégration d'une langue après validation humaine.
+2. intégration d'une langue après validation humaine ;
+3. tests linguistiques indépendants et démonstration finale.
