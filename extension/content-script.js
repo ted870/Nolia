@@ -30,8 +30,10 @@
         globalThis.__noliaStatus = snapshot;
         panel?.render(snapshot);
       },
-      onDisplayError(error) {
-        console.warn("Nolia a refusé un affichage non sûr :", error?.code ?? error?.name ?? "erreur");
+      onDisplayError() {
+        // Fixed code only: the error and its message are never logged.
+        // The count is in __noliaStatus.displayErrorCount.
+        console.warn("NOLIA_DISPLAY_REFUSED");
       }
     });
 
@@ -52,9 +54,10 @@
         return controller.status.mode === "test";
       }
     });
-  } catch (error) {
+  } catch {
     status.state = "error";
     status.errorCode = "NOLIA_START_FAILED";
-    console.error("Nolia n'a pas pu démarrer.", error?.message ?? error);
+    // Fixed code only: the Error object and its message are never logged.
+    console.error("NOLIA_START_FAILED");
   }
 })();

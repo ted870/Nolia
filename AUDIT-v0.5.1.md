@@ -1,4 +1,60 @@
-# Nolia 0.5.1 — audit de livraison
+# Nolia 0.5.1 / 0.5.2 — audit de livraison
+
+## 0. Correctif v0.5.2 (audit indépendant du 11 novembre 2026)
+
+Un audit indépendant de l'archive v0.5.1 a relevé deux contradictions entre le
+code et cet audit. **Les deux observations étaient exactes.**
+
+| Constat sur v0.5.1 | Correction v0.5.2 |
+| --- | --- |
+| `core/nolia-controller.js` plaçait la classification complète dans la Map `known` (deux appels `known.set`). Pour une intention ou un repli, elle contient `contract.values`, avec les montants, références et téléphones en clair (`raw`). Pour un message dynamique, elle contient `slots`, avec le nom ou le numéro de compte. Rien n'était transmis ni persisté, mais les commentaires affirmant « identifiants seulement » étaient faux. | La classification complète sert uniquement à l'affichage. `known` reçoit `minimalClassification(…)` : `kind`, `messageId`, `intentId` et `reason` seulement. |
+| `extension/content-script.js` journalisait `error?.message ?? error` au démarrage, ce qui contredisait « messages fixes seulement ». | Journalise `NOLIA_START_FAILED` seul ; l'objet Error n'est plus capturé. |
+| Constaté en corrigeant : le même fichier journalisait `error?.code ?? error?.name` sur un affichage refusé. C'est une valeur dynamique, même si elle ne vient pas de la page. | Journalise `NOLIA_DISPLAY_REFUSED` seul. Le nombre de refus reste dans `__noliaStatus.displayErrorCount`. |
+
+Ce qui reste **en mémoire, par nécessité**. Ces données ne sont ni persistées,
+ni journalisées, ni transmises, ni exposées dans `__noliaStatus`. Les phrases
+de la v0.5.1 qui laissaient croire le contraire sont corrigées ci-dessous.
+
+- `core/dom-text-adapter.js` garde le texte d'origine de chaque nœud modifié par
+  Nolia jusqu'à « Restaurer le français ». C'est indispensable pour restaurer
+  le texte exactement.
+- `core/dom-observer.js` garde, dans une WeakMap, le dernier texte vu par nœud.
+  Il ne signale ainsi que les changements, et l'entrée disparaît avec le nœud.
+
+Nouveaux tests (`tests/privacy-v052.test.js`, 5 tests) :
+- `minimalClassification` ne garde que les quatre clés autorisées ;
+- **à l'exécution**, un espion sur `Map.prototype.set` vérifie que rien de ce qui
+  est enregistré pour un nœud texte dans `known` ne contient de contrat, de
+  slot, de montant, de nom ou de référence, sur les deux chemins
+  (observation et activation) ;
+- chaque `known.set` passe par `minimalClassification` ;
+- chaque appel `console.*` de `core/` et `extension/` n'a qu'une chaîne
+  littérale en code fixe ;
+- un échec de démarrage, provoqué avec un message qui contient du texte de
+  page, journalise exactement `NOLIA_START_FAILED` et rien d'autre.
+
+Contre-épreuve : ces 5 tests ont été exécutés sur le code v0.5.1, et **les
+5 échouent**. Ils réussissent tous sur le code v0.5.2.
+
+Un test v0.5.1 modifié : `tests/manifest-v051.test.js` vérifiait la version
+exacte `0.5.1`. Il accepte désormais `0.5.1` ou `0.5.2`, et contrôle toujours
+que `package.json` porte la même version que le manifeste.
+
+Résultats v0.5.2 :
+- `npm test` : **252 réussis, 0 échec**, 0 annulé, 0 ignoré ;
+- les 157 tests v0.5.0, inchangés : 157 réussis ;
+- `npm run coverage:intents` : 53 phrases, 0 faux positif ;
+- Chrome sur page simulée : **30 sur 30**, dont un nouveau contrôle (aucun
+  message console de Nolia hors codes fixes). **TEST CHROME SUR LE VRAI
+  SAFINUM TOUJOURS NON EFFECTUÉ.**
+
+Aucun changement d'architecture, de catalogue, d'interface ou d'intentions.
+
+---
+
+Les sections 1 à 7 ci-dessous décrivent la livraison v0.5.1. Les phrases
+corrigées en v0.5.2 sont signalées.
+
 
 État au 11 novembre 2026. Ce document distingue ce qui a été **vérifié** de ce
 qui **ne l'a pas été**.
@@ -118,7 +174,7 @@ l'archive finale :
 | `fetch`, `XMLHttpRequest`, `WebSocket`, `sendBeacon`, `chrome.storage`, `localStorage`, `indexedDB` dans `core/` | Aucun (vérifié par test). |
 | Import d'un module distant ou d'un paquet npm dans `core/` | Aucun (vérifié par test). |
 | Manifeste | Aucune permission, aucun `host_permissions`, aucun `background`. Le script de contenu ne tourne que sur `hackathon-test`. |
-| Journaux | Messages fixes seulement : un code d'erreur, jamais de texte de page (vérifié par test). |
-| `__noliaStatus` | Compteurs et identifiants seulement (vérifié par test et dans Chrome). |
+| Journaux | **Corrigé en v0.5.2** : en v0.5.1, le démarrage journalisait `error.message`, et le test ne le détectait pas. Depuis la v0.5.2, seuls des codes fixes sont journalisés (vérifié par test et dans Chrome). |
+| `__noliaStatus` | Compteurs et identifiants seulement (vérifié par test et dans Chrome). **Corrigé en v0.5.2** : la Map interne `known` contenait en v0.5.1 les classifications complètes (valeurs et slots) ; elle ne contient plus que des types, des identifiants et des codes de motif. |
 | Écritures dans la page | `nodeValue` de nœuds texte, réversible. Aucun attribut, champ ou événement de la page n'est modifié. Le panneau ajoute un seul élément hôte, ignoré par l'analyse. |
 | Requêtes réseau dans Chrome | Aucune hors de la page (vérifié). |

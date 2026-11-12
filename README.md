@@ -1,4 +1,4 @@
-# Nolia 0.5.1
+# Nolia 0.5.2
 
 Nolia est une extension Chrome locale qui aide à comprendre l'interface de
 l'environnement de test Safinum (https://safinum.cm/hackathon-test). La langue
@@ -14,12 +14,12 @@ montants, bénéficiaires, références, frais ou événements du site.
 
 ### 1. Décompresser l'archive
 
-Clic droit sur `Nolia_Extension_Chrome_v0.5.1.zip`, puis **Extraire tout…**, puis
+Clic droit sur `Nolia_Extension_Chrome_v0.5.2.zip`, puis **Extraire tout…**, puis
 **Extraire**. Chrome ne peut pas lire une archive .zip non extraite.
 
 ### 2. Quel dossier sélectionner
 
-L'extraction crée un dossier `Nolia_Extension_Chrome_v0.5.1`. **C'est ce dossier
+L'extraction crée un dossier `Nolia_Extension_Chrome_v0.5.2`. **C'est ce dossier
 qu'il faut sélectionner** : il contient directement `manifest.json`, ainsi que
 les dossiers `core`, `extension` et `locales`. Il n'y a pas de dossier intérieur.
 
@@ -40,7 +40,7 @@ sélectionné un dossier qui ne contient pas directement `manifest.json`.
 ### 5. Ouvrir Safinum
 
 Ouvrez ou actualisez https://safinum.cm/hackathon-test. Un petit panneau
-**Nolia 0.5.1** apparaît en bas à gauche, en mode **Observation** : il compte
+**Nolia 0.5.2** apparaît en bas à gauche, en mode **Observation** : il compte
 les messages reconnus, les textes protégés et les messages inconnus, sans rien
 changer. Le bouton **Réduire** le transforme en pastille « Nolia » ; cliquez
 sur la pastille pour le rouvrir. Sur un écran étroit, il démarre réduit.
@@ -125,7 +125,9 @@ texte visible → catalogue exact (63) → valeur protégée → intention (16)
 ## Principes de sécurité
 
 - Traitement local ; aucun réseau, aucun modèle d'IA, aucune API.
-- Aucun stockage ; aucun journal de texte de page.
+- Aucun stockage persistant ; la console ne reçoit que des codes fixes
+  (`NOLIA_START_FAILED`, `NOLIA_DISPLAY_REFUSED`), jamais de texte de page ni
+  de message d'erreur.
 - Écriture uniquement par `nodeValue` de nœuds texte ; pas d'`innerHTML`,
   d'`eval` ni de `new Function`.
 - Avant tout affichage, les valeurs (montants, devise, frais, bénéficiaire,
@@ -147,4 +149,4 @@ npm run pack:ewo -- ewo.json # installe un pack éwondo validé (refuse sinon)
 ```
 
 Vérification Chrome sur page simulée : `tools/chrome-smoke/README.md`.
-Détails : `CHANGELOG-v0.5.1.md`, `AUDIT-v0.5.1.md`, `docs/NOTES-v0.5.0.md`.
+Détails : `CHANGELOG-v0.5.2.md`, `CHANGELOG-v0.5.1.md`, `AUDIT-v0.5.1.md` (mis à jour en 0.5.2), `docs/NOTES-v0.5.0.md`.

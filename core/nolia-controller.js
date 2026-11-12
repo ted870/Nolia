@@ -6,8 +6,13 @@
  * replaces catalog messages or appends explanations through the DOM adapter.
  * "Restaurer le français" puts back every original text node exactly.
  *
- * Privacy: the status holds only counters and identifiers. No page text,
- * amount, name, account or reference is stored, logged or sent.
+ * Privacy: the status and the `known` map hold only kinds, ids and reason
+ * codes (see minimalClassification). The full classification, with its
+ * contract values and slots, is used for the display and then dropped. Nothing
+ * is persisted, logged or sent. Two in-memory exceptions are required to work
+ * and are never exposed: the DOM adapter keeps the original text of each node
+ * Nolia changed until "Restaurer le français", and the DOM observer keeps the
+ * last text seen per node (WeakMap) to report only changes.
  */
 
 import { createDomObserver } from "./dom-observer.js";
@@ -20,6 +25,18 @@ import { summarizeRefusal, validateLanguagePack } from "./language-pack.js";
 export const MODES = Object.freeze({ OBSERVATION: "observation", TEST: "test", EWONDO: "ewondo" });
 
 const DISPLAYABLE = new Set(["message", "intent", "fallback"]);
+
+/**
+ * Keep only what the counters need. Contract values (amounts, phones,
+ * references...) and slots (names, account numbers) are never retained.
+ */
+export function minimalClassification(classification) {
+  const minimal = { kind: classification.kind };
+  if (typeof classification.messageId === "string") minimal.messageId = classification.messageId;
+  if (typeof classification.intentId === "string") minimal.intentId = classification.intentId;
+  if (typeof classification.reason === "string") minimal.reason = classification.reason;
+  return Object.freeze(minimal);
+}
 
 function bucketOf(classification) {
   switch (classification.kind) {
@@ -79,8 +96,9 @@ export function createNoliaController({
     errorCode: null
   };
 
-  // node -> classification, for nodes currently known. Only counted while the
-  // node is still attached; the classification holds ids, never text.
+  // node -> minimal classification (kind, ids, reason), for nodes currently
+  // known. Only counted while the node is still attached. Never contract
+  // values, slots, amounts, names, accounts or references.
   const known = new Map();
   let adapter = null;
 
@@ -141,7 +159,7 @@ export function createNoliaController({
     for (const record of records) {
       if (adapter && adapter.isManagedRecord(record)) continue; // Nolia's own text
       const classification = analyzeTextRecord(record);
-      known.set(record.node, classification);
+      known.set(record.node, minimalClassification(classification));
       display(record, classification);
     }
     recount();
@@ -176,7 +194,7 @@ export function createNoliaController({
     status.mode = mode;
     for (const record of extractVisibleText(root)) {
       const classification = analyzeTextRecord(record);
-      known.set(record.node, classification);
+      known.set(record.node, minimalClassification(classification));
       display(record, classification);
     }
     observer.flush();

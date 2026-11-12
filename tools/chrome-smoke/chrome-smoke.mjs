@@ -5,7 +5,9 @@ import https from "node:https";
 import { readFileSync, writeFileSync } from "node:fs";
 import puppeteer from "puppeteer-core";
 
+
 const [extDir, outDir] = process.argv.slice(2);
+const VERSION = JSON.parse(readFileSync(`${extDir}/manifest.json`, "utf8")).version;
 const html = readFileSync(new URL("./mock-safinum.html", import.meta.url));
 const requests = [];
 const server = https
@@ -44,8 +46,10 @@ try {
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 900 });
   const consoleErrors = [];
+  const consoleAll = [];
   const external = [];
   page.on("console", (message) => {
+    consoleAll.push(message.text());
     if (message.type() === "error") consoleErrors.push(message.text());
   });
   page.on("request", (request) => {
@@ -122,7 +126,7 @@ try {
     return host !== null && host.shadowRoot === null && host.textContent === "";
   }));
   const initialPanel = await panelText();
-  check("panneau affiche nom et version", initialPanel.includes("Nolia 0.5.1"), initialPanel.slice(0, 40));
+  check("panneau affiche nom et version", initialPanel.includes(`Nolia ${VERSION}`), initialPanel.slice(0, 40));
   check("panneau en mode Observation", initialPanel.includes("Observation"));
   const counts = initialPanel.match(/Messages reconnus(\d+)Textes protégés(\d+)Messages inconnus(\d+)/u);
   check("compteurs affichés", Boolean(counts), counts ? `reconnus ${counts[1]}, protégés ${counts[2]}, inconnus ${counts[3]}` : initialPanel);
@@ -179,6 +183,7 @@ try {
 
   check("aucune requête réseau hors page Safinum simulée", external.length === 0, external.join(", "));
   check("aucune erreur console", consoleErrors.length === 0, consoleErrors.join(" | "));
+  check("aucun message console de Nolia hors codes fixes", consoleAll.every((text) => !/Nolia|NOLIA/u.test(text) || /^NOLIA_[A-Z_]+$/u.test(text)), consoleAll.join(" | "));
 } finally {
   await browser.close();
   server.close();
