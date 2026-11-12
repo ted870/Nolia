@@ -147,6 +147,8 @@ try {
   check("montants et références inchangés", ["125 000 FCFA", "25 500 FCFA", "SAF-2026-13J0O3", "+237 6 99 12 34 56", "CM 001 2345 6789 01"].every((value) => testText.includes(value)));
   check("formulation reconnue : français conservé + valeurs", testText.includes("Paul Ndzana vous a envoyé 15 000 FCFA. — [TEST] INTENTION TRANSFER RECEIVED (15 000 FCFA)"));
   check("message inconnu : français conservé + avertissement", testText.includes("Le bénéficiaire est temporairement bloqué pour vérification. — [TEST] ATTENTION, MESSAGE NON RECONNU"));
+  check("v0.5.3 : trois textes observés affichés en [TEST]", ["[TEST] Alerte de sécurité", "[TEST] Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer.", "[TEST] Vous devez confirmer les informations avant de valider le transfert."].every((value) => testText.includes(value)));
+  check("v0.5.3 : SECURITY_001 et CONFIRM_001 intacts", ["SECURITY_001", "CONFIRM_001"].every((code) => testText.includes(code) && !testText.includes(`[TEST] ${code}`)));
   check("« Effectuer un transfert » non lu comme transfert effectué", !testText.includes("INTENTION TRANSFER SENT SUCCESS"));
   check("champ de saisie intact", (await page.evaluate(() => document.getElementById("amount").value)) === inputBefore);
   check("panneau en mode TEST", (await panelText()).includes("Mode TEST"));

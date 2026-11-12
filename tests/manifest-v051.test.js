@@ -8,7 +8,7 @@ const packageJson = JSON.parse(await readFile(new URL("package.json", root), "ut
 
 test("the manifest is a valid Manifest V3 for version 0.5.1 or later", () => {
   assert.equal(manifest.manifest_version, 3);
-  assert.ok(["0.5.1", "0.5.2"].includes(manifest.version), manifest.version);
+  assert.ok(["0.5.1", "0.5.2", "0.5.3"].includes(manifest.version), manifest.version);
   assert.equal(packageJson.version, manifest.version);
   assert.match(manifest.version, /^\d+(\.\d+){0,3}$/u);
   assert.equal(typeof manifest.name, "string");

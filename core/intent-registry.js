@@ -101,7 +101,7 @@ const INTENTS = [
     domain: "security",
     severity: "warning",
     direction: "neutral",
-    catalogIds: ["security.verifyBeneficiary", "beneficiary.intro"],
+    catalogIds: ["security.verifyBeneficiary", "beneficiary.intro", "security.verifyBeneficiaryBeforeContinue"],
     requiredCues: [
       ["\\bverifiez", "\\bverifier\\b", "\\bcontrolez", "\\bcontroler\\b", "assurez-vous", "\\brelisez"],
       ["\\bbeneficiaire", "\\bdestinataire", "\\bnumero", "nom du"]

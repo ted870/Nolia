@@ -4,11 +4,11 @@ import { readFile } from "node:fs/promises";
 
 import { HEADER, buildIntentRows, buildMessageRows, toCsv } from "../scripts/build-translation-sheet.js";
 
-test("the ewondo sheet has exactly 63 rows with the 13 requested columns", () => {
+test("the ewondo sheet has exactly 66 rows with the 13 requested columns", () => {
   const rows = buildMessageRows();
-  assert.equal(rows.length, 63);
+  assert.equal(rows.length, 66); // 63 until v0.5.2
   assert.equal(HEADER.length, 13);
-  assert.equal(new Set(rows.map((row) => row[0])).size, 63);
+  assert.equal(new Set(rows.map((row) => row[0])).size, 66);
   for (const row of rows) assert.equal(row.length, 13);
 });
 

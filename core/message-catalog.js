@@ -62,7 +62,12 @@ const ENTRIES = [
   ["error.insufficientBalance", "Solde insuffisant pour effectuer ce transfert.", "error", "critical"],
   ["error.close", "Fermer", "action"],
   ["common.back", "Retour", "action"],
-  ["common.continue", "Continuer", "action"]
+  ["common.continue", "Continuer", "action"],
+  // v0.5.3: observed on the real Safinum journey (11 Nov 2026). The codes
+  // SECURITY_001 and CONFIRM_001 shown with them stay protected values.
+  ["security.alertTitle", "Alerte de sécurité", "security", "warning"],
+  ["security.verifyBeneficiaryBeforeContinue", "Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer.", "security", "warning"],
+  ["confirmation.requiredBeforeSubmit", "Vous devez confirmer les informations avant de valider le transfert.", "confirmation", "warning"]
 ];
 
 function makeEntry([id, source, role, severity = "normal"]) {

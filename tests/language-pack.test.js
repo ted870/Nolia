@@ -26,14 +26,14 @@ const demo = (pack) => validateLanguagePack(pack, { mode: "demo" });
 
 // ------------------------------------------------------------------ schema
 
-test("the pack schema contains the 63 catalog ids, the 16 intents and the 2 fallbacks", () => {
+test("the pack schema contains the 66 catalog ids, the 16 intents and the 2 fallbacks", () => {
   const catalogIds = [...SAFINUM_MESSAGE_CATALOG, ...SAFINUM_DYNAMIC_MESSAGE_CATALOG].map((entry) => entry.id);
-  assert.equal(CATALOG_MESSAGE_IDS.length, 63);
+  assert.equal(CATALOG_MESSAGE_IDS.length, 66); // 63 until v0.5.2
   assert.deepEqual([...CATALOG_MESSAGE_IDS].sort(), [...catalogIds].sort());
   assert.equal(PACK_REQUIREMENTS.filter((item) => item.kind === "intent").length, INTENT_REGISTRY.length);
   assert.equal(INTENT_REGISTRY.length, 16);
   assert.equal(PACK_REQUIREMENTS.filter((item) => item.kind === "fallback").length, 2);
-  assert.equal(PACK_REQUIREMENTS.length, 81);
+  assert.equal(PACK_REQUIREMENTS.length, 84); // 81 until v0.5.2
 });
 
 test("the dynamic messages keep their protected slots in the schema", () => {

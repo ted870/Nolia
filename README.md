@@ -1,4 +1,4 @@
-# Nolia 0.5.2
+# Nolia 0.5.3
 
 Nolia est une extension Chrome locale qui aide à comprendre l'interface de
 l'environnement de test Safinum (https://safinum.cm/hackathon-test). La langue
@@ -14,12 +14,12 @@ montants, bénéficiaires, références, frais ou événements du site.
 
 ### 1. Décompresser l'archive
 
-Clic droit sur `Nolia_Extension_Chrome_v0.5.2.zip`, puis **Extraire tout…**, puis
+Clic droit sur `Nolia_Extension_Chrome_v0.5.3.zip`, puis **Extraire tout…**, puis
 **Extraire**. Chrome ne peut pas lire une archive .zip non extraite.
 
 ### 2. Quel dossier sélectionner
 
-L'extraction crée un dossier `Nolia_Extension_Chrome_v0.5.2`. **C'est ce dossier
+L'extraction crée un dossier `Nolia_Extension_Chrome_v0.5.3`. **C'est ce dossier
 qu'il faut sélectionner** : il contient directement `manifest.json`, ainsi que
 les dossiers `core`, `extension` et `locales`. Il n'y a pas de dossier intérieur.
 
@@ -40,7 +40,7 @@ sélectionné un dossier qui ne contient pas directement `manifest.json`.
 ### 5. Ouvrir Safinum
 
 Ouvrez ou actualisez https://safinum.cm/hackathon-test. Un petit panneau
-**Nolia 0.5.2** apparaît en bas à gauche, en mode **Observation** : il compte
+**Nolia 0.5.3** apparaît en bas à gauche, en mode **Observation** : il compte
 les messages reconnus, les textes protégés et les messages inconnus, sans rien
 changer. Le bouton **Réduire** le transforme en pastille « Nolia » ; cliquez
 sur la pastille pour le rouvrir. Sur un écran étroit, il démarre réduit.
@@ -49,7 +49,7 @@ sur la pastille pour le rouvrir. Sur un écran étroit, il démarre réduit.
 
 Cliquez sur **Activer le mode TEST** dans le panneau. Ce que vous verrez :
 
-- les 63 messages connus de Safinum s'affichent précédés de `[TEST]` ;
+- les 66 messages connus de Safinum s'affichent précédés de `[TEST]` ;
 - une phrase reconnue par son sens garde le français, suivi de
   `— [TEST] INTENTION …` et des valeurs exactes entre parenthèses ;
 - un message inconnu garde le français, suivi de
@@ -71,7 +71,7 @@ Ce dernier ne contient que des compteurs et des identifiants.
 
 ### 8. Ajouter plus tard le pack éwondo validé
 
-1. Copiez `locales/template.json` (le modèle éwondo, 81 entrées vides) vers
+1. Copiez `locales/template.json` (le modèle éwondo, 84 entrées vides) vers
    `ewo.json`.
 2. Les locuteurs remplissent chaque `text` en conservant les emplacements
    protégés (`{name}`, `{account}`, …) à la place qui convient en éwondo, et
@@ -87,7 +87,7 @@ Ce dernier ne contient que des compteurs et des identifiants.
    l'éwondo** devient utilisable.
 
 La fiche de traduction à remplir par les locuteurs est
-`docs/fiche-traduction-ewondo.csv` (63 messages), complétée par
+`docs/fiche-traduction-ewondo.csv` (66 messages), complétée par
 `docs/fiche-intentions-ewondo.csv` (16 intentions et 2 messages de repli).
 
 ### 9. Limites connues
@@ -107,7 +107,7 @@ La fiche de traduction à remplir par les locuteurs est
 ## Fonctionnement
 
 ```
-texte visible → catalogue exact (63) → valeur protégée → intention (16)
+texte visible → catalogue exact (66) → valeur protégée → intention (16)
              → mode dégradé (phrase non reconnue) → fragment laissé intact
 ```
 
@@ -116,10 +116,10 @@ texte visible → catalogue exact (63) → valeur protégée → intention (16)
 | `extension/content-script.js` | Coque mince : charge le contrôleur, les packs et le panneau. |
 | `core/nolia-controller.js` | Observation, modes Observation / TEST / éwondo, restauration. |
 | `core/nolia-panel.js` | Panneau en Shadow DOM fermé, marqué `data-nolia-ignore`. |
-| `core/language-pack.js` | Schéma (63 + 16 + 2), validation TEST / démonstration, rendu des messages. |
+| `core/language-pack.js` | Schéma (66 + 16 + 2), validation TEST / démonstration, rendu des messages. |
 | `core/locale-test-pack.js`, `core/locale-ewo-pack.js` | Packs chargés par l'extension (générés). |
 | `core/text-analyzer.js`, `core/intent-*.js`, `core/value-extractor.js` | Analyse, intentions, valeurs protégées, contrôle d'intégrité. |
-| `core/message-catalog.js`, `core/message-classifier.js` | Catalogue des 63 messages (inchangé depuis 0.4.0). |
+| `core/message-catalog.js`, `core/message-classifier.js` | Catalogue des 66 messages (63 depuis 0.4.0, 3 ajoutés en 0.5.3). |
 | `core/dom-*.js` | Lecture du DOM, observation, écriture `textContent` réversible. |
 
 ## Principes de sécurité
@@ -149,4 +149,4 @@ npm run pack:ewo -- ewo.json # installe un pack éwondo validé (refuse sinon)
 ```
 
 Vérification Chrome sur page simulée : `tools/chrome-smoke/README.md`.
-Détails : `CHANGELOG-v0.5.2.md`, `CHANGELOG-v0.5.1.md`, `AUDIT-v0.5.1.md` (mis à jour en 0.5.2), `docs/NOTES-v0.5.0.md`.
+Détails : `CHANGELOG-v0.5.3.md`, `AUDIT-v0.5.3.md`, `CHANGELOG-v0.5.2.md`, `CHANGELOG-v0.5.1.md`, `AUDIT-v0.5.1.md` (mis à jour en 0.5.2), `docs/NOTES-v0.5.0.md`.

@@ -31,7 +31,8 @@ test("the registry is distinct from the exact-text catalog", () => {
     assert.equal(catalogIds.has(intent.id), false, `intent id collides with catalog: ${intent.id}`);
   }
   // The catalog keeps its own size: intents add meanings, not exact texts.
-  assert.equal(SAFINUM_MESSAGE_CATALOG.length + SAFINUM_DYNAMIC_MESSAGE_CATALOG.length, 63);
+  // 63 in v0.5.0-v0.5.2; 66 since v0.5.3 (three texts observed on the real journey).
+  assert.equal(SAFINUM_MESSAGE_CATALOG.length + SAFINUM_DYNAMIC_MESSAGE_CATALOG.length, 66);
 });
 
 test("each intent has several French formulations", () => {

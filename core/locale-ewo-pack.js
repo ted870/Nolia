@@ -537,6 +537,24 @@ export const EWO_PACK = Object.freeze({
       ],
       "text": "",
       "source": "Numéro de compte : {account}"
+    },
+    "security.alertTitle": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Alerte de sécurité"
+    },
+    "security.verifyBeneficiaryBeforeContinue": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer."
+    },
+    "confirmation.requiredBeforeSubmit": {
+      "status": "draft",
+      "requiredSlots": [],
+      "text": "",
+      "source": "Vous devez confirmer les informations avant de valider le transfert."
     }
   }
 });

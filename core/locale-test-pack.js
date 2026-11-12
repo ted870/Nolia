@@ -537,6 +537,24 @@ export const TEST_PACK = Object.freeze({
       ],
       "text": "[TEST] Numéro de compte : {account}",
       "source": "Numéro de compte : {account}"
+    },
+    "security.alertTitle": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Alerte de sécurité",
+      "source": "Alerte de sécurité"
+    },
+    "security.verifyBeneficiaryBeforeContinue": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer.",
+      "source": "Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer."
+    },
+    "confirmation.requiredBeforeSubmit": {
+      "status": "test",
+      "requiredSlots": [],
+      "text": "[TEST] Vous devez confirmer les informations avant de valider le transfert.",
+      "source": "Vous devez confirmer les informations avant de valider le transfert."
     }
   }
 });
