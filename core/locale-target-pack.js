@@ -1,819 +1,551 @@
 /**
  * Éwondo pack shipped with the extension. Generated file: do not edit by hand.
- * Installed from ewo-provisional.json after demo-mode validation.
- * PROVISIONAL machine translation by Flagship/Lingo cameroon-int8 on 2026-11-11: NOT validated by humans; shown with [AUTO].
+ * Installed from ewondo.json after demo-mode validation.
+ * Validated by 2 people on 2026-11-13.
  */
 export const TARGET_PACK = Object.freeze({
   "meta": {
     "languageCode": "ewo",
-    "languageName": "Ewondo — traduction automatique provisoire",
-    "version": 4,
-    "status": "provisional",
-    "humanValidated": false,
-    "validatedBy": [],
-    "validatedAt": null,
-    "generatedAt": "2026-11-11",
-    "generatedBy": "Flagship/Lingo cameroon-int8",
-    "modelPair": "francais-ewondo + ewondo-francais",
-    "modelLicense": "CC BY-NC 4.0 (licence prudente du dépôt parent)"
+    "languageName": "Éwondo",
+    "version": 1,
+    "status": "validated",
+    "validatedBy": [
+      "Mballa",
+      "Menounga"
+    ],
+    "validatedAt": "2026-11-13"
   },
   "directionLabels": {
-    "send": "Mòni mëngakui asu daan",
-    "receive": "Mòni mënganyian asu daan",
-    "neutral": "Ndò mbëmbë foe osu"
+    "send": "",
+    "receive": "",
+    "neutral": ""
   },
   "templates": {
-    "transfer.summary": {
-      "status": "provisional",
-      "text": "{direction}: {amount} {currency}. Dzoe nyè: {beneficiary}. E mam mësòman: {fees}.",
-      "requiredSlots": [
-        "direction",
-        "amount",
-        "currency",
-        "beneficiary",
-        "fees"
-      ],
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
-    },
     "transfer.insufficient_balance": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "E mòni esëki soe asu die.",
-      "source": "Vous ne disposez pas d'assez de fonds.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Moni mi ne a elaŋ mi ne tyotyo asu nloman nyi.",
+      "source": "Vous ne disposez pas d'assez de fonds."
     },
     "transfer.sent_success": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "send",
-      "text": "Ndò mvulna woe ongabë eyòṅ dzaban.",
-      "source": "Votre virement a bien été effectué.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nloman moni e nga syebe.",
+      "source": "Votre virement a bien été effectué."
     },
     "transfer.received": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "receive",
-      "text": "Mingabi mòni.",
-      "source": "Paul Ndzana vous a envoyé 15 000 FCFA.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Wa nga nong moni.",
+      "source": "Paul Ndzana vous a envoyé 15 000 FCFA."
     },
     "transfer.failed": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "Ndò mvulna angabë fufulu.",
-      "source": "Le virement a échoué.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nloman moni e nji syebe.",
+      "source": "Le virement a échoué."
     },
     "beneficiary.verify_before_confirm": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "Vòṅan efaè nyi, osusua yë na alom mòni.",
-      "source": "Contrôlez le numéro du destinataire avant l'envoi.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Fombo numero ya mot a yi nong moni osu ya álōm moni.",
+      "source": "Contrôlez le numéro du destinataire avant l'envoi."
     },
     "beneficiary.new_unknown": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "Efaè nyi enë mkpamaṅ.",
-      "source": "Vous n'avez encore jamais utilisé ce destinataire.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Mot a yi nong moni nyi a ne mfe a elaŋ nyi.",
+      "source": "Vous n'avez encore jamais utilisé ce destinataire."
     },
     "summary.verify_before_confirm": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "Ndò hm, yë na: Biayi bi mvulna osu.",
-      "source": "Relisez les détails avant de valider l'opération.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Fombo mam məse osu ya yili ebɔé.",
+      "source": "Relisez les détails avant de valider l'opération."
     },
     "environment.test_data": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "Ndò hm fë anë ntud ai dzom ziṅ.",
-      "source": "Ceci est une simulation : les opérations sont fictives.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nyi a ne ve yeman; tranzaksion mə ne mə yeman.",
+      "source": "Ceci est une simulation : les opérations sont fictives."
     },
     "security.no_personal_data": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "Dzam da, të miakòbò ndzoe woe.",
-      "source": "Ne communiquez jamais votre code secret.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Tə wa ve mot mfe code woe ya nkukuma.",
+      "source": "Ne communiquez jamais votre code secret."
     },
     "fees.free_transfer": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "Ndò fë efaè esye te.",
-      "source": "Aucun frais ne sera appliqué à ce transfert.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nloman moni nyi a ne a zeze; wo yaan ki moni.",
+      "source": "Aucun frais ne sera appliqué à ce transfert."
     },
     "fees.amount_info": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "Asu te mam mësòman nyè.",
-      "source": "Les frais de cette opération s'élèvent à 500 FCFA.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Moni mi yeane yaan asu ebɔé nyi.",
+      "source": "Les frais de cette opération s'élèvent à 500 FCFA."
     },
     "transfer.total_debit": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "send",
-      "text": "Bayi komëzan asu daan.",
-      "source": "Somme prélevée sur votre compte : 25 500 FCFA.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Bayi vaa moni a elaŋ woe.",
+      "source": "Somme prélevée sur votre compte : 25 500 FCFA."
     },
     "balance.available_info": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "E mam mënë e nyòlò dzama.",
-      "source": "Votre solde actuel est de 125 000 FCFA.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Moni mi ligi a elaŋ woe.",
+      "source": "Votre solde actuel est de 125 000 FCFA."
     },
     "balance.after_operation": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "E nyi enë e mam mòni a mvus hala.",
-      "source": "Nouveau solde après le transfert : 99 500 FCFA.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Moni mi yi ligi a elaŋ a mvus nloman.",
+      "source": "Nouveau solde après le transfert : 99 500 FCFA."
     },
     "action.confirm_transfer": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "send",
-      "text": "E mam mëte, ndò e dzi engatsig mòni.",
-      "source": "Valider le virement",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "A yili nloman moni",
+      "source": "Valider le virement"
     },
     "error.generic": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "Mod nkòbò adzo te.",
-      "source": "Un problème technique s'est produit.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Evus ya teknik e nga kui.",
+      "source": "Un problème technique s'est produit."
     },
     "fallback.unrecognized": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "Nolia andzëki yen e dzi nyi. E mvende engakòbò esye te, akòn bibug biaban.",
-      "source": "fallback.unrecognized",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nolia a nji yem fóé nyi. Fóé ya falansi a ligi.",
+      "source": "fallback.unrecognized"
     },
     "fallback.unrecognized_warning": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "direction": "neutral",
-      "text": "Boan okala, Nolia andzëki yen e dzam di. Tòbògò na akada kui osu.",
-      "source": "fallback.unrecognized_warning",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Mbaale: Nolia a nji yem fóé nyi. Fombo mam osu ya ke osu.",
+      "source": "fallback.unrecognized_warning"
     },
     "environment.testBanner": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "A mvòm-biyëman, tègè ai e dzi engakomban.",
-      "source": "Environnement de test — données fictives, aucune transaction réelle.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Vom ya yeman — mam mə ne mə yeman; tranzaksion ya bebela e nji.",
+      "source": "Environnement de test — données fictives, aucune transaction réelle."
     },
     "environment.protocol": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Mvende ndò mbëmbë foe",
-      "source": "Protocole de test",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Mvəndə ya yeman",
+      "source": "Protocole de test"
     },
     "environment.backToHackathon": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò hm adugan abë ekakatan",
-      "source": "Retour au hackathon",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "A dugan a hackathon",
+      "source": "Retour au hackathon"
     },
     "app.bankOnline": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "E nyi e dzom ziṅ enë mbòg, asu yë na",
-      "source": "Banque en ligne",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Bank a internet",
+      "source": "Banque en ligne"
     },
     "step.balance": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Yë mvòm esye",
-      "source": "Solde",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Moni mi ligi",
+      "source": "Solde"
     },
     "common.fees": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Fufulu hm fë asu daan",
-      "source": "Frais",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Moni mi yeane yaan",
+      "source": "Frais"
     },
     "common.beneficiary": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Beneficiò na:",
-      "source": "Bénéficiaire",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Mot a yi nong moni",
+      "source": "Bénéficiaire"
     },
     "common.summary": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò hm, akëlë kui anë dzam sosoo.",
-      "source": "Récapitulatif",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nlaŋ mam məse",
+      "source": "Récapitulatif"
     },
     "step.confirmation": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Bendëgan e mam mëte",
-      "source": "Confirmation",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nyilan",
+      "source": "Confirmation"
     },
     "balance.accountHeading": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò fë mbëmbë foe, asu yë na b",
-      "source": "VOTRE COMPTE",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "ELAŊ MONI WOE",
+      "source": "VOTRE COMPTE"
     },
     "balance.intro": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò hm, yëmanan e mam mian ai ngogëlan a saaṅ.",
-      "source": "Consultez votre solde et lancez un transfert en toute sécurité.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Fombo moni mi ligi a elaŋ woe, ndò o bandi nloman moni a mbaalan.",
+      "source": "Consultez votre solde et lancez un transfert en toute sécurité."
     },
     "balance.available": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Dzam da, eyòṅ esëki bod asu yë na mvulna mbëmbë foe.",
-      "source": "SOLDE DISPONIBLE",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "MONI MI LIGI",
+      "source": "SOLDE DISPONIBLE"
     },
     "balance.currentAccount": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò mbëmbë foe",
-      "source": "Compte courant",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Elaŋ moni ya abog di",
+      "source": "Compte courant"
     },
     "balance.startTransfer": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò fë mvulna ṅnyè angatyeban a nda-Zamba.",
-      "source": "Effectuer un transfert",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Álōm moni",
+      "source": "Effectuer un transfert"
     },
     "balance.checkFees": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò fë ṅnyè ayen e mam mësë, nala waty",
-      "source": "Consulter les frais",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "A yen moni mi yeane yaan",
+      "source": "Consulter les frais"
     },
     "balance.recentTransactions": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Dzam da, asu yë na eyòṅ mimbog mbëmbë foe.",
-      "source": "TRANSACTIONS RÉCENTES",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "EBƆÉ YA MONI YA MVUS",
+      "source": "TRANSACTIONS RÉCENTES"
     },
     "transaction.merchantPayment": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Mbëmbë mvende.",
-      "source": "Paiement marchand",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nyaan moni a nkus",
+      "source": "Paiement marchand"
     },
     "transaction.salaryReceived": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "E mvòṅ ya maan bëngayi nyè, asu y",
-      "source": "Salaire reçu",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Maan ba nga nong",
+      "source": "Salaire reçu"
     },
     "transaction.transferReceived": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò mvulna mbëmbë foe asu yë na",
-      "source": "Transfert reçu",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nloman moni ba nga nong",
+      "source": "Transfert reçu"
     },
     "transaction.electricityBill": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Foe ngòn ziṅ asu yë na bod mbëmbë foe",
-      "source": "Facture électricité",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Kalara ya elektrisite",
+      "source": "Facture électricité"
     },
     "security.title": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Asu te, akëlë kòm esë",
-      "source": "Sécurité",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Mbaalan ya moni",
+      "source": "Sécurité"
     },
     "security.verifyBeneficiary": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Tòbëgan hm dzoe ai e nyi esya, osusua yakpèè soan.",
-      "source": "Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Abǒg áse, wo yeane fombo dzwé ai numero ya mot a yi nong moni osu ya yili nloman moni.",
+      "source": "Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert."
     },
     "security.secureConnection": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Secured nnëm",
-      "source": "Connexion sécurisée",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nlatan internet a ne a mbaalan",
+      "source": "Connexion sécurisée"
     },
     "security.demoWarning": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Safinum Pay — Engënòṅ mbil. Tègè ai e dzi enyiṅ ya abëlë.",
-      "source": "Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle réelle.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Safinum Pay — vom ya yeman. Tə wa til mam mə nyol mə bebela.",
+      "source": "Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle réelle."
     },
     "fees.title": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Tègè ai nda-Zamba, asu yë na mibò esye dzom ziṅ.",
-      "source": "FRAIS DE TRANSFERT",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "MONI MI YEANE YAAN ASU NLOMAN",
+      "source": "FRAIS DE TRANSFERT"
     },
     "fees.intro": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò hm, dzam bò na: Këlëg mvulna ai efaè.",
-      "source": "Choisissez le type de transfert et le montant. Les frais sont calculés automatiquement.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Ve akyae ya nloman ai abim moni. Nolia a laŋ moni mi yeane yaan.",
+      "source": "Choisissez le type de transfert et le montant. Les frais sont calculés automatiquement."
     },
     "fees.operationType": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Mod ziṅ asu yë na:",
-      "source": "TYPE D'OPÉRATION",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "AKYAE YA EBƆÉ",
+      "source": "TYPE D'OPÉRATION"
     },
     "fees.safinumAccount": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Mbëmbë foe Safinum",
-      "source": "Compte Safinum",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Elaŋ moni Safinum",
+      "source": "Compte Safinum"
     },
     "fees.mobileMoney": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
       "text": "Mobile Money",
-      "source": "Mobile Money",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "source": "Mobile Money"
     },
     "fees.otherBank": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Mbòg bëvòg mfufub, asu yë na",
-      "source": "Autre banque",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Bank mfe",
+      "source": "Autre banque"
     },
     "fees.freeInstant": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ntud, fili-nnëm esye asu daan",
-      "source": "Transfert instantané et gratuit",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nloman moni abog ate, tege yaan",
+      "source": "Transfert instantané et gratuit"
     },
     "fees.amountToSend": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Amu abog asëki dzam bò na:",
-      "source": "MONTANT À ENVOYER",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "ABIM MONI YA ÁLŌM",
+      "source": "MONTANT À ENVOYER"
     },
     "fees.free": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Bibëlë fufulu, asu yë na b",
-      "source": "Gratuit",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "A zeze",
+      "source": "Gratuit"
     },
     "fees.totalDebit": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò mbëmbë asu yë na:",
-      "source": "Total à débiter",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "MONI MƏSE BA YI VAA A ELAŊ",
+      "source": "Total à débiter"
     },
     "fees.balanceAfter": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "E mvòm esë a nsëṅ,",
-      "source": "Solde après opération",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "MONI MI YI LIGI A MVUS EBƆÉ",
+      "source": "Solde après opération"
     },
     "beneficiary.intro": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò hm, mikëlë e kalara enyiṅ. Tsogan tsig nda-bob asu die osusua yadzèè.",
-      "source": "Renseignez les informations du destinataire. Vérifiez toujours le numéro avant de valider.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Til mam ya mot a yi nong moni. Abǒg áse, fombo numero osu ya yili.",
+      "source": "Renseignez les informations du destinataire. Vérifiez toujours le numéro avant de valider."
     },
     "beneficiary.newWarning": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò efaè nyi, bandzëki dzam bò asu te. Tsogan tsig ntol osusua kui.",
-      "source": "Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant de continuer.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Mot a yi nong moni nyi a nji bo a elaŋ nyi. Fombo numero osu ya ke osu.",
+      "source": "Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant de continuer."
     },
     "beneficiary.name": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Dzoe bënefini nyè a mvus hala,",
-      "source": "NOM DU BÉNÉFICIAIRE",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "DZWÉ YA MOT A YI NONG MONI",
+      "source": "NOM DU BÉNÉFICIAIRE"
     },
     "beneficiary.phone": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò hm tëlekoan na:",
-      "source": "NUMÉRO DE TÉLÉPHONE",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "NUMERO YA TELEFON",
+      "source": "NUMÉRO DE TÉLÉPHONE"
     },
     "beneficiary.reason": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Asu te mod ziṅan akëlë kòm esye",
-      "source": "MOTIF DU TRANSFERT",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "AMU DZE WO ÁLŌM MONI",
+      "source": "MOTIF DU TRANSFERT"
     },
     "beneficiary.note": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "NOTES",
-      "source": "NOTE (OPTIONNEL)",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "FÓÉ MFE (NGE O YI)",
+      "source": "NOTE (OPTIONNEL)"
     },
     "beneficiary.checked": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò mëngayen dzoe ai e nyi esye.",
-      "source": "J'ai vérifié le nom et le numéro du bénéficiaire.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Ma nga fombo dzwé ai numero ya mot a yi nong moni.",
+      "source": "J'ai vérifié le nom et le numéro du bénéficiaire."
     },
     "summary.intro": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Biayëm e mam mëte, ndò fë badugan dzom ziṅ.",
-      "source": "Vérifiez les informations avant de confirmer le transfert.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Fombo mam məse osu ya yili nloman moni.",
+      "source": "Vérifiez les informations avant de confirmer le transfert."
     },
     "summary.amount": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Amount",
-      "source": "Montant",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Abim moni",
+      "source": "Montant"
     },
     "summary.totalDebited": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò mbëmbë asu yë na:",
-      "source": "Total débité",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Moni məse ba vaa a elaŋ",
+      "source": "Total débité"
     },
     "summary.phone": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Tele nkòbò woe",
-      "source": "Téléphone",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Telefon",
+      "source": "Téléphone"
     },
     "summary.reference": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò fë nkukuma a mvus hala,",
-      "source": "Référence",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Referans",
+      "source": "Référence"
     },
     "summary.operation": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Operation",
-      "source": "Opération",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Ebɔé",
+      "source": "Opération"
     },
     "summary.confirmCorrect": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Mayi kòm na e mam mëte binë asu yë nala.",
-      "source": "Je confirme que les informations ci-dessus sont correctes.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Ma yili na mam məse ya yob mə ne bebela.",
+      "source": "Je confirme que les informations ci-dessus sont correctes."
     },
     "summary.edit": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Mod ziṅan yadzëki dzoe na:",
-      "source": "Modifier",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "A kom",
+      "source": "Modifier"
     },
     "summary.confirmTransfer": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Adzoe mëkpamaṅ, asu yë na bakòbò e dzom ziṅ.",
-      "source": "Confirmer le transfert",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "A yili nloman moni",
+      "source": "Confirmer le transfert"
     },
     "receipt.title": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò hm, akëlë kui mbëṅ.",
-      "source": "Transfert effectué",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nloman moni e nga man",
+      "source": "Transfert effectué"
     },
     "receipt.successMessage": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò bëngalom mvulna a nsëṅ.",
-      "source": "Votre transfert a été envoyé avec succès.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nloman moni woe e nga syebe.",
+      "source": "Votre transfert a été envoyé avec succès."
     },
     "receipt.status": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Status",
-      "source": "Statut",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Mbe ya ebɔé",
+      "source": "Statut"
     },
     "receipt.success": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "A mvus yë na akòbògò eyòṅ bod bëng",
-      "source": "Succès",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Syebe",
+      "source": "Succès"
     },
     "receipt.newTransfer": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò mkpamaṅ mbëmbë foe asu yë n",
-      "source": "Nouveau transfert",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Nloman moni mfe",
+      "source": "Nouveau transfert"
     },
     "error.title": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Mis mëngabò na: Mvulna",
-      "source": "Une erreur est survenue",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Evus e nga kui",
+      "source": "Une erreur est survenue"
     },
     "error.insufficientBalance": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò fë mbil esye asu yë na mam mvulna.",
-      "source": "Solde insuffisant pour effectuer ce transfert.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Moni mi ne a elaŋ mi ne tyotyo asu nloman nyi.",
+      "source": "Solde insuffisant pour effectuer ce transfert."
     },
     "error.close": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò fë nkukuma a mvus hala,",
-      "source": "Fermer",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Áfɛd",
+      "source": "Fermer"
     },
     "common.back": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò hm, akëlë kui.",
-      "source": "Retour",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "A dugan",
+      "source": "Retour"
     },
     "common.continue": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Këlë kui asu yë na bakòb",
-      "source": "Continuer",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "A ke osu",
+      "source": "Continuer"
     },
     "balance.greeting": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [
         "name"
       ],
-      "text": "Mina, {name}",
-      "source": "Bonjour, {name}",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Masug, {name}",
+      "source": "Bonjour, {name}"
     },
     "balance.accountNumber": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [
         "account"
       ],
-      "text": "Ndò mbëmbë na: {account}",
-      "source": "Numéro de compte : {account}",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Numero ya elaŋ: {account}",
+      "source": "Numéro de compte : {account}"
     },
     "security.alertTitle": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Dzam da, asu yë na bakòbò mam mëte.",
-      "source": "Alerte de sécurité",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Mbaale asu mbaalan ya moni",
+      "source": "Alerte de sécurité"
     },
     "security.verifyBeneficiaryBeforeContinue": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Ndò hm asu yë na: Biayi tsig efaè waan, oyab.",
-      "source": "Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Mbaale asu mbaalan: fombo numero ya mot a yi nong moni osu ya ke osu.",
+      "source": "Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer."
     },
     "confirmation.requiredBeforeSubmit": {
-      "status": "provisional",
+      "status": "validated",
       "requiredSlots": [],
-      "text": "Miayi bò na mibëlë kad eyòṅ mam mëte, asu yë na minnalan fufulu we.",
-      "source": "Vous devez confirmer les informations avant de valider le transfert.",
-      "machineSource": "Flagship/Lingo cameroon-int8",
-      "humanValidated": false,
-      "qualityFlags": []
+      "text": "Wo yeane dzo na mam mə ne bebela osu ya álōm moni.",
+      "source": "Vous devez confirmer les informations avant de valider le transfert."
     }
   }
 });

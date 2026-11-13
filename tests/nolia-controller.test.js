@@ -8,6 +8,7 @@ import { TEST_PACK } from "../core/locale-test-pack.js";
 import { TARGET_PACK } from "../core/locale-target-pack.js";
 import { DISPLAY_SEPARATOR } from "../core/intent-renderer.js";
 import { syntheticValidatedPack } from "./helpers/synthetic-pack.js";
+import { emptyTargetPack } from "./helpers/empty-pack.js";
 import {
   FakeDocument,
   addText,
@@ -147,18 +148,15 @@ test("a site change between Nolia's display and the restoration has priority", (
   assert.equal(nodes.continue.nodeValue, "Patientez");
 });
 
-test("the shipped provisional Ewondo pack enables only the visibly automatic mode", () => {
-  const { nodes, controller } = setup();
+test("the target-language mode stays disabled with a clear reason while no validated pack exists", () => {
+  const { nodes, controller } = setup({ target: emptyTargetPack() });
+  assert.equal(controller.status.provisionalAvailable, false);
   assert.equal(controller.status.targetAvailable, false);
-  assert.equal(controller.status.provisionalAvailable, true);
-  assert.deepEqual(controller.status.provisionalCoverage, { present: 84, total: 84 });
+  assert.match(controller.status.targetRefusal, /draft/u);
+  assert.match(controller.status.targetRefusal, /validateurs/u);
   const result = controller.enableTargetLanguage();
-  assert.equal(result.enabled, true);
-  assert.equal(controller.status.mode, "provisoire");
-  assert.match(nodes.continue.nodeValue, /^\[AUTO\]/u);
-  assert.equal(nodes.amount.nodeValue, PAGE.amount);
-  assert.equal(nodes.code.nodeValue, PAGE.code);
-  controller.restoreFrench();
+  assert.equal(result.enabled, false);
+  assert.equal(controller.status.mode, "observation");
   assert.deepEqual(textsOf(nodes), PAGE);
 });
 

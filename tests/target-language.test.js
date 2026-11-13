@@ -12,6 +12,7 @@ import { TARGET_PACK } from "../core/locale-target-pack.js";
 import { validateLanguagePack } from "../core/language-pack.js";
 import { SHEET_FILES } from "../scripts/build-translation-sheet.js";
 import { syntheticValidatedPack } from "./helpers/synthetic-pack.js";
+import { emptyTargetPack } from "./helpers/empty-pack.js";
 import { OTHER_LANGUAGE, runInstall, setupPanel, writeTempPack } from "./helpers/target-helpers.js";
 
 const root = new URL("../", import.meta.url);
@@ -22,31 +23,30 @@ test("the target language is Ewondo, ISO 639-3 ewo (v0.5.5)", () => {
   });
 });
 
-test("the empty model stays separate from the shipped provisional Ewondo pack", async () => {
+test("the empty model is a draft with no text; the shipped module is validated by two distinct people", async () => {
   const model = JSON.parse(await readFile(new URL("locales/template.json", root), "utf8"));
-  const provisional = JSON.parse(await readFile(new URL("locales/ewo-provisional.json", root), "utf8"));
   assert.equal(model.meta.languageCode, TARGET_LANGUAGE.code);
   assert.equal(model.meta.languageName, `${TARGET_LANGUAGE.label} (modèle à remplir)`);
   assert.equal(model.meta.status, "draft");
   assert.deepEqual(model.meta.validatedBy, []);
-  assert.equal(provisional.meta.status, "provisional");
-  assert.equal(provisional.meta.humanValidated, false);
-  assert.deepEqual(provisional.meta.validatedBy, []);
-  assert.deepEqual(JSON.parse(JSON.stringify(TARGET_PACK)), provisional);
+  assert.equal(TARGET_PACK.meta.languageCode, TARGET_LANGUAGE.code);
+  assert.equal(TARGET_PACK.meta.status, "validated");
+  assert.equal(new Set(TARGET_PACK.meta.validatedBy).size, 2);
+  assert.equal(validateLanguagePack(TARGET_PACK, { mode: "demo", expectedLanguage: TARGET_LANGUAGE.code }).ok, true);
+  assert.equal(validateLanguagePack(TARGET_PACK, { mode: "provisional", expectedLanguage: TARGET_LANGUAGE.code }).ok, false);
   assert.equal(Object.values(model.templates).filter((template) => template.text !== "").length, 1,
     "only the historical transfer.summary example keeps a French draft sentence");
 });
 
-test("the panel names the target language and exposes the automatic mode honestly", () => {
-  const { panel, node } = setupPanel(TARGET_PACK);
-  const { targetButton, reason, mode } = panel.elements;
-  assert.equal(targetButton.textContent, `Activer ${TARGET_LANGUAGE.withArticle} (automatique)`);
-  assert.equal(targetButton.disabled, false);
-  assert.match(reason.textContent, /non validée par des humains/u);
-  assert.match(reason.textContent, /84\/84 textes/u);
+test("the panel names the target language and explains why it is disabled", () => {
+  const { panel, node } = setupPanel(emptyTargetPack());
+  const { targetButton, reason } = panel.elements;
+  assert.equal(targetButton.textContent, `Activer ${TARGET_LANGUAGE.withArticle}`);
+  assert.equal(targetButton.textContent, "Activer l'éwondo");
+  assert.equal(targetButton.disabled, true);
+  assert.ok(reason.textContent.startsWith("Éwondo indisponible : aucun pack validé."));
   targetButton.click();
-  assert.equal(mode.textContent, "Mode éwondo — traduction automatique, à vérifier");
-  assert.match(node.nodeValue, /^\[AUTO\]/u);
+  assert.equal(node.nodeValue, "Continuer");
 });
 
 test("a validated pack enables the button and the mode is shown in the target language", () => {

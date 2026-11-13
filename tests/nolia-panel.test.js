@@ -8,14 +8,15 @@ import { TEST_PACK } from "../core/locale-test-pack.js";
 import { TARGET_PACK } from "../core/locale-target-pack.js";
 import { FakeDocument, addText, fakeMutationObserverFor } from "./helpers/fake-dom.js";
 import { TARGET_LANGUAGE } from "../core/target-language.js";
+import { emptyTargetPack } from "./helpers/empty-pack.js";
 
-function setup() {
+function setup({ target = TARGET_PACK } = {}) {
   const document = new FakeDocument();
   const node = addText(document, document.body, "Continuer", "button");
   let panel = null;
   const controller = createNoliaController({
     root: document.documentElement,
-    packs: { test: TEST_PACK, target: TARGET_PACK },
+    packs: { test: TEST_PACK, target },
     version: "0.5.1",
     onStatus: (status) => panel?.render(status),
     MutationObserverImpl: fakeMutationObserverFor(document),
@@ -66,18 +67,15 @@ test("the TEST button activates the mode and the restore button brings French ba
   assert.equal(mode.textContent, "Observation");
 });
 
-test("the provisional Ewondo button is enabled and its permanent warning is visible", () => {
-  const { panel, node } = setup();
-  const { targetButton, reason, mode } = panel.elements;
-  assert.equal(targetButton.disabled, false);
-  assert.equal(targetButton.textContent, "Activer l'éwondo (automatique)");
+test("the target-language button is disabled and the refusal reason is visible", () => {
+  const { panel, node } = setup({ target: emptyTargetPack() });
+  const { targetButton, reason } = panel.elements;
+  assert.equal(targetButton.disabled, true);
   assert.equal(reason.hidden, false);
-  assert.equal(reason.getAttribute("class"), "notice");
-  assert.match(reason.textContent, /non validée par des humains/u);
-  assert.match(reason.textContent, /84\/84 textes/u);
-  targetButton.click();
-  assert.equal(mode.textContent, "Mode éwondo — traduction automatique, à vérifier");
-  assert.match(node.nodeValue, /^\[AUTO\]/u);
+  assert.ok(reason.textContent.startsWith(`${TARGET_LANGUAGE.label} indisponible : aucun pack validé.`), reason.textContent);
+  assert.match(reason.textContent, /draft/u);
+  targetButton.click(); // disabled: nothing happens
+  assert.equal(node.nodeValue, "Continuer");
 });
 
 test("the panel can be collapsed to a pill and reopened", () => {

@@ -65,15 +65,15 @@ test("the target-language model is an empty draft: no translation and no validat
   }
 });
 
-test("the shipped target-language module is the complete provisional Ewondo pack", async () => {
-  assert.deepEqual(JSON.parse(JSON.stringify(TARGET_PACK)), await readJson("../locales/ewo-provisional.json"));
-  const validation = validateLanguagePack(TARGET_PACK, {
-    mode: "provisional",
-    expectedLanguage: TARGET_LANGUAGE.code
-  });
-  assert.equal(validation.ok, true);
-  assert.deepEqual(validation.coverage, { present: 84, total: 84 });
-  assert.equal(demo(TARGET_PACK).ok, false, "a provisional pack must never pass for a validated pack");
+test("the shipped target-language module is the validated pack: accepted as validated, refused as provisional", async () => {
+  assert.deepEqual(JSON.parse(JSON.stringify(TARGET_PACK)), await readJson("../locales/ewondo.json"));
+  assert.equal(TARGET_PACK.meta.status, "validated");
+  assert.equal(new Set(TARGET_PACK.meta.validatedBy).size, 2);
+  assert.deepEqual(validateLanguagePack(TARGET_PACK, { mode: "demo" }).reasons, []);
+  assert.equal(validateLanguagePack(TARGET_PACK, { mode: "provisional" }).ok, false);
+  for (const requirement of PACK_REQUIREMENTS) {
+    assert.equal(TARGET_PACK.templates[requirement.id].text.includes("[AUTO]"), false, requirement.id);
+  }
 });
 
 // ------------------------------------------------------------ TEST vs demo

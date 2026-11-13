@@ -1,0 +1,546 @@
+{
+  "meta": {
+    "languageCode": "ewo",
+    "languageName": "Éwondo",
+    "version": 1,
+    "status": "validated",
+    "validatedBy": [
+      "Mballa",
+      "Menounga"
+    ],
+    "validatedAt": "2026-11-13"
+  },
+  "directionLabels": {
+    "send": "",
+    "receive": "",
+    "neutral": ""
+  },
+  "templates": {
+    "transfer.insufficient_balance": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Moni mi ne a elaŋ mi ne tyotyo asu nloman nyi.",
+      "source": "Vous ne disposez pas d'assez de fonds."
+    },
+    "transfer.sent_success": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "send",
+      "text": "Nloman moni e nga syebe.",
+      "source": "Votre virement a bien été effectué."
+    },
+    "transfer.received": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "receive",
+      "text": "Wa nga nong moni.",
+      "source": "Paul Ndzana vous a envoyé 15 000 FCFA."
+    },
+    "transfer.failed": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Nloman moni e nji syebe.",
+      "source": "Le virement a échoué."
+    },
+    "beneficiary.verify_before_confirm": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Fombo numero ya mot a yi nong moni osu ya álōm moni.",
+      "source": "Contrôlez le numéro du destinataire avant l'envoi."
+    },
+    "beneficiary.new_unknown": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Mot a yi nong moni nyi a ne mfe a elaŋ nyi.",
+      "source": "Vous n'avez encore jamais utilisé ce destinataire."
+    },
+    "summary.verify_before_confirm": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Fombo mam məse osu ya yili ebɔé.",
+      "source": "Relisez les détails avant de valider l'opération."
+    },
+    "environment.test_data": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Nyi a ne ve yeman; tranzaksion mə ne mə yeman.",
+      "source": "Ceci est une simulation : les opérations sont fictives."
+    },
+    "security.no_personal_data": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Tə wa ve mot mfe code woe ya nkukuma.",
+      "source": "Ne communiquez jamais votre code secret."
+    },
+    "fees.free_transfer": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Nloman moni nyi a ne a zeze; wo yaan ki moni.",
+      "source": "Aucun frais ne sera appliqué à ce transfert."
+    },
+    "fees.amount_info": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Moni mi yeane yaan asu ebɔé nyi.",
+      "source": "Les frais de cette opération s'élèvent à 500 FCFA."
+    },
+    "transfer.total_debit": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "send",
+      "text": "Bayi vaa moni a elaŋ woe.",
+      "source": "Somme prélevée sur votre compte : 25 500 FCFA."
+    },
+    "balance.available_info": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Moni mi ligi a elaŋ woe.",
+      "source": "Votre solde actuel est de 125 000 FCFA."
+    },
+    "balance.after_operation": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Moni mi yi ligi a elaŋ a mvus nloman.",
+      "source": "Nouveau solde après le transfert : 99 500 FCFA."
+    },
+    "action.confirm_transfer": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "send",
+      "text": "A yili nloman moni",
+      "source": "Valider le virement"
+    },
+    "error.generic": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Evus ya teknik e nga kui.",
+      "source": "Un problème technique s'est produit."
+    },
+    "fallback.unrecognized": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Nolia a nji yem fóé nyi. Fóé ya falansi a ligi.",
+      "source": "fallback.unrecognized"
+    },
+    "fallback.unrecognized_warning": {
+      "status": "validated",
+      "requiredSlots": [],
+      "direction": "neutral",
+      "text": "Mbaale: Nolia a nji yem fóé nyi. Fombo mam osu ya ke osu.",
+      "source": "fallback.unrecognized_warning"
+    },
+    "environment.testBanner": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Vom ya yeman — mam mə ne mə yeman; tranzaksion ya bebela e nji.",
+      "source": "Environnement de test — données fictives, aucune transaction réelle."
+    },
+    "environment.protocol": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Mvəndə ya yeman",
+      "source": "Protocole de test"
+    },
+    "environment.backToHackathon": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "A dugan a hackathon",
+      "source": "Retour au hackathon"
+    },
+    "app.bankOnline": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Bank a internet",
+      "source": "Banque en ligne"
+    },
+    "step.balance": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Moni mi ligi",
+      "source": "Solde"
+    },
+    "common.fees": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Moni mi yeane yaan",
+      "source": "Frais"
+    },
+    "common.beneficiary": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Mot a yi nong moni",
+      "source": "Bénéficiaire"
+    },
+    "common.summary": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Nlaŋ mam məse",
+      "source": "Récapitulatif"
+    },
+    "step.confirmation": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Nyilan",
+      "source": "Confirmation"
+    },
+    "balance.accountHeading": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "ELAŊ MONI WOE",
+      "source": "VOTRE COMPTE"
+    },
+    "balance.intro": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Fombo moni mi ligi a elaŋ woe, ndò o bandi nloman moni a mbaalan.",
+      "source": "Consultez votre solde et lancez un transfert en toute sécurité."
+    },
+    "balance.available": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "MONI MI LIGI",
+      "source": "SOLDE DISPONIBLE"
+    },
+    "balance.currentAccount": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Elaŋ moni ya abog di",
+      "source": "Compte courant"
+    },
+    "balance.startTransfer": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Álōm moni",
+      "source": "Effectuer un transfert"
+    },
+    "balance.checkFees": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "A yen moni mi yeane yaan",
+      "source": "Consulter les frais"
+    },
+    "balance.recentTransactions": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "EBƆÉ YA MONI YA MVUS",
+      "source": "TRANSACTIONS RÉCENTES"
+    },
+    "transaction.merchantPayment": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Nyaan moni a nkus",
+      "source": "Paiement marchand"
+    },
+    "transaction.salaryReceived": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Maan ba nga nong",
+      "source": "Salaire reçu"
+    },
+    "transaction.transferReceived": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Nloman moni ba nga nong",
+      "source": "Transfert reçu"
+    },
+    "transaction.electricityBill": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Kalara ya elektrisite",
+      "source": "Facture électricité"
+    },
+    "security.title": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Mbaalan ya moni",
+      "source": "Sécurité"
+    },
+    "security.verifyBeneficiary": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Abǒg áse, wo yeane fombo dzwé ai numero ya mot a yi nong moni osu ya yili nloman moni.",
+      "source": "Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert."
+    },
+    "security.secureConnection": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Nlatan internet a ne a mbaalan",
+      "source": "Connexion sécurisée"
+    },
+    "security.demoWarning": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Safinum Pay — vom ya yeman. Tə wa til mam mə nyol mə bebela.",
+      "source": "Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle réelle."
+    },
+    "fees.title": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "MONI MI YEANE YAAN ASU NLOMAN",
+      "source": "FRAIS DE TRANSFERT"
+    },
+    "fees.intro": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Ve akyae ya nloman ai abim moni. Nolia a laŋ moni mi yeane yaan.",
+      "source": "Choisissez le type de transfert et le montant. Les frais sont calculés automatiquement."
+    },
+    "fees.operationType": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "AKYAE YA EBƆÉ",
+      "source": "TYPE D'OPÉRATION"
+    },
+    "fees.safinumAccount": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Elaŋ moni Safinum",
+      "source": "Compte Safinum"
+    },
+    "fees.mobileMoney": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Mobile Money",
+      "source": "Mobile Money"
+    },
+    "fees.otherBank": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Bank mfe",
+      "source": "Autre banque"
+    },
+    "fees.freeInstant": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Nloman moni abog ate, tege yaan",
+      "source": "Transfert instantané et gratuit"
+    },
+    "fees.amountToSend": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "ABIM MONI YA ÁLŌM",
+      "source": "MONTANT À ENVOYER"
+    },
+    "fees.free": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "A zeze",
+      "source": "Gratuit"
+    },
+    "fees.totalDebit": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "MONI MƏSE BA YI VAA A ELAŊ",
+      "source": "Total à débiter"
+    },
+    "fees.balanceAfter": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "MONI MI YI LIGI A MVUS EBƆÉ",
+      "source": "Solde après opération"
+    },
+    "beneficiary.intro": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Til mam ya mot a yi nong moni. Abǒg áse, fombo numero osu ya yili.",
+      "source": "Renseignez les informations du destinataire. Vérifiez toujours le numéro avant de valider."
+    },
+    "beneficiary.newWarning": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Mot a yi nong moni nyi a nji bo a elaŋ nyi. Fombo numero osu ya ke osu.",
+      "source": "Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant de continuer."
+    },
+    "beneficiary.name": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "DZWÉ YA MOT A YI NONG MONI",
+      "source": "NOM DU BÉNÉFICIAIRE"
+    },
+    "beneficiary.phone": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "NUMERO YA TELEFON",
+      "source": "NUMÉRO DE TÉLÉPHONE"
+    },
+    "beneficiary.reason": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "AMU DZE WO ÁLŌM MONI",
+      "source": "MOTIF DU TRANSFERT"
+    },
+    "beneficiary.note": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "FÓÉ MFE (NGE O YI)",
+      "source": "NOTE (OPTIONNEL)"
+    },
+    "beneficiary.checked": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Ma nga fombo dzwé ai numero ya mot a yi nong moni.",
+      "source": "J'ai vérifié le nom et le numéro du bénéficiaire."
+    },
+    "summary.intro": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Fombo mam məse osu ya yili nloman moni.",
+      "source": "Vérifiez les informations avant de confirmer le transfert."
+    },
+    "summary.amount": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Abim moni",
+      "source": "Montant"
+    },
+    "summary.totalDebited": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Moni məse ba vaa a elaŋ",
+      "source": "Total débité"
+    },
+    "summary.phone": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Telefon",
+      "source": "Téléphone"
+    },
+    "summary.reference": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Referans",
+      "source": "Référence"
+    },
+    "summary.operation": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Ebɔé",
+      "source": "Opération"
+    },
+    "summary.confirmCorrect": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Ma yili na mam məse ya yob mə ne bebela.",
+      "source": "Je confirme que les informations ci-dessus sont correctes."
+    },
+    "summary.edit": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "A kom",
+      "source": "Modifier"
+    },
+    "summary.confirmTransfer": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "A yili nloman moni",
+      "source": "Confirmer le transfert"
+    },
+    "receipt.title": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Nloman moni e nga man",
+      "source": "Transfert effectué"
+    },
+    "receipt.successMessage": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Nloman moni woe e nga syebe.",
+      "source": "Votre transfert a été envoyé avec succès."
+    },
+    "receipt.status": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Mbe ya ebɔé",
+      "source": "Statut"
+    },
+    "receipt.success": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Syebe",
+      "source": "Succès"
+    },
+    "receipt.newTransfer": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Nloman moni mfe",
+      "source": "Nouveau transfert"
+    },
+    "error.title": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Evus e nga kui",
+      "source": "Une erreur est survenue"
+    },
+    "error.insufficientBalance": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Moni mi ne a elaŋ mi ne tyotyo asu nloman nyi.",
+      "source": "Solde insuffisant pour effectuer ce transfert."
+    },
+    "error.close": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Áfɛd",
+      "source": "Fermer"
+    },
+    "common.back": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "A dugan",
+      "source": "Retour"
+    },
+    "common.continue": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "A ke osu",
+      "source": "Continuer"
+    },
+    "balance.greeting": {
+      "status": "validated",
+      "requiredSlots": [
+        "name"
+      ],
+      "text": "Masug, {name}",
+      "source": "Bonjour, {name}"
+    },
+    "balance.accountNumber": {
+      "status": "validated",
+      "requiredSlots": [
+        "account"
+      ],
+      "text": "Numero ya elaŋ: {account}",
+      "source": "Numéro de compte : {account}"
+    },
+    "security.alertTitle": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Mbaale asu mbaalan ya moni",
+      "source": "Alerte de sécurité"
+    },
+    "security.verifyBeneficiaryBeforeContinue": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Mbaale asu mbaalan: fombo numero ya mot a yi nong moni osu ya ke osu.",
+      "source": "Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer."
+    },
+    "confirmation.requiredBeforeSubmit": {
+      "status": "validated",
+      "requiredSlots": [],
+      "text": "Wo yeane dzo na mam mə ne bebela osu ya álōm moni.",
+      "source": "Vous devez confirmer les informations avant de valider le transfert."
+    }
+  }
+}
