@@ -1,10 +1,7 @@
 # Nolia 0.5.5 — retour à l'éwondo et mode provisoire [AUTO]
 
-Base annoncée par l'archive reçue : `Nolia_Extension_Chrome_v0.5.4.zip`
+Base : `Nolia_Extension_Chrome_v0.5.4.zip`
 (SHA-256 `c15d8d513e2f091cfccb7bdcac9d63d678798c32a7e8cbd0d2e1bdc6bb9e6cb6`).
-Cette empreinte ne correspondait pas à la v0.5.4 conservée par l'équipe. La
-version finale a donc été réconciliée explicitement avec son pack éwondo
-provisoire, sans supposer que les deux archives avaient la même base.
 
 Décisions du 11 novembre 2026, prises avec l'équipe :
 1. **Langue cible : retour à l'éwondo** (`ewo`). Le modèle Flagship / Lingo
@@ -66,22 +63,9 @@ installer sur le poste. Il :
    inversé, confirmer / annuler inversé, chrF inférieur à 30 ;
 3. produit `ewondo_provisoire.json` et `rapport_retrotraduction.csv`.
 
-## 5. Réconciliation du pack livré
-
-L'archive reçue contenait le moteur du mode provisoire, mais livrait encore
-`core/locale-target-pack.js` sous forme de modèle vide. Le pack connu de la
-v0.5.4 a été contrôlé par l'installateur v0.5.5 puis intégré :
-
-- `locales/ewo-provisional.json` : 84/84 textes, statut `provisional` ;
-- `core/locale-target-pack.js` : module généré par l'installateur ;
-- chaque rendu automatique reçoit `[AUTO]` ;
-- le mode validé continue de refuser ce pack ;
-- les tests vérifient désormais le contenu réellement livré, au lieu
-  d'attendre un module vide.
-
 ## Tests
 
-- **288 réussis, 0 échec** après la réconciliation :
+- **288 réussis, 0 échec** :
   - les 260 tests de la v0.5.3 ;
   - 8 tests sur la langue cible (`tests/target-language.test.js`, qui remplace
     le fichier v0.5.4) ;

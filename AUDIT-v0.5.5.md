@@ -1,63 +1,52 @@
-# Nolia 0.5.5 — audit de livraison finale
+# Nolia 0.5.5 — audit de livraison
 
-État au 11 novembre 2026. Ce document distingue les résultats reproduits sur
-la livraison finale des affirmations provenant des archives antérieures.
+État au 11 novembre 2026. Ce document distingue ce qui a été vérifié de ce qui
+ne l'a pas été.
 
-## 1. Verdict
-
-La v0.5.5 finale est techniquement prête pour un test manuel sur Safinum avec
-un pack éwondo **automatique et provisoire**. Elle n'est pas linguistiquement
-validée et ne doit jamais être présentée comme telle.
-
-## 2. Vérifications reproduites
+## 1. Vérifié
 
 | Vérification | Résultat |
 | --- | --- |
 | `npm test` | **288 réussis, 0 échec**, 0 annulé, 0 ignoré |
 | `npm run coverage:intents` | 53 phrases, **0 faux positif** |
-| Pack livré | 84/84 textes, langue `ewo`, statut `provisional`, aucun validateur déclaré |
-| Module chargé par Chrome | Identique à `locales/ewo-provisional.json` |
-| Mode provisoire | Accepté uniquement en mode `provisional`; chaque rendu reçoit `[AUTO]` |
-| Mode validé | Refuse le pack provisoire |
-| Valeurs protégées | Montants, comptes, téléphones, références, codes, dates, bénéficiaires et sens couverts par les tests d'intégrité |
-| Restauration | Retour exact au français couvert par les tests |
-| Messages inédits | Mode dégradé conservé; aucune traduction libre forcée |
+| Chrome, page simulée, extension livrée (modèle éwondo vide) | **32 sur 32**. Bouton « Activer l'éwondo » désactivé, raison affichée |
+| Chrome, page simulée, copie de l'extension avec un pack provisoire **synthétique** (phrases « AUTOMATIQUE … », non livré) | **38 sur 38**. Chaque texte est préfixé `[AUTO]` ; les montants, références et codes sont intacts ; la formulation reconnue est affichée avec `[AUTO]` et ses valeurs ; le panneau affiche « traduction automatique, à vérifier » ; la restauration est exacte nœud par nœud |
+| Notebook Colab, exécuté ici avec de **faux modèles** qui injectent des fautes | 5 fautes sur 5 rejetées avec le bon motif (chiffre ajouté, négation perdue, envoyer / recevoir inversé, confirmer / annuler inversé, retour trop différent). La règle « identique au français » est vérifiée à part. Le pack produit (79/84) est **validé par Nolia elle-même** et s'installe avec `--provisional` |
+| Le module livré `core/locale-target-pack.js` | C'est le modèle éwondo vide (draft). Aucun test ne peut plus l'écrire |
+| Classeur éwondo des validateurs v0.5.5 | 97 formules sans erreur ; les 8 scénarios de contrôle réussissent ; aucune mention du bulu |
 
-Le pack v0.5.4 a été accepté par l'installateur v0.5.5 sans contournement :
-`Pack éwondo PROVISOIRE installé (84/84 textes, affichés avec [AUTO])`.
+## 2. Non vérifié
 
-## 3. Vérifications non réalisées
+- **Le vrai modèle Flagship / Lingo n'a pas été exécuté** : Hugging Face est
+  inaccessible depuis l'environnement de développement. Les points suivants
+  sont des hypothèses que le notebook signale à l'exécution :
+  - les noms exacts des dossiers français→éwondo et éwondo→français du dépôt
+    `flagship-ai/cameroon-int8` (le notebook les détecte et les affiche) ;
+  - la présence d'un tokenizer Marian utilisable dans ces dossiers ;
+  - la qualité réelle des traductions.
+- **La licence du modèle** n'a pas été vérifiée par moi. Elle est non
+  commerciale (CC BY-NC 4.0) selon la vérification de l'équipe, alors qu'une
+  autre page Flagship indique CC-BY-4.0. À contrôler sur la page du modèle et
+  à déclarer.
+- **La pertinence du seuil chrF de 30.** C'est un choix initial. Le rapport
+  CSV donne chaque score pour l'ajuster.
+- **L'extension sur la vraie page Safinum** : toujours non exécutée.
 
-- **Chrome sur la page simulée** : Chromium ne démarre pas dans cet
-  environnement (`ProcessSingleton`, création de socket interdite). Le script
-  a été adapté au vrai pack livré, mais son exécution doit être faite sur
-  l'ordinateur de l'équipe.
-- **La vraie page Safinum** : aucun parcours manuel complet n'a encore été
-  observé avec cette archive finale.
-- **Le notebook Colab** : il est annoncé comme fourni séparément, mais il
-  n'était pas présent dans l'archive v0.5.5 reçue.
-- **La génération du pack** : le pack et son rapport ont été repris de la
-  v0.5.4 connue; le modèle Flagship/Lingo n'a pas été réexécuté pendant cet
-  audit.
-- **La qualité linguistique** : aucune relecture par des locuteurs
-  ewondophones n'a été fournie.
-- **La licence exacte du modèle** : les documents disponibles mentionnent
-  prudemment CC BY-NC 4.0, mais cette information doit être confirmée sur la
-  source officielle avant la soumission.
+## 3. Limites du mode provisoire
 
-## 4. Limites du mode provisoire
+- La rétrotraduction utilise le même éditeur de modèle dans les deux sens : une
+  erreur cohérente dans les deux directions peut passer les contrôles.
+- Les règles de négation et de sens (envoyer / recevoir, confirmer / annuler)
+  s'appliquent au retour en français. Elles ne lisent pas l'éwondo.
+- Un pack provisoire **ne remplace pas** la validation humaine. Le classeur
+  des validateurs reste l'étape requise pour le statut `validated`.
 
-- Une rétrotraduction peut laisser passer une erreur cohérente dans les deux
-  directions.
-- Les contrôles de sens portent surtout sur le retour français; ils ne prouvent
-  pas la grammaire ni l'acceptabilité de l'éwondo.
-- Un message absent ou refusé reste en français.
-- Nolia assiste la compréhension; elle ne bloque ni ne sécurise une
-  transaction financière.
+## 4. Engagements tenus
 
-## 5. Formulation exacte pour le jury
-
-« Nolia affiche un pack éwondo généré automatiquement et clairement marqué
-`[AUTO]`. Les montants, bénéficiaires, frais, références et sens de l'opération
-sont contrôlés par le moteur local. La validation linguistique humaine n'est
-pas encore effectuée. »
+- Aucun nom de validateur inventé. Un pack provisoire qui en contient est
+  refusé.
+- Aucun texte éwondo écrit à la main ni généré dans cette livraison.
+- Le mode validé refuse toujours un pack provisoire, et `[AUTO]` ne peut être
+  ni retiré ni ajouté par le pack.
+- Les protections de valeurs et de confidentialité des versions précédentes
+  sont inchangées.

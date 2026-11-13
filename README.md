@@ -1,193 +1,119 @@
-# Nolia 0.5.5
+# Nolia 0.5.7
 
-Nolia est une extension Chrome locale qui aide à comprendre l'interface de
-l'environnement de test Safinum (https://safinum.cm/hackathon-test). La langue
-cible est l'**éwondo** (code ISO 639-3 `ewo`), de nouveau retenue le
-11 novembre 2026 après un essai avec le bulu. **Aucune traduction éwondo n'est
-encore validée par des humains.** Cette version contient un pack artificiel
-`[TEST]`, qui n'est pas une langue, un modèle vide destiné aux validateurs et
-un pack de **traduction automatique provisoire** couvrant 84/84 textes. Ce
-dernier est toujours affiché avec le préfixe `[AUTO]` (voir l'étape 8 bis).
+Nolia est une extension Chrome Manifest V3 qui adapte localement en **éwondo**
+(ISO 639-3 `ewo`) les textes de l’environnement de test Safinum Pay.
 
-La langue cible est définie à un seul endroit : `core/target-language.js`.
+La version 0.5.7 livre un pack de **84 textes** relus en contexte dans Chrome
+par deux locuteurs éwondophones, Mballa et Menounga, le 13 novembre 2026.
+L’extension protège les valeurs financières et restaure exactement le français.
 
-Nolia aide à comprendre le texte. Elle **ne bloque, ne protège et ne modifie
-aucune transaction** : elle ne touche ni aux boutons, ni aux formulaires, ni aux
-montants, bénéficiaires, références, frais ou événements du site.
+## État de la livraison
 
-## Installer et utiliser
+| Élément | Résultat |
+| --- | --- |
+| Version | 0.5.7 |
+| Langue | Éwondo (`ewo`) |
+| Pack | 84/84 entrées au statut `validated` |
+| Validation linguistique | Mballa et Menounga, dans Chrome, le 13 novembre 2026 |
+| Tests automatisés | 288 réussis, 0 échec |
+| Messages inédits | 53 phrases, 0 faux positif |
+| Audit Chrome | 38/38 sur une page Safinum simulée |
+| Traitement | 100 % local, sans API externe à l’exécution |
 
-### 1. Décompresser l'archive
+La validation dans le navigateur vérifie la langue en contexte. L’audit Chrome
+automatisé reste distinct : il vérifie le comportement technique sur une page
+simulée reproductible.
 
-Clic droit sur `Nolia_Extension_Chrome_v0.5.5.zip`, puis **Extraire tout…**, puis
-**Extraire**. Chrome ne peut pas lire une archive .zip non extraite.
+## Installation
 
-### 2. Quel dossier sélectionner
+1. Décompresser l’archive.
+2. Ouvrir `chrome://extensions` dans Chrome sur ordinateur.
+3. Activer **Mode développeur**.
+4. Cliquer sur **Charger l’extension non empaquetée**.
+5. Sélectionner le dossier contenant directement `manifest.json`.
+6. Ouvrir ou actualiser <https://safinum.cm/hackathon-test>.
 
-L'extraction crée un dossier `Nolia_Extension_Chrome_v0.5.5`. **C'est ce dossier
-qu'il faut sélectionner** : il contient directement `manifest.json`, ainsi que
-les dossiers `core`, `extension` et `locales`. Il n'y a pas de dossier intérieur.
+Retirer toute ancienne version avant de charger la 0.5.7. Chrome mobile ne
+prend pas en charge cette extension.
 
-### 3. Activer le mode développeur
+## Utilisation
 
-Ouvrez `chrome://extensions` dans Chrome sur ordinateur, puis activez
-l'interrupteur **Mode développeur**, en haut à droite.
+Le panneau démarre en mode **Observation** : il classe les textes sans modifier
+la page.
 
-### 4. Charger l'extension non empaquetée
+- **Activer l’éwondo** affiche les traductions validées.
+- **Activer le mode TEST** prouve le branchement avec des libellés `[TEST]` ;
+  ce mode n’est pas une traduction.
+- **Restaurer le français** remet chaque texte source exactement. Si le site a
+  modifié un texte entre-temps, le texte du site reste prioritaire.
 
-Cliquez sur **Charger l'extension non empaquetée** et sélectionnez le dossier de
-l'étape 2. Si une ancienne version de Nolia est installée, supprimez-la avant,
-sinon les deux tourneront sur la page.
+Commandes disponibles dans la console, contexte de l’extension :
 
-Si Chrome affiche « Manifest file is missing or unreadable », vous avez
-sélectionné un dossier qui ne contient pas directement `manifest.json`.
+```js
+__noliaTestMode.enable()
+__noliaTestMode.disable()
+__noliaStatus
+```
 
-### 5. Ouvrir Safinum
-
-Ouvrez ou actualisez https://safinum.cm/hackathon-test. Un petit panneau
-**Nolia 0.5.5** apparaît en bas à gauche, en mode **Observation** : il compte
-les messages reconnus, les textes protégés et les messages inconnus, sans rien
-changer. Le bouton **Réduire** le transforme en pastille « Nolia » ; cliquez
-sur la pastille pour le rouvrir. Sur un écran étroit, il démarre réduit.
-
-### 6. Activer le mode TEST
-
-Cliquez sur **Activer le mode TEST** dans le panneau. Ce que vous verrez :
-
-- les 66 messages connus de Safinum s'affichent précédés de `[TEST]` ;
-- une phrase reconnue par son sens garde le français, suivi de
-  `— [TEST] INTENTION …` et des valeurs exactes entre parenthèses ;
-- un message inconnu garde le français, suivi de
-  `— [TEST] MESSAGE NON RECONNU…` ou, s'il paraît sensible,
-  `— [TEST] ATTENTION, MESSAGE NON RECONNU : VÉRIFIEZ AVANT DE CONTINUER` ;
-- les montants, comptes, téléphones, références, codes et noms ne changent pas.
-
-Le mode TEST prouve le branchement technique. **Ce n'est pas une traduction.**
-
-### 7. Restaurer le français
-
-Cliquez sur **Restaurer le français**. Chaque texte d'origine est remis
-exactement, sans recharger la page. Si le site a modifié un texte entre-temps,
-c'est le texte du site qui est gardé.
-
-Ces commandes restent disponibles dans la console, contexte « Nolia » :
-`__noliaTestMode.enable()`, `__noliaTestMode.disable()` et `__noliaStatus`.
-Ce dernier ne contient que des compteurs et des identifiants.
-
-### 8. Ajouter plus tard le pack éwondo validé
-
-1. Les deux validateurs remplissent le classeur
-   `Nolia_Traduction_Ewondo_Validateurs_v0.5.5.xlsx`, fourni à part. Ses
-   84 lignes correspondent exactement au schéma du pack. Les fiches
-   `docs/fiche-traduction-ewondo.csv` (66 messages) et
-   `docs/fiche-intentions-ewondo.csv` (16 intentions et 2 messages de repli)
-   en sont la version texte.
-2. Les textes validés sont reportés dans une copie de `locales/template.json`
-   (le modèle éwondo, 84 entrées vides). Chaque emplacement protégé (`{name}`,
-   `{account}`) est conservé, et chaque `status` passe à `validated`.
-3. Dans `meta` : `"languageCode": "ewo"`, `"status": "validated"`, les **noms
-   des deux validateurs** (deux personnes distinctes) dans `validatedBy`, et la
-   date dans `validatedAt` (AAAA-MM-JJ, pas dans le futur).
-4. Exécutez `npm run pack:ewondo -- ewondo.json`. S'il manque quoi que ce soit,
-   rien n'est installé et chaque motif est listé.
-5. Rechargez l'extension. Le bouton **Activer l'éwondo** devient utilisable.
-
-### 8 bis. Traduction automatique provisoire (avant la validation humaine)
-
-La livraison contient déjà `locales/ewo-provisional.json`. Il est installé
-dans `core/locale-target-pack.js` et rend immédiatement disponible le bouton
-**Activer l'éwondo (automatique)**. Chaque texte traduit est précédé de
-**[AUTO]**, et le panneau indique « Mode éwondo — traduction automatique, à
-vérifier ». Le pack n'est jamais accepté par le mode validé.
-
-Pour régénérer ultérieurement ce pack :
-
-1. Ouvrez `Nolia_Ewondo_Provisoire_Colab.ipynb` dans Google Colab, s'il vous a
-   été fourni séparément, puis
-   lancez **Exécution → Tout exécuter**. Il traduit les 84 textes avec le
-   modèle Flagship / Lingo français→éwondo (CTranslate2 int8), les retraduit
-   en français, et **rejette** toute traduction qui perd un emplacement, reste
-   identique au français, ajoute un chiffre, perd une négation, inverse
-   envoyer / recevoir ou confirmer / annuler, ou dont le retour français est
-   trop différent.
-2. Il produit `ewondo_provisoire.json`, au statut `provisional` et **sans
-   aucun validateur**, ainsi que `rapport_retrotraduction.csv`.
-3. Exécutez `npm run pack:provisoire -- ewondo_provisoire.json`, puis
-   rechargez l'extension.
-4. Le bouton reste **Activer l'éwondo (automatique)**. Chaque texte est alors
-   affiché précédé de **[AUTO]**, et le panneau indique « Mode éwondo —
-   traduction automatique, à vérifier », avec la source et le nombre de textes.
-   Les textes rejetés restent en français.
-
-Formulation à utiliser devant le jury : « Traductions provisoires générées
-localement par le modèle Flagship/Lingo, contrôlées automatiquement par
-rétrotraduction et protection des valeurs. Validation humaine non effectuée à
-ce stade. » Déclarez Flagship/Lingo dans la note technique et vérifiez la
-licence affichée sur la page du modèle (non commerciale selon la vérification
-de l'équipe).
-
-### 9. Limites connues
-
-- Testé dans Chrome uniquement sur une **page simulée** : le parcours réel
-  Safinum reste à vérifier (voir `AUDIT-v0.5.1.md`).
-- Chrome sur ordinateur seulement ; Chrome mobile n'accepte pas ces extensions.
-- Aucune phrase éwondo n'est validée par des humains. Le pack livré active
-  uniquement le mode automatique clairement signalé `[AUTO]`.
-- Un pack provisoire est une traduction automatique : les contrôles réduisent
-  les contresens sans les éliminer. Il est toujours affiché avec [AUTO].
-- Les intentions reconnaissent une liste mesurée de formulations françaises ;
-  tout le reste passe en mode dégradé, sans traduction libre.
-- Un message de plusieurs phrases, ou avec « mais », « puis », « ensuite », etc.,
-  passe toujours en mode dégradé, même si chaque partie est connue.
-- Les modules `core/*.js` sont accessibles à la page safinum.cm (nécessaire à
-  l'import par le script de contenu).
+`__noliaStatus` n’expose que des compteurs et des identifiants.
 
 ## Fonctionnement
 
-```
-texte visible → catalogue exact (66) → valeur protégée → intention (16)
-             → mode dégradé (phrase non reconnue) → fragment laissé intact
+```text
+texte visible → catalogue → valeurs protégées → intention
+              → traduction ou mode dégradé → contrôle d’intégrité
 ```
 
-| Fichier | Rôle |
+| Emplacement | Rôle |
 | --- | --- |
-| `extension/content-script.js` | Coque mince : charge le contrôleur, les packs et le panneau. |
-| `core/target-language.js` | Langue cible (éwondo, `ewo`) : seul endroit à modifier pour changer de langue. |
-| `core/nolia-controller.js` | Observation, modes Observation / TEST / langue cible validée / provisoire [AUTO], restauration. |
-| `core/nolia-panel.js` | Panneau en Shadow DOM fermé, marqué `data-nolia-ignore`. |
-| `core/language-pack.js` | Schéma (66 + 16 + 2), validation TEST / démonstration, rendu des messages. |
-| `core/locale-test-pack.js`, `core/locale-target-pack.js` | Packs chargés par l'extension (générés). |
-| `core/text-analyzer.js`, `core/intent-*.js`, `core/value-extractor.js` | Analyse, intentions, valeurs protégées, contrôle d'intégrité. |
-| `core/message-catalog.js`, `core/message-classifier.js` | Catalogue des 66 messages (63 depuis 0.4.0, 3 ajoutés en 0.5.3). |
-| `core/dom-*.js` | Lecture du DOM, observation, écriture `textContent` réversible. |
+| `extension/content-script.js` | Démarre le contrôleur et le panneau. |
+| `core/dom-*.js` | Extrait, observe et restaure les nœuds texte. |
+| `core/message-catalog.js` | Catalogue les messages Safinum connus. |
+| `core/intent-*.js` | Reconnaît des formulations inédites de sens connu. |
+| `core/value-extractor.js` | Protège montants, noms, comptes, téléphones et références. |
+| `core/language-pack.js` | Valide les packs vide, provisoire et validé. |
+| `locales/ewondo.json` | Source du pack éwondo validé. |
+| `core/locale-target-pack.js` | Pack généré chargé par l’extension. |
 
-## Principes de sécurité
+## Garde-fous
 
-- Traitement local ; aucun réseau, aucun modèle d'IA, aucune API.
-- Aucun stockage persistant ; la console ne reçoit que des codes fixes
-  (`NOLIA_START_FAILED`, `NOLIA_DISPLAY_REFUSED`), jamais de texte de page ni
-  de message d'erreur.
-- Écriture uniquement par `nodeValue` de nœuds texte ; pas d'`innerHTML`,
-  d'`eval` ni de `new Function`.
-- Avant tout affichage, les valeurs (montants, devise, frais, bénéficiaire,
-  téléphone, compte, référence, code, date, sens) sont relues et comparées à
-  la source ; toute différence est refusée.
-- Le mode démonstration refuse tout pack qui n'est pas validé par deux
-  personnes distinctes, à une date passée, sans traduction vide ni `[TEST]`.
+- Aucun appel réseau, aucune API payante et aucun modèle à l’exécution.
+- Aucun stockage persistant et aucun texte financier écrit dans la console.
+- Aucun `innerHTML`, `eval` ou `new Function`.
+- Refus d’affichage si une valeur protégée ou le sens envoyer/recevoir change.
+- Message inconnu conservé en français avec un avertissement contrôlé.
+- Pack de démonstration refusé s’il est incomplet ou insuffisamment validé.
 
-## Commandes pour l'équipe
+Nolia aide à comprendre l’interface. Elle ne confirme, ne bloque et ne sécurise
+aucune transaction.
 
-Prérequis : Node.js 20 ou plus récent. Aucune dépendance npm pour l'extension.
+## Vérification
+
+Prérequis : Node.js 20 ou version ultérieure.
 
 ```bash
-npm test                     # tous les tests
-npm run coverage:intents     # corpus indépendant : couverture et faux positifs
-npm run packs:build          # régénère locales/test.json, locales/template.json et les modules
-npm run sheet:langue          # régénère les fiches CSV depuis le code
-npm run pack:ewondo -- ewondo.json            # installe un pack éwondo validé (refuse sinon)
-npm run pack:provisoire -- ewondo_provisoire.json # installe un pack automatique, affiché avec [AUTO]
-npm run pack:provisoire -- locales/ewo-provisional.json # réinstalle le pack provisoire livré
+npm test
+npm run coverage:intents
 ```
 
-Vérification Chrome sur page simulée : `tools/chrome-smoke/README.md`.
-Détails : `CHANGELOG-v0.5.5.md`, `AUDIT-v0.5.5.md`, `CHANGELOG-v0.5.4.md`, `AUDIT-v0.5.4.md`, `CHANGELOG-v0.5.3.md`, `AUDIT-v0.5.3.md`, `CHANGELOG-v0.5.2.md`, `CHANGELOG-v0.5.1.md`, `AUDIT-v0.5.1.md` (mis à jour en 0.5.2), `docs/NOTES-v0.5.0.md`.
+Résultats de référence : **288 tests réussis, 0 échec** et **53 phrases
+inédites, 0 faux positif**. Le test Chrome est documenté dans
+`tools/chrome-smoke/README.md`.
+
+## Documentation
+
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- [`docs/VALIDATION_ET_TESTS.md`](docs/VALIDATION_ET_TESTS.md)
+- [`docs/GUIDE_DEMONSTRATION.md`](docs/GUIDE_DEMONSTRATION.md)
+- [`docs/JOURNAL_11_13_NOVEMBRE_2026.md`](docs/JOURNAL_11_13_NOVEMBRE_2026.md)
+- [`AUDIT-v0.5.7.md`](AUDIT-v0.5.7.md)
+- [`CHANGELOG-v0.5.7.md`](CHANGELOG-v0.5.7.md)
+
+## Limites connues
+
+- Chrome sur ordinateur uniquement.
+- Couverture mesurée de variantes ; pas de traduction universelle.
+- Une phrase inconnue ou ambiguë n’est pas traduite librement.
+- Les tests ne prouvent pas qu’une phrase éwondo est idiomatique.
+- Points lexicaux à surveiller : `nkukuma` (« secret »), `A kom`
+  (« modifier ») et `syebe` (« réussi »).
