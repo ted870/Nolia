@@ -18,11 +18,14 @@ L’extension protège les valeurs financières et restaure exactement le franç
 | Tests automatisés | 288 réussis, 0 échec |
 | Messages inédits | 53 phrases, 0 faux positif |
 | Audit Chrome | 38/38 sur une page Safinum simulée |
+| Environnement Safinum réel | 5 écrans parcourus manuellement, rendu conforme |
 | Traitement | 100 % local, sans API externe à l’exécution |
 
 La validation dans le navigateur vérifie la langue en contexte. L’audit Chrome
 automatisé reste distinct : il vérifie le comportement technique sur une page
-simulée reproductible.
+simulée reproductible. Les cinq écrans de l’environnement Safinum réel ont
+également été parcourus manuellement par l’équipe le 13 novembre 2026, sans
+anomalie de rendu signalée.
 
 ## Installation
 

@@ -15,10 +15,15 @@ datée de la séance et les noms complets des validateurs.
 - 288 tests unitaires et d’intégration sur 288 ;
 - 53 phrases indépendantes, avec 0 faux positif ;
 - 38 contrôles Chrome sur 38 sur une page Safinum simulée.
+- cinq écrans du véritable environnement Safinum parcourus manuellement par
+  l’équipe le 13 novembre 2026, sans anomalie de rendu signalée.
 
 Sont notamment couverts : inversion envoyer/recevoir, valeurs modifiées,
 négation, textes inconnus ou ambigus, contenu dynamique, restauration exacte,
 séparation des packs vide/provisoire/validé et absence de fuite réseau.
+
+Le parcours réel est une vérification manuelle du rendu et de l’intégration. Il
+ne remplace pas l’audit automatisé reproductible sur la page simulée.
 
 ## Limite des preuves
 
